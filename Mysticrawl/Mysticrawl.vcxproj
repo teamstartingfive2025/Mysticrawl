@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="Mysticrawl.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
