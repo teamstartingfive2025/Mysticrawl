@@ -22,5 +22,5 @@ private:
 public:
     SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts);
 
-    void MakeSelection();
+    bool MakeSelection();
 };

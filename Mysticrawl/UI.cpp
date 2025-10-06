@@ -45,7 +45,7 @@ void SelectionMenu::ApplyKeyModifier(const array<int, Constants::UI::MENU_OPTION
 	focusedIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::COL] = focusedColFinal;
 }
 
-void SelectionMenu::MakeSelection() {
+bool SelectionMenu::MakeSelection() {
 	DisplayOptions();
 
 	char input = getInstantaneousCharInput();
@@ -53,29 +53,32 @@ void SelectionMenu::MakeSelection() {
 
 	system("cls");
 
+	int selectedRow;
+	int selectedCol;
+
 	switch(inputCode) {
 		case Constants::UI::UP_KEY_CODE:
 			ApplyKeyModifier(Constants::UI::UP_KEY_MODIFIER);
-			return;
+			return false;
 		case Constants::UI::DOWN_KEY_CODE:
 			ApplyKeyModifier(Constants::UI::DOWN_KEY_MODIFIER);
-			return;
+			return false;
 		case Constants::UI::LEFT_KEY_CODE:
 			ApplyKeyModifier(Constants::UI::LEFT_KEY_MODIFIER);
-			return;
+			return false;
 		case Constants::UI::RIGHT_KEY_CODE:
 			ApplyKeyModifier(Constants::UI::RIGHT_KEY_MODIFIER);
-			return;
+			return false;
+		case Constants::UI::SELECT_KEY_CODE:
+			selectionIndex = focusedIndex;
+			selectedRow = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::ROW];
+			selectedCol = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::COL];
+
+			// Execute the associated action
+			get<Constants::UI::MENU_COMPONENTS::ACTION>(options[selectedRow][selectedCol])();
+
+			return true;
 		default:
-			break;
-	}
-
-	if (inputCode == Constants::UI::SELECT_KEY_CODE) {
-		selectionIndex = focusedIndex;
-		int selectedRow = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::ROW];
-		int selectedCol = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::COL];
-
-		// Execute the associated action
-		get<Constants::UI::MENU_COMPONENTS::ACTION>(options[selectedRow][selectedCol])();
+			return false;
 	}
 }
