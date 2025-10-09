@@ -3,31 +3,31 @@
 #include <functional>
 #include "Constants.h"
 #include "UI.h"
+#include "Dungeon.h"   // Include our new dungeon system
 using namespace std;
 
 void displayTitleScreen() {
-	SelectionMenu menu({
-		{
-			{"Enter Dungeon", [](){ /*Enter Dungeon*/; }},
-		},
-		{
-			{"Exit Game", [](){ exit(0); }},
-		},
-	});
+    // Title screen menu setup
+    SelectionMenu menu({
+        {
+            {"Enter Dungeon", []() { StartDungeon(); }},   // Runs dungeon gameplay
+        },
+        {
+            {"Exit Game", []() { exit(0); }},
+        },
+    });
 
-	while(true) {
-		cout << Constants::UI::WELCOME_MESSAGE << endl;
-		cout << Constants::Story::BACKSTORY << endl;
-
-		cout << Constants::UI::NAVIGATE_TEXT << endl;
-		cout << Constants::UI::CONTINUE_TEXT << "\n\n";
-
-		menu.MakeSelection();
-	}
+    while (true) {
+		system("cls");
+        cout << Constants::UI::WELCOME_MESSAGE << endl;
+        cout << Constants::Story::BACKSTORY << endl;
+        cout << Constants::UI::NAVIGATE_TEXT << endl;
+        cout << Constants::UI::CONTINUE_TEXT << "\n\n";
+        menu.MakeSelection();
+    }
 }
 
-int main()
-{
-	displayTitleScreen();
+int main() {
+    displayTitleScreen();
     return 0;
 }
