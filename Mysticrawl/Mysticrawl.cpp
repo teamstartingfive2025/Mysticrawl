@@ -15,9 +15,10 @@ void displayTitleScreen() {
         {
             {"Exit Game", []() { exit(0); }},
         },
-        });
+    });
 
     while (true) {
+		system("cls");
         cout << Constants::UI::WELCOME_MESSAGE << endl;
         cout << Constants::Story::BACKSTORY << endl;
         cout << Constants::UI::NAVIGATE_TEXT << endl;
