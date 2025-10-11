@@ -54,7 +54,6 @@ void StartDungeon() {
 
     // --- Main dungeon loop ---
     while (playing) {
-        //cout << "TEST MESSAGE";
         cout << "\nAvailable actions:\n";
         int option = 1;
 
@@ -67,8 +66,6 @@ void StartDungeon() {
 
 
         bool canMoveEast = player.getCurrentRoom()->exits.count("east");
-        cout << "current room east exits: ";
-        cout << player.getCurrentRoom()->exits["east"];
         bool canMoveWest = player.getCurrentRoom()->exits.count("west");
         bool hasItems = !player.getCurrentRoom()->items.empty();
 
@@ -134,7 +131,7 @@ void StartDungeon() {
                 }
             }
             // Move east once unlocked
-            if (player.getCurrentRoom()->locked) {
+            if (!player.getCurrentRoom()->locked) {
                 player.setCurrentRoom(player.getCurrentRoom()->exits["east"]);
                 player.look();
             }
