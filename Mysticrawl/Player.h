@@ -39,3 +39,22 @@ public:
     Room* getCurrentRoom() const;
     void setCurrentRoom(Room* room);
 };
+
+class Player {
+public:
+    Player(const std::string& name = "Player", int hp = 100)
+        : playerName(name), health(hp) {}
+
+    int getHealth() const { return health; }
+    const std::string& getName() const { return playerName; }
+
+    // changeHealth accepts positive (heal) or negative (damage) values
+    void changeHealth(int delta) { health += delta; }
+
+    // convenience: apply damage (positive amount)
+    void applyDamage(int amount) { changeHealth(-amount); }
+
+private:
+    std::string playerName;
+    int health;
+};
