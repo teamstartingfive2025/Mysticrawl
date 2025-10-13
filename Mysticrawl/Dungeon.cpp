@@ -31,6 +31,11 @@ void StartDungeon() {
         "A torch might help illuminate the strange scroll lying on the ground."
     };
 
+    Room fightRoom{
+        "Rat Room",
+        "This is the combat demo.\n"
+    };
+
     // Populate the rooms with items
     spawnRoom.items = { "Torch" };              // visible item
     spawnRoom.hiddenItems = { "Key" };          // hidden item found only by investigating
@@ -39,6 +44,8 @@ void StartDungeon() {
     // Connect rooms via exits
     spawnRoom.exits["east"] = &nextRoom;
     nextRoom.exits["west"] = &spawnRoom;
+    nextRoom.exits["east"] = &fightRoom;
+    fightRoom.exits["west"] = &nextRoom;
 
     // The east door in the spawn room starts locked
     spawnRoom.locked = true;
@@ -129,7 +136,7 @@ void StartDungeon() {
                 }
             }
             // Move east once unlocked
-            if (!spawnRoom.locked) {
+            if (!player.getCurrentRoom()->locked) {
                 player.setCurrentRoom(player.getCurrentRoom()->exits["east"]);
                 player.look();
             }
