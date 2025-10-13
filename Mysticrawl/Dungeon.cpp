@@ -51,7 +51,7 @@ void StartDungeon() {
     spawnRoom.locked = true;
 
     // --- Initialize the player ---
-    Player player(&spawnRoom);
+    Player player(&spawnRoom, "Hero", 20);
     cout << "\n=== Dungeon Entry ===\n";
     player.look();
 
@@ -161,11 +161,9 @@ void StartDungeon() {
     }
 }
 
-void StartDungeon() {
+/*void StartDungeon() {
     // Seed std random (defensive)
     std::srand((unsigned)std::time(nullptr));
-
-    Player player("Hero", 20); // example starting HP (change as needed)
     cout << "You enter the dimly lit dungeon. Your starting health is " << player.getHealth() << ".\n\n";
 
     // Create a single room for a simple demo
@@ -195,4 +193,4 @@ void StartDungeon() {
 
     cout << "Press Enter to return to the title screen." << endl;
     getline(cin, dummy);
-}
+}*/

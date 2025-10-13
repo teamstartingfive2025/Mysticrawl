@@ -21,11 +21,8 @@ private:
 
 public:
     // Constructor initializes the player at the starting room
-    Player(Room* startRoom);
-
-    Player(const std::string& name = "Player", int hp = 100)
-        : playerName(name), health(hp) {
-    }
+    Player(Room* currentRoom, string name, int health)
+        : currentRoom(currentRoom), playerName(name), health(health) {}
 
     // Describes the current room and visible items
     void look() const;
