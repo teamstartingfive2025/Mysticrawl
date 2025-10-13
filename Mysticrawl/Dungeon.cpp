@@ -1,8 +1,13 @@
 #include "Dungeon.h"
 #include "Player.h"
 #include "Input.h"
+#include "Enemy.h"
 #include <iostream>
-#include <limits> 
+#include <limits>
+#include <cstdlib>
+#include <ctime>
+#include <thread>
+#include <chrono>
 using namespace std;
 
 /**
@@ -154,4 +159,77 @@ void StartDungeon() {
             cout << "Invalid choice. Try again.\n";
         }
     }
+}
+
+void StartDungeon() {
+    // Seed std random (defensive)
+    std::srand((unsigned)std::time(nullptr));
+
+    Player player("Hero", 20); // example starting HP (change as needed)
+    cout << "You enter the dimly lit dungeon. Your starting health is " << player.getHealth() << ".\n\n";
+
+    // Create a single room for a simple demo
+    Room entry;
+    entry.name = "Dusty Cellar";
+    entry.description = "Old crates and the smell of mildew.";
+
+    cout << "You step into: " << entry.name << "\n";
+    cout << entry.description << "\n\n";
+    cout << "Press Enter to proceed into the room..." << endl;
+    std::string dummy; getline(cin, dummy);
+
+    // Spawn a rat enemy
+    Enemy rat(Enemy::Type::Rat, 5);
+
+    if (rat.hostilityTrigger()) {
+        // Rat will attack immediately once
+        int damage = rat.attack(player);
+
+        // Acceptance criteria text:
+        cout << "A rat suddenly appears! It bites you and scurries away.\n";
+        cout << "enemy attacked you, health decreased by " << damage
+             << ", your new health is " << player.getHealth() << "\n\n";
+    } else {
+        cout << "A small rat appears but it is startled and runs away without biting you.\n\n";
+    }
+
+    cout << "Press Enter to return to the title screen." << endl;
+    getline(cin, dummy);
+}
+
+void StartDungeon() {
+    // Seed std random (defensive)
+    std::srand((unsigned)std::time(nullptr));
+
+    Player player("Hero", 20); // example starting HP (change as needed)
+    cout << "You enter the dimly lit dungeon. Your starting health is " << player.getHealth() << ".\n\n";
+
+    // Create a single room for a simple demo
+    Room entry;
+    entry.name = "Dusty Cellar";
+    entry.description = "Old crates and the smell of mildew.";
+
+    cout << "You step into: " << entry.name << "\n";
+    cout << entry.description << "\n\n";
+    cout << "Press Enter to proceed into the room..." << endl;
+    std::string dummy; getline(cin, dummy);
+
+    // Spawn a rat enemy
+    Enemy rat(Enemy::Type::Rat, 5);
+
+    if (rat.hostilityTrigger()) {
+        // Rat will attack immediately once
+        int damage = rat.attack(player);
+
+        // Acceptance criteria text:
+        cout << "A rat suddenly appears! It bites you and scurries away.\n";
+        cout << "enemy attacked you, health decreased by " << damage
+            << ", your new health is " << player.getHealth() << "\n\n";
+    }
+    else {
+        cout << "A small rat appears but it is startled and runs away without biting you.\n\n";
+    }
+
+    cout << "Press Enter to return to the title screen." << endl;
+    getline(cin, dummy);
 }
