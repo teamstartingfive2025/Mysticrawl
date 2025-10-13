@@ -16,10 +16,16 @@ class Player {
 private:
     Room* currentRoom;            // Pointer to the room the player is currently in
     vector<string> inventory;     // List of items collected by the player
+    std::string playerName;
+    int health;
 
 public:
     // Constructor initializes the player at the starting room
     Player(Room* startRoom);
+
+    Player(const std::string& name = "Player", int hp = 100)
+        : playerName(name), health(hp) {
+    }
 
     // Describes the current room and visible items
     void look() const;
@@ -38,12 +44,6 @@ public:
     // Accessor and mutator for the current room pointer
     Room* getCurrentRoom() const;
     void setCurrentRoom(Room* room);
-};
-
-class Player {
-public:
-    Player(const std::string& name = "Player", int hp = 100)
-        : playerName(name), health(hp) {}
 
     int getHealth() const { return health; }
     const std::string& getName() const { return playerName; }
@@ -53,8 +53,4 @@ public:
 
     // convenience: apply damage (positive amount)
     void applyDamage(int amount) { changeHealth(-amount); }
-
-private:
-    std::string playerName;
-    int health;
 };
