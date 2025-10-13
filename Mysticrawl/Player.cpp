@@ -1,8 +1,8 @@
 #include "Player.h"
 #include "Dungeon.h"
 
-// Initializes the player in a starting room
-Player::Player(Room* startRoom) : currentRoom(startRoom) {}
+#include <iostream>
+using namespace std;
 
 // Prints details about the current room and visible items
 void Player::look() const {
