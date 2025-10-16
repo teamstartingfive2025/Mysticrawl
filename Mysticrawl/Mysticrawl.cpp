@@ -6,16 +6,29 @@
 #include "Dungeon.h"   // Include our new dungeon system
 using namespace std;
 
+void displayLoreScreen() {
+    system("cls");
+    cout << Constants::Story::BACKSTORY << "\n\n";
+    cout << Constants::Story::ANTAGONIST_INTRO << "\n\n";
+    cout << "Press Enter to return to the main menu...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
 void displayTitleScreen() {
     // Title screen menu setup
     SelectionMenu menu({
-        {
-            {"Enter Dungeon", []() { StartDungeon(); }},   // Runs dungeon gameplay
-        },
-        {
-            {"Exit Game", []() { exit(0); }},
-        },
-    });
+    {
+        {"Enter Dungeon", []() { StartDungeon(); }},
+    },
+    {
+        {"View Lore", []() { displayLoreScreen(); }},
+    },
+    {
+        {"Exit Game", []() { exit(0); }},
+    },
+        });
+
+
 
     while (true) {
 		system("cls");
