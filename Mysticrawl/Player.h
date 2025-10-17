@@ -18,11 +18,30 @@ private:
     vector<string> inventory;     // List of items collected by the player
     std::string playerName;
     int health;
+    int maxHealth;
 
 public:
     // Constructor initializes the player at the starting room
+    // updated constructor (initialize maxHealth to starting health)
     Player(Room* currentRoom, string name, int health)
-        : currentRoom(currentRoom), playerName(name), health(health) {}
+        : currentRoom(currentRoom), playerName(name), health(health), maxHealth(health) {
+    }
+
+    // New health-related accessors/mutators
+    int getMaxHealth() const;
+    bool isAlive() const;
+
+    // takeDamage applies positive damage to the player, clamps at 0, and returns the actual damage applied
+    int takeDamage(int amount);
+
+    // heal increases health up to maxHealth and returns amount healed
+    int heal(int amount);
+
+    // optional: set current health directly (clamped)
+    void setHealth(int hp);
+
+    // optional: change player's maximum health (adjusts current health if needed)
+    void setMaxHealth(int newMax);
 
     // Describes the current room and visible items
     void look() const;
@@ -50,4 +69,8 @@ public:
 
     // convenience: apply damage (positive amount)
     void applyDamage(int amount) { changeHealth(-amount); }
+
+    //view healthbar
+    void displayHealthBar(int width = 20) const;
+
 };

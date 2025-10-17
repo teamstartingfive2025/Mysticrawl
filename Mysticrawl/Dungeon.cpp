@@ -11,7 +11,7 @@
 #include <chrono>
 using namespace std;
 
-void encounterRat(Player player) {
+void encounterRat(Player& player) {
     // Seed std random (defensive)
     std::srand((unsigned)std::time(nullptr));
     cout << "You enter the dimly lit dungeon. Your starting health is " << player.getHealth() << ".\n\n";
@@ -37,7 +37,11 @@ void encounterRat(Player player) {
         cout << "A rat suddenly appears! It bites you and scurries away.\n";
         cout << "enemy attacked you, health decreased by " << damage
             << ", your new health is " << player.getHealth() << "\n\n";
+
+        // Show updated health bar immediately
+        player.displayHealthBar();
     }
+
     else {
         cout << "A small rat appears but it is startled and runs away without biting you.\n\n";
     }
@@ -87,7 +91,7 @@ void StartDungeon() {
     spawnRoom.locked = true;
 
     // --- Initialize the player ---
-    Player player(&spawnRoom, "Hero", 20);
+    Player player(&spawnRoom, "Hero", 100);
     cout << "\n=== Dungeon Entry ===\n";
     player.look();
 

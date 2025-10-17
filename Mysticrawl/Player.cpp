@@ -1,11 +1,12 @@
 #include "Player.h"
 #include "Dungeon.h"
-
+#include <algorithm>
 #include <iostream>
 using namespace std;
 
 // Prints details about the current room and visible items
 void Player::look() const {
+    displayHealthBar();
     cout << "\n== " << currentRoom->name << " ==\n";
     cout << currentRoom->description << "\n";
 
@@ -83,3 +84,66 @@ Room* Player::getCurrentRoom() const { return currentRoom; }
 
 // Updates the current room pointer (used for movement)
 void Player::setCurrentRoom(Room* room) { currentRoom = room; }
+
+// Health accessors
+int Player::getMaxHealth() const {
+    return maxHealth;
+}
+
+bool Player::isAlive() const {
+    return health > 0;
+}
+
+// Applies positive damage; returns actual damage applied (clamped to current health)
+int Player::takeDamage(int amount) {
+    if (amount <= 0) return 0;
+    int actual = std::min(amount, health);
+    health -= actual;
+    if (health < 0) health = 0;
+    return actual;
+}
+
+// Heals player by amount, clamped to maxHealth; returns actual healed amount
+int Player::heal(int amount) {
+    if (amount <= 0) return 0;
+    int space = maxHealth - health;
+    int healed = std::min(space, amount);
+    health += healed;
+    return healed;
+}
+
+// Set current health (clamped 0..maxHealth)
+void Player::setHealth(int hp) {
+    if (hp < 0) health = 0;
+    else if (hp > maxHealth) health = maxHealth;
+    else health = hp;
+}
+
+// Adjust max health (optionally adjust current health if it exceeds new max)
+void Player::setMaxHealth(int newMax) {
+    if (newMax < 1) return; // ignore invalid values
+    maxHealth = newMax;
+    if (health > maxHealth) health = maxHealth;
+}
+
+void Player::displayHealthBar(int width) const {
+    if (width < 4) width = 4; // ensure space for brackets and numbers
+
+    // avoid divide-by-zero if maxHealth somehow 0
+    int maxHp = (maxHealth > 0 ? maxHealth : 1);
+    int filled = static_cast<int>((static_cast<double>(health) / maxHp) * (width - 2));
+    if (filled < 0) filled = 0;
+    else if (filled > width - 2) filled = width - 2;
+    int empty = (width - 2) - filled;
+
+    // Build bar
+    std::string bar;
+    bar.reserve(width);
+    bar.push_back('[');
+    bar.append(filled, '#');
+    bar.append(empty, '-');
+    bar.push_back(']');
+
+    // Print with numeric readout
+    std::cout << "Health " << bar << " " << health << "/" << maxHp << "\n";
+}
