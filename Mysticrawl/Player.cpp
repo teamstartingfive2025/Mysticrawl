@@ -6,6 +6,7 @@ using namespace std;
 
 // Prints details about the current room and visible items
 void Player::look() const {
+    displayHealthBar();
     cout << "\n== " << currentRoom->name << " ==\n";
     cout << currentRoom->description << "\n";
 
@@ -123,4 +124,26 @@ void Player::setMaxHealth(int newMax) {
     if (newMax < 1) return; // ignore invalid values
     maxHealth = newMax;
     if (health > maxHealth) health = maxHealth;
+}
+
+void Player::displayHealthBar(int width) const {
+    if (width < 4) width = 4; // ensure space for brackets and numbers
+
+    // avoid divide-by-zero if maxHealth somehow 0
+    int maxHp = (maxHealth > 0 ? maxHealth : 1);
+    int filled = static_cast<int>((static_cast<double>(health) / maxHp) * (width - 2));
+    if (filled < 0) filled = 0;
+    else if (filled > width - 2) filled = width - 2;
+    int empty = (width - 2) - filled;
+
+    // Build bar
+    std::string bar;
+    bar.reserve(width);
+    bar.push_back('[');
+    bar.append(filled, '#');
+    bar.append(empty, '-');
+    bar.push_back(']');
+
+    // Print with numeric readout
+    std::cout << "Health " << bar << " " << health << "/" << maxHp << "\n";
 }

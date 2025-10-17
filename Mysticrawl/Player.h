@@ -69,4 +69,8 @@ public:
 
     // convenience: apply damage (positive amount)
     void applyDamage(int amount) { changeHealth(-amount); }
+
+    //view healthbar
+    void displayHealthBar(int width = 20) const;
+
 };
