@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fight.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Mysticrawl.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fight.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="Item.h" />

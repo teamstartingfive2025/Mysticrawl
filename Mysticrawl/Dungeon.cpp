@@ -96,6 +96,18 @@ void StartDungeon() {
                     }}
                 };
 
+                //if (there are monsters present)
+                options.push_back({ "Fight", [&]() {
+                    vector<tuple<string, function<void()>>> fightOptions;
+
+                    fightOptions = {
+                        {"Attack", [&/*Relevent object*/]() { cout << "You attack."; /*replace with relevant function*/} },
+                        {"Defend", [&/*Relevent object*/]() { cout << "You defend."; /*replace with relevant function*/} }
+                    };
+                    RefreshSelectionMenu(fightOptions);
+                    SelectMenuOption();
+                } });
+
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
         }
