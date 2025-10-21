@@ -43,7 +43,8 @@ private:
     int GetMaximumRowItems();
 
 public:
+    SelectionMenu();
     SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts);
 
-    bool MakeSelection();
+    void SetFormattedOptions(vector< tuple<string, function<void()>> >);
 };
