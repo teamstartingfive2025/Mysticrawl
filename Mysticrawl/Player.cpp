@@ -38,10 +38,10 @@ void Player::investigate() {
 
 // Picks up the first item available in the current room
 void Player::pickup() {
-    auto roomItems = currentRoom->getItems(); // reference to actual container
+    auto& roomItems = currentRoom->getItems();
 
     if (roomItems.empty()) {
-        cout << "There’s nothing to pick up here.\n";
+        cout << "There is nothing to pick up here.\n";
         return;
     }
 
@@ -53,11 +53,9 @@ void Player::pickup() {
         auto& item = roomItems[i];
         itemOptions.push_back({
             item->getName(),
-            [this, i]() {
-                auto items = currentRoom->getItems();
-
-                if (i < items.size()) {
-                    std::shared_ptr<Item> pickedItem = items[i];
+            [this, &roomItems, i]() {
+                if (i < roomItems.size()) {
+                    shared_ptr<Item> pickedItem = roomItems[i];
                     cout << "You pick up the " << pickedItem->getName() << ".\n";
 
                     if (auto key = std::dynamic_pointer_cast<Key>(pickedItem)) {
@@ -65,7 +63,7 @@ void Player::pickup() {
                     }
 
                     inventory.push_back(pickedItem);
-                    items.erase(items.begin() + i);
+                    roomItems.erase(roomItems.begin() + i);
                 }
             }
             });

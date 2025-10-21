@@ -47,12 +47,15 @@ public:
 	string getName() const { return name; }
 	string getDescription() const { return description; }
 
-	vector<shared_ptr<Item>> getItems() const { return items; }
-	void addItem(const shared_ptr<Item>& item) { items.push_back(item); }
+    vector<shared_ptr<Item>>& getItems() { return items; }
+    vector<shared_ptr<Item>>& getHiddenItems() { return hiddenItems; }
 
+    const vector<shared_ptr<Item>>& getItems() const { return items; }
+    const vector<shared_ptr<Item>>& getHiddenItems() const { return hiddenItems; }
+
+    void addItem(const shared_ptr<Item>& item) { items.push_back(item); }
     void addHiddenItem(const shared_ptr<Item>& item) { hiddenItems.push_back(item); }
-    vector<shared_ptr<Item>> getHiddenItems() { return hiddenItems; }
-	void clearHiddenItems() { hiddenItems.clear(); }
+    void clearHiddenItems() { hiddenItems.clear(); }
 };
 
 /**
