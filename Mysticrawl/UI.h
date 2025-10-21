@@ -34,9 +34,13 @@ private:
     vector<vector< tuple<string, function<void()>> >> options;
     array<int, Constants::UI::MENU_OPTION_DIMENSIONS> focusedIndex;
     array<int, Constants::UI::MENU_OPTION_DIMENSIONS> selectionIndex;
+	int longestOptionLength = Constants::UI::VALUE_UNSET;
+    int maximumRowItems = Constants::UI::VALUE_UNSET;
 
     void DisplayOptions();
     void ApplyKeyModifier(const array<int, Constants::UI::MENU_OPTION_DIMENSIONS> modifier);
+	int GetLongestOptionLength();
+    int GetMaximumRowItems();
 
 public:
     SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts);
