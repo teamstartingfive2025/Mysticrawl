@@ -29,6 +29,8 @@ public:
 	string GetText() const { return text; }
 };
 
+void WaitForEnterPrompt(string waitForEnterPromptText);
+
 class SelectionMenu {
 private:
     vector<vector< tuple<string, function<void()>> >> options;

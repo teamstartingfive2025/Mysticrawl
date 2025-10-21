@@ -15,29 +15,31 @@ void displayLoreScreen() {
 }
 
 void displayTitleScreen() {
-    // Title screen menu setup
-    SelectionMenu menu({
-    {
-        {"Enter Dungeon", []() { StartDungeon(); }},
-    },
-    {
-        {"View Lore", []() { displayLoreScreen(); }},
-    },
-    {
-        {"Exit Game", []() { exit(0); }},
-    },
-        });
+    while (true) {
+        // Title screen menu setup
+        SelectionMenu menu({
+            {
+                {"Enter Dungeon", []() { StartDungeon(); }},
+            },
+            {
+                {"View Lore", []() {
+					WaitForEnterPrompt(Constants::Story::BACKSTORY + Constants::Story::ANTAGONIST_INTRO + "\n");
+                }},
+            },
+            {
+                {"Exit Game", []() { exit(0); }},
+            },
+            });
 
+        Prompt& prompt = Prompt::GetInstance();
 
+        cout << Constants::UI::WELCOME_MESSAGE << endl;
+        cout << Constants::Story::BACKSTORY << endl;
+        cout << Constants::UI::NAVIGATE_TEXT << endl;
+        cout << Constants::UI::CONTINUE_TEXT << endl;
 
-    Prompt& prompt = Prompt::GetInstance();
-
-    cout << Constants::UI::WELCOME_MESSAGE << endl;
-    cout << Constants::Story::BACKSTORY << endl;
-    cout << Constants::UI::NAVIGATE_TEXT << endl;
-    cout << Constants::UI::CONTINUE_TEXT << "\n\n";
-
-    menu.MakeSelection();
+        menu.MakeSelection();
+    }
 }
 
 int main() {
