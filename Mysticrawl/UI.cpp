@@ -127,6 +127,11 @@ void SelectionMenu::ApplyKeyModifier(const array<int, Constants::UI::MENU_OPTION
 }
 
 void SelectionMenu::SetFormattedOptions(vector< tuple<string, function<void()>> > unformattedOptions) {
+	longestOptionLength = Constants::UI::VALUE_UNSET;
+	maximumRowItems = Constants::UI::VALUE_UNSET;
+
+	focusedIndex = { Constants::UI::INITIAL_MENU_OPTION_INDEX, Constants::UI::INITIAL_MENU_OPTION_INDEX };
+
 	vector<vector< tuple<string, function<void()>> >> formattedOptions;
 	vector< tuple<string, function<void()>> > optionRow;
 
@@ -138,6 +143,10 @@ void SelectionMenu::SetFormattedOptions(vector< tuple<string, function<void()>> 
 		}
 	}
 
+	if (!optionRow.empty()) {
+		formattedOptions.push_back(optionRow);
+	}
+
 	options = formattedOptions;
 }
 
@@ -146,7 +155,9 @@ void SelectionMenu::MakeSelection() {
 	prompt.StopRecordingText();
 
 	while (true) {
-		cout << prompt.GetText();
+		system("cls");
+
+		cout << prompt.GetText() << endl;
 
 		DisplayOptions();
 
