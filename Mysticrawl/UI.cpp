@@ -26,6 +26,7 @@ void Prompt::StopRecordingText() {
 	cout.rdbuf(originalCoutBuffer);
 }
 
+SelectionMenu::SelectionMenu() {}
 SelectionMenu::SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts) : options(opts) {}
 
 int SelectionMenu::GetLongestOptionLength() {
@@ -112,13 +113,20 @@ void SelectionMenu::ApplyKeyModifier(const array<int, Constants::UI::MENU_OPTION
 	focusedIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::COL] = focusedColFinal;
 }
 
-bool SelectionMenu::MakeSelection() {
-	DisplayOptions();
+void SelectionMenu::SetFormattedOptions(vector< tuple<string, function<void()>> > unformattedOptions) {
+	vector<vector< tuple<string, function<void()>> >> formattedOptions;
+	vector< tuple<string, function<void()>> > optionRow;
 
-	char input = getInstantaneousCharInput();
-	int inputCode = (int)input;
+	for(int i = 0; i < unformattedOptions.size(); i++) {
+		optionRow.push_back(unformattedOptions[i]);
+		if((i + 1) % Constants::UI::MENU_ITEMS_PER_ROW == 0) {
+			formattedOptions.push_back(optionRow);
+			optionRow.clear();
+		}
+	}
 
-	system("cls");
+	options = formattedOptions;
+}
 
 	int selectedRow;
 	int selectedCol;
