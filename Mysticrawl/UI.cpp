@@ -26,6 +26,19 @@ void Prompt::StopRecordingText() {
 	cout.rdbuf(originalCoutBuffer);
 }
 
+void WaitForEnterPrompt(string waitForEnterPromptText) {
+	Prompt& selectionMenuPrompt = Prompt::GetInstance();
+	selectionMenuPrompt.StopRecordingText();
+
+	system("cls");
+
+	cout << waitForEnterPromptText;
+	cout << "Press Enter to continue...";
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	selectionMenuPrompt.StartRecordingText();
+}
+
 SelectionMenu::SelectionMenu() {}
 SelectionMenu::SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts) : options(opts) {}
 
