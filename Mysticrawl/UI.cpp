@@ -1,4 +1,4 @@
-#include "UI.h"
+﻿#include "UI.h"
 #include "Constants.h"
 #include "Input.h"
 #include <iostream>
@@ -128,32 +128,47 @@ void SelectionMenu::SetFormattedOptions(vector< tuple<string, function<void()>> 
 	options = formattedOptions;
 }
 
-	int selectedRow;
-	int selectedCol;
+void SelectionMenu::MakeSelection() {
+	Prompt& prompt = Prompt::GetInstance();
+	prompt.StopRecordingText();
 
-	switch(inputCode) {
-		case Constants::UI::UP_KEY_CODE:
-			ApplyKeyModifier(Constants::UI::UP_KEY_MODIFIER);
-			return false;
-		case Constants::UI::DOWN_KEY_CODE:
-			ApplyKeyModifier(Constants::UI::DOWN_KEY_MODIFIER);
-			return false;
-		case Constants::UI::LEFT_KEY_CODE:
-			ApplyKeyModifier(Constants::UI::LEFT_KEY_MODIFIER);
-			return false;
-		case Constants::UI::RIGHT_KEY_CODE:
-			ApplyKeyModifier(Constants::UI::RIGHT_KEY_MODIFIER);
-			return false;
-		case Constants::UI::SELECT_KEY_CODE:
-			selectionIndex = focusedIndex;
-			selectedRow = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::ROW];
-			selectedCol = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::COL];
+	while (true) {
+		cout << prompt.GetText();
 
-			// Execute the associated action
-			get<Constants::UI::MENU_COMPONENTS::ACTION>(options[selectedRow][selectedCol])();
+		DisplayOptions();
 
-			return true;
-		default:
-			return false;
+		char input = getInstantaneousCharInput();
+		int inputCode = (int)input;
+
+		system("cls");
+
+		int selectedRow;
+		int selectedCol;
+
+		switch (inputCode) {
+			case Constants::UI::UP_KEY_CODE:
+				ApplyKeyModifier(Constants::UI::UP_KEY_MODIFIER);
+				break;
+			case Constants::UI::DOWN_KEY_CODE:
+				ApplyKeyModifier(Constants::UI::DOWN_KEY_MODIFIER);
+				break;
+			case Constants::UI::LEFT_KEY_CODE:
+				ApplyKeyModifier(Constants::UI::LEFT_KEY_MODIFIER);
+				break;
+			case Constants::UI::RIGHT_KEY_CODE:
+				ApplyKeyModifier(Constants::UI::RIGHT_KEY_MODIFIER);
+				break;
+			case Constants::UI::SELECT_KEY_CODE:
+				selectionIndex = focusedIndex;
+				selectedRow = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::ROW];
+				selectedCol = selectionIndex[Constants::UI::FOCUSED_INDEX_DIMENSION::COL];
+
+				prompt.StartRecordingText();
+
+				// Execute the associated action
+				get<Constants::UI::MENU_COMPONENTS::ACTION>(options[selectedRow][selectedCol])();
+
+				return;
+		}
 	}
 }

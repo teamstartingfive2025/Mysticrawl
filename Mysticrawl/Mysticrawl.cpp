@@ -17,14 +17,14 @@ void displayTitleScreen() {
         },
     });
 
-    while (true) {
-		system("cls");
-        cout << Constants::UI::WELCOME_MESSAGE << endl;
-        cout << Constants::Story::BACKSTORY << endl;
-        cout << Constants::UI::NAVIGATE_TEXT << endl;
-        cout << Constants::UI::CONTINUE_TEXT << "\n\n";
-        menu.MakeSelection();
-    }
+    Prompt& prompt = Prompt::GetInstance();
+
+    cout << Constants::UI::WELCOME_MESSAGE << endl;
+    cout << Constants::Story::BACKSTORY << endl;
+    cout << Constants::UI::NAVIGATE_TEXT << endl;
+    cout << Constants::UI::CONTINUE_TEXT << "\n\n";
+
+    menu.MakeSelection();
 }
 
 int main() {

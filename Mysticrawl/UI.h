@@ -47,4 +47,5 @@ public:
     SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts);
 
     void SetFormattedOptions(vector< tuple<string, function<void()>> >);
+    void MakeSelection();
 };
