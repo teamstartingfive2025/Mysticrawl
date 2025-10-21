@@ -7,8 +7,27 @@
 #include <functional>
 #include <tuple>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 using namespace std;
+
+class Prompt {
+private:
+    string text;
+    streambuf* originalCoutBuffer = cout.rdbuf();
+    ostringstream promptTextBuffer;
+    Prompt() { StartRecordingText(); }
+
+public:
+    Prompt(const Prompt&) = delete;
+    static Prompt& GetInstance();
+
+    void StartRecordingText();
+    void StopRecordingText();
+
+	string GetText() const { return text; }
+};
 
 class SelectionMenu {
 private:

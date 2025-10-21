@@ -7,8 +7,24 @@
 #include <array>
 #include <functional>
 #include <tuple>
+#include <stdlib.h>
 
 using namespace std;
+
+Prompt& Prompt::GetInstance() {
+	static Prompt instance;
+	return instance;
+}
+
+void Prompt::StartRecordingText() {
+	cout.rdbuf(promptTextBuffer.rdbuf());
+	promptTextBuffer.str("");
+}
+
+void Prompt::StopRecordingText() {
+	text = promptTextBuffer.str();
+	cout.rdbuf(originalCoutBuffer);
+}
 
 SelectionMenu::SelectionMenu(const vector<vector< tuple<string, function<void()>> >>& opts) : options(opts) {}
 
