@@ -65,4 +65,8 @@ was twisted by forbidden magic and now seeks to bind the living to his will. He 
 collecting the souls of those who wander too far, and will stop at nothing to keep his domain unchallenged.
 )";
 	}
+
+	namespace Gameplay {
+		const bool DOOR_LOCKED = true;
+	}
 }

@@ -3,51 +3,36 @@
 #include "Input.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Item.h"
+#include "Key.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
 #include <ctime>
 #include <thread>
 #include <chrono>
+#include <vector>
 using namespace std;
 
-void encounterRat(Player& player) {
-    // Seed std random (defensive)
-    std::srand((unsigned)std::time(nullptr));
-    cout << "You enter the dimly lit dungeon. Your starting health is " << player.getHealth() << ".\n\n";
+void Exit::unlock() {
+    locked = false;
+}
 
-    // Create a single room for a simple demo
-    Room entry;
-    entry.name = "Dusty Cellar";
-    entry.description = "Old crates and the smell of mildew.";
+Room::Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems)
+    : name(name), description(description), items(items), hiddenItems(hiddenItems) {
+}
 
-    cout << "You step into: " << entry.name << "\n";
-    cout << entry.description << "\n\n";
-    cout << "Press Enter to proceed into the room..." << endl;
-    std::string dummy; getline(cin, dummy);
+void Room::setExits(const vector<Exit>& exits) {
+    this->exits = exits;
+}
 
-    // Spawn a rat enemy
-    Enemy rat(Enemy::Type::Rat, 5);
-
-    if (rat.hostilityTrigger()) {
-        // Rat will attack immediately once
-        int damage = rat.attack(player);
-
-        // Acceptance criteria text:
-        cout << "A rat suddenly appears! It bites you and scurries away.\n";
-        cout << "enemy attacked you, health decreased by " << damage
-            << ", your new health is " << player.getHealth() << "\n\n";
-
-        // Show updated health bar immediately
-        player.displayHealthBar();
+Exit* Room::getExit(const string& exitName) {
+    for (auto& exit : exits) { // remove const
+        if (exit.getDirection() == exitName) {
+            return &exit;
+        }
     }
-
-    else {
-        cout << "A small rat appears but it is startled and runs away without biting you.\n\n";
-    }
-
-    cout << "Press Enter to return to the title screen." << endl;
-    getline(cin, dummy);
+    return nullptr;
 }
 
 /**
@@ -57,147 +42,65 @@ void encounterRat(Player& player) {
  */
 void StartDungeon() {
     // --- Define dungeon layout and content ---
-    Room spawnRoom{
+    Room spawnRoom(
         "Spawn Room",
         "You awake in a dimly lit dungeon cell, confused and dazed. \n"
         "The fiery light of a torch flickers against the dark, cold walls. \n"
         "The room is barren except for a sole flowerpot resting beside a pile of stones in the corner. \n"
-        "A large iron-clad door stands to the east, bearing a large lock on the handle.\n"
-    };
+        "A large iron-clad door stands to the east, bearing a large lock on the handle.\n",
+        { make_shared<Item>("Torch") },
+        {}
+    );
 
-    Room nextRoom{
+    Room nextRoom(
         "Next Room",
         "You step into a darker chamber. Runes glow faintly on the wall. "
-        "A torch might help illuminate the strange scroll lying on the ground."
-    };
+        "A torch might help illuminate the strange scroll lying on the ground.",
+        { make_shared<Item>("Scroll with Riddle") },
+        {}  // empty key
+    );
 
-    Room fightRoom{
+    Room fightRoom(
         "Rat Room",
-        "This is the combat demo.\n"
-    };
-
-    // Populate the rooms with items
-    spawnRoom.items = { "Torch" };              // visible item
-    spawnRoom.hiddenItems = { "Key" };          // hidden item found only by investigating
-    nextRoom.items = { "Scroll with Riddle" };
+        "This is the combat demo.\n",
+		{}, // empty items
+        {}  // empty key
+    );
 
     // Connect rooms via exits
-    spawnRoom.exits["east"] = &nextRoom;
-    nextRoom.exits["west"] = &spawnRoom;
-    nextRoom.exits["east"] = &fightRoom;
-    fightRoom.exits["west"] = &nextRoom;
+    spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
+    spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
 
-    // The east door in the spawn room starts locked
-    spawnRoom.locked = true;
+    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
+    fightRoom.setExits({ Exit("west", &nextRoom) });
 
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
-    cout << "\n=== Dungeon Entry ===\n";
-    player.look();
-
-    bool playing = true;
 
     // --- Main dungeon loop ---
-    while (playing) {
-        cout << "\nAvailable actions:\n";
-        int option = 1;
+    player.look();
 
-        // Dynamic menu numbering based on available actions
-        cout << option++ << ". Look around\n";
-
-        //always allow for investigating and looking around
-        cout << option << ". Investigate the area\n";
-        int investigateOpt = option++;
-
-
-        bool canMoveEast = player.getCurrentRoom()->exits.count("east");
-        bool canMoveWest = player.getCurrentRoom()->exits.count("west");
-        bool hasItems = !player.getCurrentRoom()->items.empty();
-
-        // Track valid options
-        int eastOpt = 0, westOpt = 0, pickupOpt = 0, invOpt = 0, exitOpt = 0;
-
-        // Show move options only if those exits exist
-        if (canMoveEast) {
-            cout << option << ". Try moving East\n";
-            eastOpt = option++;
-        }
-        if (canMoveWest) {
-            cout << option << ". Move West\n";
-            westOpt = option++;
-        }
-        // Only show pickup if items are present
-        if (hasItems) {
-            cout << option << ". Pick up Item\n";
-            pickupOpt = option++;
-        }
-
-        // Always show inventory and exit
-        cout << option << ". Check Inventory\n";
-        invOpt = option++;
-        cout << option << ". Exit Game\n";
-        exitOpt = option++;
-        cout << "\n";
-        // --- Player input ---
-        cout << "Selection: ";
-        int choice;
-
-        // Input validation loop to prevent crashes on non-numeric input
+    try {
         while (true) {
-            if (!(cin >> choice)) {
-                cin.clear(); // clear error flag
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
-                cout << "Invalid input. Please enter a number: ";
-                continue;
-            }
+            vector< tuple<string, function<void()>> > options;
+        
+                options = {
+                    {"Look around", [&player]() { player.look(); }},
+                    {"Investigate the area", [&player]() { player.investigate(); }},
+                    {"Check Inventory", [&player]() { player.showInventory(); }},
+					{"Move Somewhere", [&player]() { player.move(); }},
+                    {"Pickup Item", [&player]() { player.pickup(); }},
+                    {"Exit Game", [&]() {
+                        WaitForEnterPrompt("You leave the dungeon for now...\n\n");
+                        throw runtime_error("exit lambda and dungeon loop");
+                    }}
+                };
 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard leftover input
-            break;
+		    player.getCurrentRoom()->RefreshSelectionMenu(options);
+            player.getCurrentRoom()->SelectMenuOption();
         }
-
-        // --- Handle player actions ---
-        if (choice == 1) {
-            player.look();
-        }
-        else if (choice == investigateOpt) {
-            // Search for hidden items
-            player.investigate();
-        }
-        else if (choice == eastOpt && canMoveEast) {
-            // Handle locked door behavior
-            if (player.getCurrentRoom() == &spawnRoom && spawnRoom.locked) {
-                cout << "\nYou tug on the iron door, but it will not budge. It is locked tight.\n Perhaps there is a key somewhere to unlock it\n";
-                if (player.hasItem("Key")) {
-                    cout << "You use the key to unlock the door.\n";
-                    spawnRoom.locked = false;
-                }
-                else {
-                    cout << "You will need to find a key.\n";
-                    continue;
-                }
-            }
-            // Move east once unlocked
-            if (!player.getCurrentRoom()->locked) {
-                player.setCurrentRoom(player.getCurrentRoom()->exits["east"]);
-                player.look();
-            }
-        }
-        else if (choice == westOpt && canMoveWest) {
-            player.setCurrentRoom(player.getCurrentRoom()->exits["west"]);
-            player.look();
-        }
-        else if (choice == pickupOpt && hasItems) {
-            player.pickup();
-        }
-        else if (choice == invOpt) {
-            player.showInventory();
-        }
-        else if (choice == exitOpt) {
-            cout << "You leave the dungeon for now...\n";
-            playing = false;
-        }
-        else {
-            cout << "Invalid choice. Try again.\n";
-        }
+    }
+    catch (const runtime_error&) {
+        return;
     }
 }
