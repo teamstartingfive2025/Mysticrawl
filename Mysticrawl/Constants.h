@@ -57,5 +57,16 @@ Its walls echo with the whispers of forgotten souls. The air is thick with encha
 and every shadow seems to conceal a lurking danger. To escape, you must gather spellbooks, wands,
 and other magical trinkets to navigate this labyrinthine filled with treacherous creatures and cunning puzzles.
 )";
+
+		// Antagonist introduction
+		const string ANTAGONIST_INTRO = R"(
+Beware Lord Malachar, the Cursed Warden of the Abyss. Once a noble guardian of the old sanctum, he
+was twisted by forbidden magic and now seeks to bind the living to his will. He rules the deep passages,
+collecting the souls of those who wander too far, and will stop at nothing to keep his domain unchallenged.
+)";
+	}
+
+	namespace Gameplay {
+		const bool DOOR_LOCKED = true;
 	}
 }
