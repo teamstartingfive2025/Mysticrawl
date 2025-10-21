@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Key.h"
+#include "Fight.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -77,6 +78,9 @@ void StartDungeon() {
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
 
+    // --- Initialize fight manager ---
+    Fight fight;
+
     // --- Main dungeon loop ---
     player.look();
 
@@ -98,14 +102,7 @@ void StartDungeon() {
 
                 //if (there are monsters present)
                 options.push_back({ "Fight", [&]() {
-                    vector<tuple<string, function<void()>>> fightOptions;
-
-                    fightOptions = {
-                        {"Attack", [&/*Relevent object*/]() { cout << "You attack."; /*replace with relevant function*/} },
-                        {"Defend", [&/*Relevent object*/]() { cout << "You defend."; /*replace with relevant function*/} }
-                    };
-                    RefreshSelectionMenu(fightOptions);
-                    SelectMenuOption();
+                    fight.fightMenu();
                 } });
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
