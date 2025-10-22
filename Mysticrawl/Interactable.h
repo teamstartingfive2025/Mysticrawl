@@ -6,6 +6,10 @@
 
 class SelectionMenu;
 
+/**
+ * Base class for any interactable object in the game.
+ * Contains a refreshable selection menu for user interactions.
+ */
 class Interactable {
 private:
     SelectionMenu menu;

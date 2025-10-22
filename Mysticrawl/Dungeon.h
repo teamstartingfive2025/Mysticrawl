@@ -10,6 +10,11 @@ using namespace std;
 
 class Room;
 
+/**
+ * Represents an exit to a dungeon room.
+ * Each exit contains a direction (Ex: north, east, ...),
+ * whether that exit is locked, and where it leads.
+ */
 class Exit {
 private:
     string direction;
@@ -36,7 +41,7 @@ private:
     vector<shared_ptr<Item>> items;              // visable Items currently in the room
     vector<shared_ptr<Item>> hiddenItems;        // Items that must be discovered by investigation
     vector<Exit> exits;          // Adjacent rooms by direction (e.g., "east")
-	SelectionMenu selectionMenu;
+
 public:
     Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems);
 

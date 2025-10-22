@@ -2,6 +2,9 @@
 #include "Item.h"
 #include "Dungeon.h"
 
+/**
+ * Key item that can unlock a specific exit in the dungeon.
+ */
 class Key : public Item {
 private:
 	Exit* exitKeyUnlocks;

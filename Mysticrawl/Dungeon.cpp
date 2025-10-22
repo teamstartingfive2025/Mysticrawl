@@ -84,17 +84,17 @@ void StartDungeon() {
         while (true) {
             vector< tuple<string, function<void()>> > options;
         
-                options = {
-                    {"Look around", [&player]() { player.look(); }},
-                    {"Investigate the area", [&player]() { player.investigate(); }},
-                    {"Check Inventory", [&player]() { player.showInventory(); }},
-					{"Move Somewhere", [&player]() { player.move(); }},
-                    {"Pickup Item", [&player]() { player.pickup(); }},
-                    {"Exit Game", [&]() {
-                        WaitForEnterPrompt("You leave the dungeon for now...\n\n");
-                        throw runtime_error("exit lambda and dungeon loop");
-                    }}
-                };
+            options = {
+                {"Look around", [&player]() { player.look(); }},
+                {"Investigate the area", [&player]() { player.investigate(); }},
+                {"Check Inventory", [&player]() { player.showInventory(); }},
+				{"Move Somewhere", [&player]() { player.move(); }},
+                {"Pickup Item", [&player]() { player.pickup(); }},
+                {"Exit Game", [&]() {
+                    WaitForEnterPrompt("You leave the dungeon for now...\n\n");
+                    throw runtime_error("exit lambda and dungeon loop");
+                }}
+            };
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();

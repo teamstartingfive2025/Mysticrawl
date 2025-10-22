@@ -29,7 +29,7 @@ void displayTitleScreen() {
             {
                 {"Exit Game", []() { exit(0); }},
             },
-            });
+        });
 
         Prompt& prompt = Prompt::GetInstance();
 
