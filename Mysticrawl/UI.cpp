@@ -85,7 +85,8 @@ void SelectionMenu::DisplayOptions() {
 	// Calculate total width for horizontal border
 	int longestOptionLength = GetLongestOptionLength();
 	double longestOptionLengthInTabs = (double)longestOptionLength / Constants::UI::TAB_SIZE;
-	int optionsWidth = GetMaximumRowItems() * ceil(longestOptionLengthInTabs);
+	int maximumRowItems = GetMaximumRowItems();
+	int optionsWidth = maximumRowItems * ceil(longestOptionLengthInTabs);
 	int totalWidth = (optionsWidth + Constants::UI::MENU_OPTION_PADDING_TABS) * Constants::UI::TAB_SIZE + Constants::UI::MENU_HORIZONTAL_BORDER.length();
 	string horizontalBorder = string(totalWidth, Constants::UI::MENU_HORIZONTAL_BORDER[0]);
 
@@ -107,8 +108,11 @@ void SelectionMenu::DisplayOptions() {
 			
 			double currentOptionLengthInTabs = get<Constants::UI::MENU_COMPONENTS::LABEL>(options[row][col]).length() / Constants::UI::TAB_SIZE;
 
-			for (int tab = 0; tab <= floor(longestOptionLengthInTabs) - floor(currentOptionLengthInTabs); ++tab)
-				cout << '\t';
+			// Add padding tabs when less options than maximum in the row
+			cout << string((maximumRowItems - options[row].size()) * ceil(longestOptionLengthInTabs), '\t');
+
+			// Add padding tabs to align each option
+			cout << string(ceil(longestOptionLengthInTabs) - floor(currentOptionLengthInTabs), '\t');
 		}
 
 		cout << '\t' << Constants::UI::MENU_VERTICAL_BORDER << endl;
