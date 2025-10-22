@@ -8,7 +8,6 @@ using namespace std;
 
 // Prints details about the current room and visible items
 void Player::look() const {
-    displayHealthBar();
     cout << "\n== " << currentRoom->getName() << " ==\n";
     cout << currentRoom->getDescription() << "\n";
 
@@ -18,7 +17,13 @@ void Player::look() const {
             cout << " - " << item->getName() << "\n";
     }
     else {
-        cout << "Nothing special here.\n";
+        cout << "You don't see any items.\n";
+    }
+
+	vector<Enemy> enemies = currentRoom->getEnemies();
+
+    for (Enemy enemy : enemies) {
+        enemy.DisplayIntroText();
     }
 }
 
@@ -38,10 +43,10 @@ void Player::investigate() {
 
 // Picks up the first item available in the current room
 void Player::pickup() {
-    auto roomItems = currentRoom->getItems(); // reference to actual container
+    auto& roomItems = currentRoom->getItems();
 
     if (roomItems.empty()) {
-        cout << "There’s nothing to pick up here.\n";
+        cout << "There is nothing to pick up here.\n";
         return;
     }
 
@@ -53,11 +58,9 @@ void Player::pickup() {
         auto& item = roomItems[i];
         itemOptions.push_back({
             item->getName(),
-            [this, i]() {
-                auto items = currentRoom->getItems();
-
-                if (i < items.size()) {
-                    std::shared_ptr<Item> pickedItem = items[i];
+            [this, &roomItems, i]() {
+                if (i < roomItems.size()) {
+                    shared_ptr<Item> pickedItem = roomItems[i];
                     cout << "You pick up the " << pickedItem->getName() << ".\n";
 
                     if (auto key = std::dynamic_pointer_cast<Key>(pickedItem)) {
@@ -65,7 +68,7 @@ void Player::pickup() {
                     }
 
                     inventory.push_back(pickedItem);
-                    items.erase(items.begin() + i);
+                    roomItems.erase(roomItems.begin() + i);
                 }
             }
             });
@@ -180,5 +183,5 @@ void Player::displayHealthBar(int width) const {
     bar.push_back(']');
 
     // Print with numeric readout
-    std::cout << "Health " << bar << " " << health << "/" << maxHp << "\n";
+    std::cout << "\nHealth " << bar << " " << health << "/" << maxHp;
 }

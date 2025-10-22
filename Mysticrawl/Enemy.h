@@ -1,14 +1,13 @@
 #pragma once
 #include <string>
 #include <random>
+using namespace std;
 
 class Player; // forward decl
 
 class Enemy {
 public:
-    enum class Type { Rat };
-
-    Enemy(Type t = Type::Rat, int hp = 5);
+    Enemy(string n, string t, int hp = 5);
 
     const std::string& getName() const;
     int getHealth() const;
@@ -26,9 +25,12 @@ public:
     // Whether this enemy will be hostile on spawn (chance-based)
     bool hostilityTrigger();
 
+	// Display introductory text when enemy appears
+    void DisplayIntroText();
+
 private:
-    Type type;
-    std::string name;
+    string name;
+	string introText = "";
     int health;
 
     // random engine for decisions

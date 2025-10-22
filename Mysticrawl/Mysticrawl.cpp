@@ -29,7 +29,7 @@ void displayTitleScreen() {
             {
                 {"Exit Game", []() { exit(0); }},
             },
-            });
+        });
 
         Prompt& prompt = Prompt::GetInstance();
 
@@ -43,6 +43,9 @@ void displayTitleScreen() {
 }
 
 int main() {
+	// Seed random number generator
+    srand((unsigned)time(nullptr));
+
     displayTitleScreen();
     return 0;
 }

@@ -6,10 +6,16 @@
 #include "Player.h"
 #include "Interactable.h"
 #include "Item.h"
+#include "Enemy.h"
 using namespace std;
 
 class Room;
 
+/**
+ * Represents an exit to a dungeon room.
+ * Each exit contains a direction (Ex: north, east, ...),
+ * whether that exit is locked, and where it leads.
+ */
 class Exit {
 private:
     string direction;
@@ -36,9 +42,10 @@ private:
     vector<shared_ptr<Item>> items;              // visable Items currently in the room
     vector<shared_ptr<Item>> hiddenItems;        // Items that must be discovered by investigation
     vector<Exit> exits;          // Adjacent rooms by direction (e.g., "east")
-	SelectionMenu selectionMenu;
+	vector<Enemy> enemies;        // Enemies present in the room
+
 public:
-    Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems);
+    Room(string name, string description, vector<shared_ptr<Item>> items = {}, vector<shared_ptr<Item>> hiddenItems = {});
 
     void setExits(const vector<Exit>& exits);
     Exit* getExit(const string& exitName);
@@ -47,12 +54,18 @@ public:
 	string getName() const { return name; }
 	string getDescription() const { return description; }
 
-	vector<shared_ptr<Item>> getItems() const { return items; }
-	void addItem(const shared_ptr<Item>& item) { items.push_back(item); }
+    vector<shared_ptr<Item>>& getItems() { return items; }
+    vector<shared_ptr<Item>>& getHiddenItems() { return hiddenItems; }
 
+    const vector<shared_ptr<Item>>& getItems() const { return items; }
+    const vector<shared_ptr<Item>>& getHiddenItems() const { return hiddenItems; }
+
+    void addItem(const shared_ptr<Item>& item) { items.push_back(item); }
     void addHiddenItem(const shared_ptr<Item>& item) { hiddenItems.push_back(item); }
-    vector<shared_ptr<Item>> getHiddenItems() { return hiddenItems; }
-	void clearHiddenItems() { hiddenItems.clear(); }
+    void clearHiddenItems() { hiddenItems.clear(); }
+
+	void addEnemy(const Enemy& enemy) { enemies.push_back(enemy); }
+    vector<Enemy> getEnemies() const { return enemies; }
 };
 
 /**
