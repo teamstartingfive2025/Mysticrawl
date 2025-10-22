@@ -7,5 +7,5 @@
 class Fight : public Interactable {
 public:
 	Fight() {}
-	void fightMenu() {};
+	void fightMenu();
 };
