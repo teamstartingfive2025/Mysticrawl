@@ -125,6 +125,9 @@
   <ItemGroup>
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fight.cpp" />
+    <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="Mysticrawl.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -135,7 +138,11 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Fight.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Interactable.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Weapons.h" />

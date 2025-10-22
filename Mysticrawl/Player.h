@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "Interactable.h"
+#include "Item.h"
 using namespace std;
 
 // Forward declaration to avoid circular dependency with Dungeon.h
@@ -12,10 +14,10 @@ struct Room;
  * It tracks the player's current room, inventory, and provides methods
  * for interacting with the dungeon world.
  */
-class Player {
+class Player : public Interactable {
 private:
     Room* currentRoom;            // Pointer to the room the player is currently in
-    vector<string> inventory;     // List of items collected by the player
+    vector<shared_ptr<Item>> inventory;     // List of items collected by the player
     std::string playerName;
     int health;
     int maxHealth;
@@ -45,6 +47,9 @@ public:
 
     // Describes the current room and visible items
     void look() const;
+
+    // Allows the player to move between rooms
+    void move();
 
     void investigate();  // Search the current room for hidden items
 
