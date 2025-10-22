@@ -8,7 +8,6 @@ using namespace std;
 
 // Prints details about the current room and visible items
 void Player::look() const {
-    displayHealthBar();
     cout << "\n== " << currentRoom->getName() << " ==\n";
     cout << currentRoom->getDescription() << "\n";
 
@@ -18,7 +17,13 @@ void Player::look() const {
             cout << " - " << item->getName() << "\n";
     }
     else {
-        cout << "Nothing special here.\n";
+        cout << "You don't see any items.\n";
+    }
+
+	vector<Enemy> enemies = currentRoom->getEnemies();
+
+    for (Enemy enemy : enemies) {
+        enemy.DisplayIntroText();
     }
 }
 
@@ -178,5 +183,5 @@ void Player::displayHealthBar(int width) const {
     bar.push_back(']');
 
     // Print with numeric readout
-    std::cout << "Health " << bar << " " << health << "/" << maxHp << "\n";
+    std::cout << "\nHealth " << bar << " " << health << "/" << maxHp;
 }

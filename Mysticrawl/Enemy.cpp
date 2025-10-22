@@ -2,12 +2,10 @@
 #include "Player.h"
 #include <chrono>
 #include <random>
+#include <string>
 using namespace std;
 
-Enemy::Enemy(Type t, int hp) : type(t), health(hp) {
-    if (type == Type::Rat) name = "Rat";
-    else name = "Enemy";
-
+Enemy::Enemy(string n, string t, int hp) : name(n), introText(t), health(hp) {
     // seed RNG with time-based seed
     rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
 }
@@ -42,4 +40,8 @@ bool Enemy::hostilityTrigger() {
     // 60% chance to be hostile on spawn
     uniform_int_distribution<int> d(0, 99);
     return d(rng) < 60;
+}
+
+void Enemy::DisplayIntroText() {
+    cout << introText << endl;
 }

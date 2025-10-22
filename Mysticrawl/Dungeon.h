@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Interactable.h"
 #include "Item.h"
+#include "Enemy.h"
 using namespace std;
 
 class Room;
@@ -41,9 +42,10 @@ private:
     vector<shared_ptr<Item>> items;              // visable Items currently in the room
     vector<shared_ptr<Item>> hiddenItems;        // Items that must be discovered by investigation
     vector<Exit> exits;          // Adjacent rooms by direction (e.g., "east")
+	vector<Enemy> enemies;        // Enemies present in the room
 
 public:
-    Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems);
+    Room(string name, string description, vector<shared_ptr<Item>> items = {}, vector<shared_ptr<Item>> hiddenItems = {});
 
     void setExits(const vector<Exit>& exits);
     Exit* getExit(const string& exitName);
@@ -61,6 +63,9 @@ public:
     void addItem(const shared_ptr<Item>& item) { items.push_back(item); }
     void addHiddenItem(const shared_ptr<Item>& item) { hiddenItems.push_back(item); }
     void clearHiddenItems() { hiddenItems.clear(); }
+
+	void addEnemy(const Enemy& enemy) { enemies.push_back(enemy); }
+    vector<Enemy> getEnemies() const { return enemies; }
 };
 
 /**

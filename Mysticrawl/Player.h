@@ -29,6 +29,9 @@ public:
         : currentRoom(currentRoom), playerName(name), health(health), maxHealth(health) {
     }
 
+    Player(const Player&) = delete; // Disable copy constructor
+    static Player& GetInstance(); // Singleton access method
+
     // New health-related accessors/mutators
     int getMaxHealth() const;
     bool isAlive() const;
