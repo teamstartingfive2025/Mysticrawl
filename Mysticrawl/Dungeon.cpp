@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Key.h"
+#include "Fight.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -77,6 +78,9 @@ void StartDungeon() {
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
 
+    // --- Initialize fight manager ---
+    Fight fight;
+
     // --- Main dungeon loop ---
     player.look();
 
@@ -90,11 +94,20 @@ void StartDungeon() {
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
-                {"Exit Game", [&]() {
+                
+            };
+
+            //if (there are monsters present)
+            options.push_back({ "Fight", [&]() {
+                fight.fightMenu();
+            } });
+
+            options.push_back(
+                { "Exit Game", [&]() {
                     WaitForEnterPrompt("You leave the dungeon for now...\n\n");
                     throw runtime_error("exit lambda and dungeon loop");
                 }}
-            };
+            );
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
