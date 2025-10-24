@@ -80,5 +80,7 @@ public:
 
     //view healthbar
     void displayHealthBar(int width = 20) const;
-
+    
+    // Performs a basic attack with bare hands against an enemy.
+    void basicAttack(Enemy& target, Room& currentRoom);
 };

@@ -15,7 +15,6 @@ void Fight::fightMenu(Player& player) {
         return;
     }
     // 3. Create our menu option list using lambdas.
-    // 4. Display the fight menu and handle input
     vector<tuple<string, function<void()>>> fightOptions;
 
     fightOptions = {
@@ -28,6 +27,7 @@ void Fight::fightMenu(Player& player) {
             }
         }},
     };
+    // 4. Display the fight menu and handle input
 
     RefreshSelectionMenu(fightOptions);
     SelectMenuOption();
