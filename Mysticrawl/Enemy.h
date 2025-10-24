@@ -3,8 +3,7 @@
 #include <random>
 using namespace std;
 
-class Player; // forward decl
-
+class Player;
 class Enemy {
 public:
     Enemy(string n, string t, int hp = 5);
@@ -27,7 +26,6 @@ public:
 
 	// Display introductory text when enemy appears
     void DisplayIntroText();
-
 private:
     string name;
 	string introText = "";
