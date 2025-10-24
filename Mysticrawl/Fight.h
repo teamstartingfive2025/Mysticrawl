@@ -13,5 +13,5 @@ public:
 	// Parameters:
 		//player: reference to the player object (attacker)
 	Fight() {}
-	void fightMenu(Player& player, Room& room); 
+	void fightMenu(Player& player); 
 };
