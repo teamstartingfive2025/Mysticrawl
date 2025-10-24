@@ -201,16 +201,13 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
     // Apply the damage
     target.takeDamage(damage);
 
-    // Check if the enemy is defeated
+    // If the enemy's HP has dropped to 0 or below, print a message
     if (!target.isAlive()) {
-        cout << "The " << target.getName() << " crumples to the ground. You win!\n";
-        auto& enemies = currentRoom.getEnemies();
-        if (!enemies.empty()) {
-            delete enemies.front();
-            enemies.erase(enemies.begin());
-        }
+        cout << "The " << target.getName()
+            << " collapses to the ground. You are victorious!\n";
     }
     else {
+        // If the enemy still has health, display the remaining HP
         cout << "The " << target.getName()
             << " still has " << target.getHealth() << " HP left.\n";
     }
