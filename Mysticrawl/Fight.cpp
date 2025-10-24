@@ -1,4 +1,4 @@
-#include "Fight.h"
+﻿#include "Fight.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Dungeon.h"
@@ -17,16 +17,51 @@ void Fight::fightMenu(Player& player) {
     // 3. Create our menu option list using lambdas.
     vector<tuple<string, function<void()>>> fightOptions;
 
-    fightOptions = {
-        { "Attack", [&/*Relevent object*/]() { cout << "You attack."; /*replace with relevant function*/} },
-        { "Defend", [&/*Relevent object*/]() { cout << "You defend."; /*replace with relevant function*/} },
-        { "Check", [&player]() { 
-            for (Enemy enemy : player.getCurrentRoom()->getEnemies()) {
-				cout << "Enemies present:\n";
-				cout << " - " << enemy.getName() << " (Health: " << enemy.getHealth() << ")\n";
+    // --- ATTACK OPTION ---
+    fightOptions.push_back({
+        "Attack",
+        [&player, room]() {
+        auto& enemies = room->getEnemies();
+            if (enemies.empty()) {
+                cout << "There are no enemies to attack.\n";
+                return;
             }
-        }},
-    };
+            // Player attacks the first enemy in the room
+            Enemy* target = enemies.front();  
+            player.basicAttack(*target, *room); // dereference for attack
+
+            if (!target->isAlive()) {
+                cout << target->getName() << " is defeated!\n";
+                enemies.erase(enemies.begin());
+                delete target; // prevent memory leak
+            }
+        }
+        });
+
+    // --- DEFEND OPTION (placeholder) ---
+    fightOptions.push_back({
+        "Defend",
+        []() {
+            cout << "You brace yourself for an incoming attack.\n";
+        }
+        });
+
+    // --- CHECK OPTION ---
+    fightOptions.push_back({
+        "Check",
+        [&player]() {
+            cout << "\nEnemies present:\n";
+            for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
+                if (enemy)
+                    cout << " - " << enemy->getName()
+                    << " (Health: " << enemy->getHealth() << ")\n";
+            }
+        }
+        });
+
+
+
+
     // 4. Display the fight menu and handle input
 
     RefreshSelectionMenu(fightOptions);

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Dungeon.h"
+#include "Enemy.h"
 #include "Key.h"
 #include <algorithm>
 #include <iostream>
@@ -20,10 +21,9 @@ void Player::look() const {
         cout << "You don't see any items.\n";
     }
 
-	vector<Enemy> enemies = currentRoom->getEnemies();
-
-    for (Enemy enemy : enemies) {
-        enemy.DisplayIntroText();
+    auto& enemies = currentRoom->getEnemies();
+    for (Enemy* enemy : enemies) {
+        if (enemy) enemy->DisplayIntroText();
     }
 }
 
@@ -187,7 +187,7 @@ void Player::displayHealthBar(int width) const {
 }
 
 // Player::basicAttack() Generic unarmed strike implementation.
-void Player::basicAttack(Enemy & target, Room & currentRoom) {
+void Player::basicAttack(Enemy& target, Room& currentRoom) {
     // Seed the random number generator
     srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -204,11 +204,14 @@ void Player::basicAttack(Enemy & target, Room & currentRoom) {
     // Check if the enemy is defeated
     if (!target.isAlive()) {
         cout << "The " << target.getName() << " crumples to the ground. You win!\n";
-        auto enemies = currentRoom.getEnemies();
-        enemies.erase(enemies.begin());
+        auto& enemies = currentRoom.getEnemies();
+        if (!enemies.empty()) {
+            delete enemies.front();
+            enemies.erase(enemies.begin());
+        }
     }
     else {
-        cout << "The " << target.getName() << " still has "
-            << target.getHealth() << " HP left.\n";
+        cout << "The " << target.getName()
+            << " still has " << target.getHealth() << " HP left.\n";
     }
 }
