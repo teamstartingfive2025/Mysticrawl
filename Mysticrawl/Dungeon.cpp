@@ -95,10 +95,12 @@ void StartDungeon() {
                 
             };
 
-            //if (there are monsters present)
-            options.push_back({ "Fight", [&]() {
-                fight.fightMenu(player);
-            } });
+            if (!player.getCurrentRoom()->getEnemies().empty()) {
+                cout << "Dungeon: " << player.getCurrentRoom()->getEnemies().empty() << endl;
+                options.push_back({ "Fight", [&]() {
+                    fight.fightMenu(player);
+                } });
+            }
 
             options.push_back(
                 { "Exit Game", [&]() {
