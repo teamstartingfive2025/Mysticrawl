@@ -25,6 +25,11 @@ bool Enemy::block() {
     return d(rng) < 20;
 }
 
+/*
+ * For automated test, DON't call this method, need initialized player, but player requires initialized rooms, which are buried in the main game loop function
+ *   Note: player object is not accessible, nor are the rooms accessible outside the main game loop function - need to refactor for test automation
+ */
+
 int Enemy::attack(Player& target) {
     // For a rat: small bite damage 1-3
     uniform_int_distribution<int> dmgDist(1, 3);
@@ -34,7 +39,7 @@ int Enemy::attack(Player& target) {
     target.applyDamage(damage);
 
     return damage;
-}
+}  // END of method to be EXCLUDED from test automation
 
 bool Enemy::hostilityTrigger() {
     // 60% chance to be hostile on spawn

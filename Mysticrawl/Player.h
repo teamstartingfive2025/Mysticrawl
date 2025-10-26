@@ -30,6 +30,7 @@ public:
         : currentRoom(currentRoom), playerName(name), health(health), maxHealth(health) {
     }
 
+    // LV - true Singleton design pattern makes the constructor private, attribution?
     Player(const Player&) = delete; // Disable copy constructor
     static Player& GetInstance(); // Singleton access method
 

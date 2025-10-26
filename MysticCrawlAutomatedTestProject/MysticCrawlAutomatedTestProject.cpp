@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "../Mysticrawl/Enemy.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -13,5 +14,54 @@ namespace MysticCrawlAutomatedTestProject
 		{
 			Logger::WriteMessage("Hello from MysticCrawlAutomatedTestProject\n");
 		}
+
+		TEST_METHOD(CreateEnemyAndVerifyNameHP)
+		{
+			Logger::WriteMessage("Creating a dog rat and verifying constructor works as intended\n");
+			std::string enemy = "DogRat";
+			std::string enemyDescription = "A rat that is as big as a dog!";
+			int initialHP = 10;
+			Enemy dogRat(enemy, enemyDescription, initialHP);
+			Assert::AreEqual(dogRat.getName(), enemy, L"constructor name doesn't match getName()");
+			Assert::AreEqual(dogRat.getHealth(), initialHP, L"constructor HP doesn't match getHealth()");
+			// can't verify initial text since this is a cout only, not returned
+		}
 	};
 }
+
+/*
+Starting 5 Enemy Class
+// Enemy constructor, args string enemy name, string related text pertinent to enemy & hp - default is 5)
+// initializes random seed based on current time (note - the random # generation appears to be a direct lift from the web/AI)
+// Requires: enemy.cpp, pulls in chrono, random (for random # generation) & string libraries
+Enemy(string n, string t, int hp = 5);
+
+// getters 
+//  getName - returns enemy name (config in constructor)
+//  getHealth - returns current value of health (int - could be anything, no checks)
+//  isAlive - true if enemy is alive (health value > 0), false if "dead" (health value !> 0)
+const std::string& getName() const;
+int getHealth() const;
+bool isAlive() const;
+
+// *** Can't test in automated test at this time, problems with creating a player ***
+// Attack the player. Returns damage to be dealt to the player, LV - actual damage must be applied by caller
+// attack is a uniformally random amount - currently 1-3 hps, based on mt19937 seed initialized in constructor
+int attack(Player& target);
+
+// Optionally block (not used in this simple rat example)
+// hardcodes 20% chance of blocking (generates random # 0-99, checks if value < 20)
+bool block();
+
+// Apply damage to this enemy
+// calculates damage to enemy, and applies the damage
+// returns enemy health, but if < 0, returns 0 (net: health in range (0,initial hp-1))
+void takeDamage(int amount);
+
+// Whether this enemy will be hostile on spawn (chance-based)
+// hardcodes 60% chance of attacking (generates random # 0-99, checks if value < 60)
+bool hostilityTrigger();
+
+// Display introductory text when enemy appears (LV defined in constructor)
+void DisplayIntroText();
+*/

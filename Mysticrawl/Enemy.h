@@ -13,7 +13,7 @@ public:
     bool isAlive() const;
 
     // Attack the player. Returns damage dealt.
-    int attack(Player& target);
+    int attack(Player& target);   // LV - need to omit for test automation, player object initiation not easily accomplished in current design 26-Oct
 
     // Optionally block (not used in this simple rat example)
     bool block();
