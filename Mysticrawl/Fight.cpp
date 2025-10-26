@@ -24,19 +24,9 @@ void Fight::fightMenu(Player& player) {
         "Attack",
         [&player, room]() {
         auto& enemies = room->getEnemies();
-            if (enemies.empty()) {
-                cout << "There are no enemies to attack.\n";
-                return;
-            }
+            
             // Player attacks first enemy in the room
             Enemy* target = enemies.front();  
-            // Code intended to allow player to choose an enemy
-            //vector<tuple<string, function<void()>>> enemyOptions;
-            //for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
-            //    enemyOptions.push_back({ enemy->getName(), [&]() { target = enemy; }});
-            //}
-            //RefreshSelectionMenu(enemyOptions);
-            //SelectMenuOption();
 
             player.basicAttack(*target, *room); // dereference for attack
 
