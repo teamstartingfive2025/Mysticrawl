@@ -6,8 +6,9 @@
 #include "Item.h"
 using namespace std;
 
-// Forward declaration to avoid circular dependency with Dungeon.h
-struct Room;
+// Forward declarations to avoid circular dependency
+class Enemy;
+class Room;
 
 /**
  * The Player class represents the user-controlled character.
@@ -80,5 +81,7 @@ public:
 
     //view healthbar
     void displayHealthBar(int width = 20) const;
-
+    
+    // Performs a basic attack with bare hands against an enemy.
+    void basicAttack(Enemy& target, Room& currentRoom);
 };

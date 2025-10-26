@@ -63,11 +63,8 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-	fightRoom.addEnemy(Enemy(
-        "Rat",
-        "A rat suddenly appears! It bites you and scurries away.\n",
-        5
-    ));
+    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
+    fightRoom.addEnemy(rat);
 
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
@@ -98,10 +95,12 @@ void StartDungeon() {
                 
             };
 
-            //if (there are monsters present)
-            options.push_back({ "Fight", [&]() {
-                fight.fightMenu(player);
-            } });
+            //only give fight option if enemy is present
+            if (!player.getCurrentRoom()->getEnemies().empty()) {
+                options.push_back({ "Fight", [&]() {
+                    fight.fightMenu(player);
+                } });
+            }
 
             options.push_back(
                 { "Exit Game", [&]() {
@@ -110,10 +109,10 @@ void StartDungeon() {
                 }}
             );
 
-            for (Enemy& enemy : player.getCurrentRoom()->getEnemies()) {
-                if (enemy.hostilityTrigger()) {
-                    int damage = enemy.attack(player);
-                    cout << enemy.getName() << " attacked you, health decreased by " << damage << endl;
+            for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
+                if (enemy && enemy->hostilityTrigger()) {
+                    int damage = enemy->attack(player);
+                    cout << enemy->getName() << " attacked you, health decreased by " << damage << endl;
                 }
             }
 
