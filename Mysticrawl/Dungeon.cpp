@@ -97,7 +97,6 @@ void StartDungeon() {
 
             //only give fight option if enemy is present
             if (!player.getCurrentRoom()->getEnemies().empty()) {
-                cout << "Dungeon: " << player.getCurrentRoom()->getEnemies().empty() << endl;
                 options.push_back({ "Fight", [&]() {
                     fight.fightMenu(player);
                 } });
