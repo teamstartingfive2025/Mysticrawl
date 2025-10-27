@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Interactable.h"
 #include "Player.h"
+#include <random>
+#include <chrono>
 
 // The Fight class handles all combat-related player actions.
 // For this story, we’re only implementing the player's basic attack.
