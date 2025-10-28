@@ -79,7 +79,15 @@ void Player::pickup() {
 }
 
 // Allows the player to move between rooms
-void Player::move() {
+void Player::move() 
+{
+    // Block movement if enemies are present and alive
+    if (currentRoom->hasBlockingEnemy()) {
+        cout << "An enemy bars your path! You cannot move until you deal with it.\n"
+            "Try 'Fight' to defeat it or select 'Fight' and then 'Run' to attempt an escape.\n";
+        return;
+    }
+
     if (currentRoom->getExits().empty()) {
         cout << "You don't see any exits.\n";
         return;
