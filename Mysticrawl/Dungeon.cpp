@@ -112,9 +112,11 @@ void StartDungeon() {
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
                 if (enemy && enemy->hostilityTrigger()) {
                     int damage = enemy->attack(player);
-                    cout << enemy->getName() << " attacked you, health decreased by " << damage << endl;
+                    cout << enemy->getName() << " attacked you, health decreased by " << damage
+                        << ", your new health is " << player.getHealth() << "\n\n";
                 }
             }
+
 
             player.displayHealthBar();
 

@@ -103,15 +103,16 @@ bool Fight::CalculateRunChance() {
 
 void Fight::HandleRunOutcome(bool success, Player& player, Enemy& enemy, bool& battleEnded) {
     if (success) {
-        cout << "You turn and sprint into the shadows... You escaped!\n";
-        battleEnded = true; // success → exit battle loop
+        cout << "\nYou turn and sprint into the shadows... You escaped!\n\n";
+        battleEnded = true;
         return;
     }
 
     // failure → counterattack
-    cout << "You trip—no escape! The " << enemy.getName() << " strikes back!\n";
+    cout << "\nYou trip—no escape! The " << enemy.getName() << " strikes back!\n";
     int damage = enemy.attack(player);
     cout << "enemy attacked you, health decreased by " << damage
-        << ", your new health is " << player.getHealth() << "\n";
+        << ", your new health is " << player.getHealth() << "\n\n";
     player.displayHealthBar();
+    cout << "\n"; // extra space for readability
 }
