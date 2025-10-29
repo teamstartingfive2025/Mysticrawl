@@ -63,6 +63,9 @@ public:
     // Displays all items the player has collected
     void showInventory() const;
 
+    // Displays selection menu of all items the player has collected
+    shared_ptr<Item> itemSelectMenu();
+
     // Checks if the player currently has a specific item
     bool hasItem(const string& itemName) const;
 

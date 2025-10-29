@@ -110,6 +110,18 @@ void Player::showInventory() const {
     cout << "\n";
 }
 
+// Displays selection menu of all items the player has collected and returns player choice
+shared_ptr<Item> Player::itemSelectMenu() {
+    shared_ptr<Item> selection;
+    
+    vector< tuple<string, function<void()>>> itemOptions;
+    for (const auto& item : inventory) {
+        itemOptions.push_back({ item->getName(), [item, selection]() { selection = item; } });
+    }
+
+    return selection;
+}
+
 // Checks whether a specific item exists in the player's inventory
 bool Player::hasItem(const string& itemName) const {
     for (const auto& item : inventory)

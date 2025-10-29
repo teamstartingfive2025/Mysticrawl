@@ -92,7 +92,7 @@ void StartDungeon() {
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
-                
+                {"Use Item", [&player]() { player.itemSelectMenu()->use(&player); }}
             };
 
             //only give fight option if enemy is present
