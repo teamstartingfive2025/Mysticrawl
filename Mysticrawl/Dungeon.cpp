@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Key.h"
+#include "Potion.h"
 #include "Fight.h"
 #include <iostream>
 #include <limits>
@@ -65,6 +66,8 @@ void StartDungeon() {
 
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
     fightRoom.addEnemy(rat);
+
+    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });

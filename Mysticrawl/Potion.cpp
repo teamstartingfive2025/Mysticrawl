@@ -4,6 +4,6 @@
 #include "Potion.h"
 #include <string>
 
-void Potion::use(Player* player) {
+void Potion::use(Player* player) override {
 	player->heal(healing);
 }
