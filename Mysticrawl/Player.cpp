@@ -138,6 +138,7 @@ int Player::takeDamage(int amount) {
     int actual = std::min(amount, health);
     health -= actual;
     if (health < 0) health = 0;
+	if (health <= 0) { cout << "\nGame Over. You lose. \n";}
     return actual;
 }
 
@@ -192,7 +193,7 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
     srand(static_cast<unsigned int>(time(nullptr)));
 
     // Generate random damage between 2 and 6
-    int damage = rand() % 5 + 2;  // Range: 2–6 damage
+    int damage = rand() % 5 + 2;  // Range: 2â€“6 damage
 
     // Print attack message
     cout << "You swing your fists at the " << target.getName()
