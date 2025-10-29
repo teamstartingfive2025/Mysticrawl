@@ -116,8 +116,10 @@ shared_ptr<Item> Player::itemSelectMenu() {
     
     vector< tuple<string, function<void()>>> itemOptions;
     for (const auto& item : inventory) {
-        itemOptions.push_back({ item->getName(), [item, selection]() { selection = item; } });
+        itemOptions.push_back({ item->getName(), [item, &selection]() { selection = item; } });
     }
+    RefreshSelectionMenu(itemOptions);
+    SelectMenuOption();
 
     return selection;
 }
