@@ -68,5 +68,8 @@ collecting the souls of those who wander too far, and will stop at nothing to ke
 
 	namespace Gameplay {
 		const bool DOOR_LOCKED = true;
+
+		const string GAME_OVER_TEXT = "\n\nYour health has been depleted, and you have succumbed to the dungeon.\n"
+										+ Constants::UI::SELECTION_COLOR + "\nGame Over.\n\n" + Constants::UI::COLOR_RESET;
 	}
 }
