@@ -90,14 +90,14 @@ void StartDungeon() {
             vector< tuple<string, function<void()>> > options;
         
             options = {
-                {"Look around", [&player]() { player.look(); }},
+                {"Look ound", [&player]() { player.look(); }},
                 {"Investigate the area", [&player]() { player.investigate(); }},
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
             };
             if (!player.inventoryEmpty()) {
-                options.push_back({ "Use Item", [&player]() { player.itemSelectMenu()->use(&player);  }});
+                options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  }});
             }
 
             //only give fight option if enemy is present

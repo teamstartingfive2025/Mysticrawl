@@ -67,6 +67,9 @@ public:
     // Displays selection menu of all items the player has collected
     shared_ptr<Item> itemSelectMenu();
 
+    // Manages item usage
+    void useItem(shared_ptr<Item> item);
+
     bool inventoryEmpty();
 
     // Checks if the player currently has a specific item

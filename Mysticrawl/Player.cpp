@@ -124,6 +124,11 @@ shared_ptr<Item> Player::itemSelectMenu() {
     return selection;
 }
 
+// Manages item usage
+void Player::useItem(shared_ptr<Item> item) {
+    item->use(this);
+}
+
 bool Player::inventoryEmpty() { return inventory.empty(); }
 
 // Checks whether a specific item exists in the player's inventory
