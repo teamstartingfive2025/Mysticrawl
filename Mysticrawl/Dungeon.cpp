@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "Key.h"
 #include "Fight.h"
+
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -12,6 +13,8 @@
 #include <thread>
 #include <chrono>
 #include <vector>
+#include <string>
+
 using namespace std;
 
 void Exit::unlock() {
@@ -113,7 +116,14 @@ void StartDungeon() {
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
                 if (enemy && enemy->hostilityTrigger()) {
                     int damage = enemy->attack(player);
-                    cout << enemy->getName() << " attacked you, health decreased by " << damage << endl;
+                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
+
+                    if (player.getHealth() <= 0) {
+                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
+                        return;
+                    }
+
+                    cout << attackMessage << endl;
                 }
             }
 
@@ -121,11 +131,6 @@ void StartDungeon() {
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
-
-            if (player.getHealth() <= 0) {
-                WaitForEnterPrompt("\n Game Over. You Lose.\n");
-                return;
-            }
         }
     }
     catch (const runtime_error&) {
