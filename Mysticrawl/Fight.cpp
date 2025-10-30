@@ -94,8 +94,8 @@ bool Fight::CalculateRunChance() {
         (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
     );
     std::uniform_int_distribution<int> d(0, 99);
-    // 60% base chance to successfully run away
-    return d(rng) < 60;
+    // 40% base chance to successfully run away
+    return d(rng) < 40;
 }
 
 void Fight::HandleRunOutcome(bool success, Player& player, Enemy& enemy, bool& battleEnded) {
@@ -106,7 +106,7 @@ void Fight::HandleRunOutcome(bool success, Player& player, Enemy& enemy, bool& b
     }
 
     // failure → counterattack
-    cout << "\nYou trip—no escape! The " << enemy.getName() << " strikes back!\n";
+    cout << "\nYou trip, no escape! The " << enemy.getName() << " strikes back!\n";
     int damage = enemy.attack(player);
     cout << "enemy attacked you, health decreased by " << damage
         << ", your new health is " << player.getHealth() << "\n\n";
