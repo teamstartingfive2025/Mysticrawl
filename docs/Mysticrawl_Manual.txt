@@ -24,4 +24,4 @@ Controls:
 
 Credits:
 
-- Developed by: 
+- Developed by: Philip Maraldo, Sam Kimak, John Giglio, Brendan Roman, and Mike Baah
