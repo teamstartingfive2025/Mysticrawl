@@ -90,7 +90,7 @@ void StartDungeon() {
             vector< tuple<string, function<void()>> > options;
         
             options = {
-                {"Look ound", [&player]() { player.look(); }},
+                {"Look around", [&player]() { player.look(); }},
                 {"Investigate the area", [&player]() { player.investigate(); }},
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},

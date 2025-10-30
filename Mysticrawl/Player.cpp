@@ -127,6 +127,8 @@ shared_ptr<Item> Player::itemSelectMenu() {
 // Manages item usage
 void Player::useItem(shared_ptr<Item> item) {
     item->use(this);
+
+    if(item->isConsumable()) inventory.erase(find(inventory.begin(), inventory.end(), item)); //delete consumables after use
 }
 
 bool Player::inventoryEmpty() { return inventory.empty(); }
