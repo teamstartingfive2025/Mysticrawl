@@ -62,22 +62,19 @@ void Fight::fightMenu(Player& player) {
         });
 
     // --- RUN OPTION ---
-    fightOptions.push_back({
-        "Run",
-        [&player, room, this]() {
-            if (room->getEnemies().empty()) {
-                cout << "There's nothing to run from.\n";
-                return;
-            }
-            Enemy* enemy = room->getEnemies().front();
-            bool battleEnded = false;
-            AttemptRun(player, *enemy, battleEnded);
-            if (battleEnded) {
-                cout << "You dash back toward safety!\n";
-                // return to dungeon (just end fightMenu)
-                room->getEnemies().clear();
-                throw runtime_error("Player fled battle");
-            }
+    fightOptions.push_back({ "Run", [&player, room, this]() {
+    if (room->getEnemies().empty()) {
+        cout << "There's nothing to run from.\n";
+        return; // nothing to flee
+    }
+    Enemy* enemy = room->getEnemies().front();
+    bool battleEnded = false;
+    AttemptRun(player, *enemy, battleEnded);
+    if (battleEnded) {
+        cout << "You dash back toward safety!\n\n";
+        // Success: simply end this fight menu and return to the dungeon loop
+        return;
+    }
         }
         });
 
