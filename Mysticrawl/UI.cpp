@@ -180,8 +180,6 @@ void SelectionMenu::MakeSelection() {
 		char input = getInstantaneousCharInput();
 		int inputCode = (int)input;
 
-		system("cls");
-
 		int selectedRow;
 		int selectedCol;
 
