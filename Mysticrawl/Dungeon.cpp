@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "Key.h"
 #include "Fight.h"
+
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -12,6 +13,8 @@
 #include <thread>
 #include <chrono>
 #include <vector>
+#include <string>
+
 using namespace std;
 
 void Exit::unlock() {
@@ -85,7 +88,7 @@ void StartDungeon() {
     try {
         while (true) {
             vector< tuple<string, function<void()>> > options;
-        
+
             options = {
                 {"Look around", [&player]() { player.look(); }},
                 {"Investigate the area", [&player]() { player.investigate(); }},
@@ -102,6 +105,7 @@ void StartDungeon() {
                 } });
             }
 
+
             options.push_back(
                 { "Exit Game", [&]() {
                     WaitForEnterPrompt("You leave the dungeon for now...\n\n");
@@ -112,7 +116,14 @@ void StartDungeon() {
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
                 if (enemy && enemy->hostilityTrigger()) {
                     int damage = enemy->attack(player);
-                    cout << enemy->getName() << " attacked you, health decreased by " << damage << endl;
+                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
+
+                    if (player.getHealth() <= 0) {
+                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
+                        return;
+                    }
+
+                    cout << attackMessage << endl;
                 }
             }
 

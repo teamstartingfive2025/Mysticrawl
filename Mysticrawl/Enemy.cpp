@@ -31,7 +31,7 @@ int Enemy::attack(Player& target) {
     int damage = dmgDist(rng);
 
     // Apply damage to player
-    target.applyDamage(damage);
+    target.takeDamage(damage);
 
     return damage;
 }

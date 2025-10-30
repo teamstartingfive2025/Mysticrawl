@@ -137,7 +137,6 @@ int Player::takeDamage(int amount) {
     if (amount <= 0) return 0;
     int actual = std::min(amount, health);
     health -= actual;
-    if (health < 0) health = 0;
     return actual;
 }
 
