@@ -57,9 +57,6 @@
     <ClCompile Include="Fight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerLose.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -93,9 +90,6 @@
       <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="Fight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerLose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
