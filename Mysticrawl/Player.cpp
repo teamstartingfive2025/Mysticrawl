@@ -110,7 +110,7 @@ void Player::showInventory() const {
     cout << "\n";
 }
 
-// Displays selection menu of all items the player has collected and returns player choice
+// Displays selection menu of all items in player inventory and returns player choice
 shared_ptr<Item> Player::itemSelectMenu() {
     shared_ptr<Item> selection;
     

@@ -97,7 +97,7 @@ void StartDungeon() {
                 {"Pickup Item", [&player]() { player.pickup(); }},
             };
             if (!player.inventoryEmpty()) {
-                options.push_back({ "Use Item", [&player]() { player.itemSelectMenu()->use(&player);  } });
+                options.push_back({ "Use Item", [&player]() { player.itemSelectMenu()->use(&player);  }});
             }
 
             //only give fight option if enemy is present

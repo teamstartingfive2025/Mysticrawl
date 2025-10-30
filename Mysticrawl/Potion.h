@@ -12,6 +12,6 @@ public:
 	Potion(string name, const int healing) : Item(name), healing(healing) { setConsumable(true); }
 	void use(Player* player) override {
 		player->heal(healing);
-		cout << "Healed " << healing << "hit points";
+		cout << "Healed " << healing << " hit points";
 	}
 };
