@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+#include <random>
+#include <chrono>
+
 using namespace std;
 
 // Prints details about the current room and visible items
@@ -26,6 +29,7 @@ void Player::look() const {
         if (enemy) enemy->DisplayIntroText();
     }
 }
+extern bool skipNextHostility;
 
 void Player::investigate() {
     if (currentRoom->getHiddenItems().empty()) {
@@ -79,36 +83,54 @@ void Player::pickup() {
 }
 
 // Allows the player to move between rooms
-void Player::move() 
+void Player::move()
 {
-    // Block movement if enemies are present and alive
-    if (currentRoom->hasBlockingEnemy()) {
-        cout << "An enemy bars your path! You cannot move until you deal with it.\n"
-            "Try 'Fight' to defeat it or select 'Fight' and then 'Run' to attempt an escape.\n";
-        return;
-    }
-
     if (currentRoom->getExits().empty()) {
         cout << "You don't see any exits.\n";
         return;
     }
 
-	vector< tuple<string, function<void()>> > moveOptions;
+    // If enemies are alive, inform the player this will try to flee
+    bool hasAliveEnemyForMove = false;
+    for (Enemy* e : currentRoom->getEnemies()) {
+        if (e && e->isAlive()) { hasAliveEnemyForMove = true; break; }
+    }
+    if (hasAliveEnemyForMove) {
+        cout << "(An enemy blocks your path: choosing an exit will attempt to flee. "
+            "Success: you move. Failure: enemy counterattacks.)\n\n";
+    }
+
+    vector< tuple<string, function<void()>> > moveOptions;
     for (const auto& exit : currentRoom->getExits()) {
         moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit]() {
             if (exit.isLocked()) {
                 cout << "The way " << exit.getDirection() << " is locked.\n";
                 return;
             }
-            setCurrentRoom(exit.getDestination());
-            cout << "You move " << exit.getDirection() << ".\n";
-            look();
+
+            // If enemies are present and alive, this is a run attempt toward that exit
+            bool hasAliveEnemy = false;
+            for (Enemy* e : currentRoom->getEnemies()) {
+                if (e && e->isAlive()) { hasAliveEnemy = true; break; }
+            }
+
+            if (hasAliveEnemy) {
+                cout << "You try to run " << exit.getDirection() << "...\n";
+                (void)attemptFleeTo(exit.getDestination()); // success moves & looks; failure counterattacks
+            }
+ else {
+                // Normal movement (no enemies blocking)
+                setCurrentRoom(exit.getDestination());
+                cout << "You move " << exit.getDirection() << ".\n";
+                look();
+            }
         } });
-	}
+    }
 
     RefreshSelectionMenu(moveOptions);
     SelectMenuOption();
 }
+
 
 // Displays the player's inventory contents
 void Player::showInventory() const {
@@ -193,6 +215,54 @@ void Player::displayHealthBar(int width) const {
     // Print with numeric readout
     std::cout << "\nHealth " << bar << " " << health << "/" << maxHp;
 }
+bool Player::calculateRunChance() const {
+    static std::mt19937 rng(
+        (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
+    );
+    std::uniform_int_distribution<int> d(0, 99);
+    // Tune as needed
+    return d(rng) < 40; // 40% success
+}
+
+bool Player::attemptFleeTo(Room* destination) {
+    // Find the first alive enemy in the current room
+    Enemy* blocker = nullptr;
+    for (Enemy* e : currentRoom->getEnemies()) {
+        if (e && e->isAlive()) { blocker = e; break; }
+    }
+
+    // If nothing actually blocks, just move
+    if (!blocker) {
+        setCurrentRoom(destination);
+        cout << "You slip away to safety.\n";
+        look();
+        return true;
+    }
+
+    // Try to run
+    if (calculateRunChance()) {
+        cout << "You slip past the " << blocker->getName() << " and escape!\n\n";
+        setCurrentRoom(destination);
+
+        skipNextHostility = true;
+
+        look();
+        return true;
+    }
+    else {
+        cout << "You fail to escape! The " << blocker->getName() << " strikes!\n";
+        int dmg = blocker->attack(*this);
+        cout << "enemy attacked you, health decreased by " << dmg
+            << ", your new health is " << getHealth() << "\n\n";
+
+        skipNextHostility = true;
+
+        // Do NOT print displayHealthBar() here; the dungeon loop prints it once per tick.
+        return false;
+    }
+}
+
+
 
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
@@ -219,4 +289,5 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
         cout << "The " << target.getName()
             << " still has " << target.getHealth() << " HP left.\n";
     }
+
 }

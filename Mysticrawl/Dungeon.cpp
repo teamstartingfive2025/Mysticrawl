@@ -17,6 +17,7 @@ using namespace std;
 void Exit::unlock() {
     locked = false;
 }
+bool skipNextHostility = false; // shared global flag
 
 Room::Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems)
     : name(name), description(description), items(items), hiddenItems(hiddenItems) {
@@ -109,16 +110,18 @@ void StartDungeon() {
                 }}
             );
 
-            for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
-                if (enemy && enemy->hostilityTrigger()) {
-                    int damage = enemy->attack(player);
-                    cout << enemy->getName() << " attacked you, health decreased by " << damage
-                        << ", your new health is " << player.getHealth() << "\n\n";
+            if (!skipNextHostility) {
+                for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
+                    if (enemy && enemy->hostilityTrigger()) {
+                        int damage = enemy->attack(player);
+                        cout << enemy->getName() << " attacked you, health decreased by " << damage
+                            << ", your new health is " << player.getHealth() << "\n\n";
+                    }
                 }
             }
-
-
             player.displayHealthBar();
+            skipNextHostility = false; // reset each turn
+
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();

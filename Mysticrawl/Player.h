@@ -22,6 +22,7 @@ private:
     std::string playerName;
     int health;
     int maxHealth;
+    bool calculateRunChance() const;
 
 public:
     // Constructor initializes the player at the starting room
@@ -84,4 +85,7 @@ public:
     
     // Performs a basic attack with bare hands against an enemy.
     void basicAttack(Enemy& target, Room& currentRoom);
+    // Try to flee to a specific destination room while enemies are present.
+    // Returns true if moved, false if blocked by failed flee.
+    bool attemptFleeTo(Room* destination);
 };
