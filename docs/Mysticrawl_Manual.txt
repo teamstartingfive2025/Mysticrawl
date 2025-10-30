@@ -1,0 +1,27 @@
+
+  /\\,/\\,                   ,                                   ,, 
+ /| || ||                   ||   _.                _             || 
+ || || ||   '\\ /\   _-_,  =||=  \/   _-_  ,._-_  < \,  \\ \  \  || 
+ || || ||    || ;'  ||_.    ||   ||  ||     ||    /-||  || || |  || 
+ || || ||    ||/     ~ ||   ||   ||  ||     ||   (( ||  || || |  || 
+ |, \\,\\,   |/     ,-_-    \\,  \\  \\,/   \\    \/\\  \\/\\/   \\ 
+            (                                               
+             -_-
+                            Version 0.1
+
+Description:
+
+In the world of Mysticrawl where magic and mystery intertwine, you find yourself trapped in an ancient dungeon.
+
+Its walls echo with the whispers of forgotten souls. The air is thick with enchantment, and every shadow seems to conceal a lurking danger.
+
+To escape, you must gather spellbooks, wands, and other magical trinkets to navigate this labyrinthine filled with treacherous creatures and cunning puzzles.
+
+Controls:
+
+- Movement: Use the arrow keys to navigate through menus.
+- Selection: Press 'Enter' to select options or interact with objects.
+
+Credits:
+
+- Developed by: 
