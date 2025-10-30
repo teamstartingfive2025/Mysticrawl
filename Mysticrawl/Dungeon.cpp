@@ -85,7 +85,7 @@ void StartDungeon() {
     try {
         while (true) {
             vector< tuple<string, function<void()>> > options;
-        
+
             options = {
                 {"Look around", [&player]() { player.look(); }},
                 {"Investigate the area", [&player]() { player.investigate(); }},
@@ -101,6 +101,7 @@ void StartDungeon() {
                     fight.fightMenu(player);
                 } });
             }
+
 
             options.push_back(
                 { "Exit Game", [&]() {
@@ -120,6 +121,11 @@ void StartDungeon() {
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
+
+            if (player.getHealth() <= 0) {
+                WaitForEnterPrompt("\n Game Over. You Lose.\n");
+                return;
+            }
         }
     }
     catch (const runtime_error&) {

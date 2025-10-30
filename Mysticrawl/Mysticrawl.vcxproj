@@ -131,7 +131,6 @@
     <ClCompile Include="Mysticrawl.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerLose.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Weapons.cpp" />
   </ItemGroup>
@@ -145,7 +144,6 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerLose.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Weapons.h" />
   </ItemGroup>
