@@ -76,9 +76,6 @@ public:
     // changeHealth accepts positive (heal) or negative (damage) values
     void changeHealth(int delta) { health += delta; }
 
-    // convenience: apply damage (positive amount)
-    void applyDamage(int amount) { changeHealth(-amount); }
-
     //view healthbar
     void displayHealthBar(int width = 20) const;
     
