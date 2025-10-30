@@ -95,8 +95,9 @@ void StartDungeon() {
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
-                {"Use Item", [&player]() { /*player.itemSelectMenu()->use(&player)*/ player.itemSelectMenu()->getName();  }}
             };
+            if(!player.)
+            { "Use Item", [&player]() { /*player.itemSelectMenu()->use(&player)*/ player.itemSelectMenu()->getName();  } }
 
             //only give fight option if enemy is present
             if (!player.getCurrentRoom()->getEnemies().empty()) {

@@ -67,6 +67,8 @@ public:
     // Displays selection menu of all items the player has collected
     shared_ptr<Item> itemSelectMenu();
 
+    bool inventoryEmpty();
+
     // Checks if the player currently has a specific item
     bool hasItem(const string& itemName) const;
 

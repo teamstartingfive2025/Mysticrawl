@@ -124,6 +124,8 @@ shared_ptr<Item> Player::itemSelectMenu() {
     return selection;
 }
 
+bool Player::inventoryEmpty() { return inventory.empty(); }
+
 // Checks whether a specific item exists in the player's inventory
 bool Player::hasItem(const string& itemName) const {
     for (const auto& item : inventory)
