@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-//void Potion::use(Player* player) override {
-//	player->heal(healing);
-//	cout << "Healed " << healing << "hit points";
-//}
+void Potion::use(Player* player) {
+	player->heal(healing);
+	cout << "\nHealed " << healing << " hit points";
+}

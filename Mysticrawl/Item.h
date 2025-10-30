@@ -19,6 +19,6 @@ protected:
 public:
 	Item(const string name) : name(name) {}
 	virtual string getName() const { return name; }
-	virtual void use(Player* player) { cout << "Nothing happened."; return; }
+	virtual void use(Player* player) { cout << "Nothing happened.\n"; return; }
 	bool isConsumable() const { return consumable; }
 };
