@@ -9,6 +9,7 @@ using namespace std;
 // Forward declarations to avoid circular dependency
 class Enemy;
 class Room;
+class Item;
 
 /**
  * The Player class represents the user-controlled character.
@@ -62,6 +63,14 @@ public:
 
     // Displays all items the player has collected
     void showInventory() const;
+
+    // Displays selection menu of all items the player has collected
+    shared_ptr<Item> itemSelectMenu();
+
+    // Manages item usage
+    void useItem(shared_ptr<Item> item);
+
+    bool inventoryEmpty();
 
     // Checks if the player currently has a specific item
     bool hasItem(const string& itemName) const;

@@ -110,6 +110,29 @@ void Player::showInventory() const {
     cout << "\n";
 }
 
+// Displays selection menu of all items in player inventory and returns player choice
+shared_ptr<Item> Player::itemSelectMenu() {
+    shared_ptr<Item> selection;
+    
+    vector< tuple<string, function<void()>>> itemOptions;
+    for (const auto& item : inventory) {
+        itemOptions.push_back({ item->getName(), [item, &selection]() { selection = item; } });
+    }
+    RefreshSelectionMenu(itemOptions);
+    SelectMenuOption();
+
+    return selection;
+}
+
+// Manages item usage
+void Player::useItem(shared_ptr<Item> item) {
+    item->use(this);
+
+    if(item->isConsumable()) inventory.erase(find(inventory.begin(), inventory.end(), item)); //delete consumables after use
+}
+
+bool Player::inventoryEmpty() { return inventory.empty(); }
+
 // Checks whether a specific item exists in the player's inventory
 bool Player::hasItem(const string& itemName) const {
     for (const auto& item : inventory)

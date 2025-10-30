@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Key.h"
+#include "Potion.h"
 #include "Fight.h"
 
 #include <iostream>
@@ -69,6 +70,8 @@ void StartDungeon() {
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
     fightRoom.addEnemy(rat);
 
+    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
@@ -95,8 +98,10 @@ void StartDungeon() {
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
-                
             };
+            if (!player.inventoryEmpty()) {
+                options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  }});
+            }
 
             //only give fight option if enemy is present
             if (!player.getCurrentRoom()->getEnemies().empty()) {
