@@ -9,6 +9,7 @@ using namespace std;
 // Forward declarations to avoid circular dependency
 class Enemy;
 class Room;
+class Item;
 
 /**
  * The Player class represents the user-controlled character.
