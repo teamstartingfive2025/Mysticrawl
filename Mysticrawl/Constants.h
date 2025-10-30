@@ -6,8 +6,17 @@ using namespace std;
 namespace Constants {
 	namespace UI {
 		//Game Title and Expressions
-		const string GAME_TITLE = "Mysticrawl";
-		const string WELCOME_MESSAGE = "Welcome to " + GAME_TITLE + "!";
+		const string GAME_TITLE = R"(                      
+  /\\,/\\,                   ,                                   ,, 
+ /| || ||                   ||   _.                _             || 
+ || || ||   '\\ /\   _-_,  =||=  \/   _-_  ,._-_  < \,  \\ \  \  || 
+ || || ||    || ;'  ||_.    ||   ||  ||     ||    /-||  || || |  || 
+ || || ||    ||/     ~ ||   ||   ||  ||     ||   (( ||  || || |  || 
+ |, \\,\\,   |/     ,-_-    \\,  \\  \\,/   \\    \/\\  \\/\\/   \\ 
+            (                                               
+             -_-
+)";
+		const string WELCOME_MESSAGE = "\n\tWelcome to...\n" + GAME_TITLE;
 
 		//Coloring
 		const string ESCAPE_CODE = "\033[";
