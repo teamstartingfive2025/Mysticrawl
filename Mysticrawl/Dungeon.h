@@ -66,7 +66,6 @@ public:
 
     void addEnemy(Enemy* enemy) { enemies.push_back(enemy); }
     vector<Enemy*>& getEnemies() { return enemies; }
-    const vector<Enemy*>& getEnemies() const { return enemies; }
 };
 
 /**

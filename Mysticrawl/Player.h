@@ -24,11 +24,6 @@ private:
     int health;
     int maxHealth;
 
-    bool skipNextEnemyTurn = false;
-
-    bool calculateRunChance() const;
-
-
 public:
     // Constructor initializes the player at the starting room
     // updated constructor (initialize maxHealth to starting health)
@@ -87,10 +82,6 @@ public:
     int getHealth() const { return health; }
     const std::string& getName() const { return playerName; }
 
-    // accessors for the per-player skip flag
-    void setSkipNextEnemyTurn(bool v) { skipNextEnemyTurn = v; }
-    bool shouldSkipNextEnemyTurn() const { return skipNextEnemyTurn; }
-
     // changeHealth accepts positive (heal) or negative (damage) values
     void changeHealth(int delta) { health += delta; }
 
@@ -99,7 +90,4 @@ public:
     
     // Performs a basic attack with bare hands against an enemy.
     void basicAttack(Enemy& target, Room& currentRoom);
-    // Try to flee to a specific destination room while enemies are present.
-    // Returns true if moved, false if blocked by failed flee.
-    bool attemptFleeTo(Room* destination);
 };

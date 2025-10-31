@@ -132,6 +132,7 @@ void StartDungeon() {
                 }
             }
 
+            player.displayHealthBar();
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();

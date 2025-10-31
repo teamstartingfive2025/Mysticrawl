@@ -5,8 +5,6 @@
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
-#include <random>
-#include <chrono>
 
 using namespace std;
 
@@ -82,8 +80,7 @@ void Player::pickup() {
 }
 
 // Allows the player to move between rooms
-void Player::move()
-{
+void Player::move() {
     if (currentRoom->getExits().empty()) {
         cout << "You don't see any exits.\n";
         return;
@@ -228,56 +225,6 @@ void Player::displayHealthBar(int width) const {
     // Print with numeric readout
     std::cout << "\nHealth " << bar << " " << health << "/" << maxHp;
 }
-bool Player::calculateRunChance() const {
-    static std::mt19937 rng(
-        (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
-    );
-    std::uniform_int_distribution<int> d(0, 99);
-    // Tune as needed
-    return d(rng) < 40; // 40% success
-}
-
-bool Player::attemptFleeTo(Room* destination) {
-    // Find the first alive enemy in the current room
-    Enemy* blocker = nullptr;
-    for (Enemy* e : currentRoom->getEnemies()) {
-        if (e && e->isAlive()) { blocker = e; break; }
-    }
-
-    // If nothing actually blocks, just move
-    if (!blocker) {
-        setCurrentRoom(destination);
-        cout << "You slip away to safety.\n";
-        look();
-        return true;
-    }
-
-    // Try to run
-    if (calculateRunChance()) {
-        cout << "You slip past the " << blocker->getName() << " and escape!\n\n";
-        setCurrentRoom(destination);
-
-        setSkipNextEnemyTurn(true);
-
-        look();
-        return true;
-    }
-
-    else {
-        cout << "You fail to escape! The " << blocker->getName() << " strikes!\n";
-        int dmg = blocker->attack(*this);
-        cout << "enemy attacked you, health decreased by " << dmg
-            << ", your new health is " << getHealth() << "\n\n";
-
-        setSkipNextEnemyTurn(true);
-
-        // Do NOT print displayHealthBar() here; the dungeon loop prints it once per tick.
-        return false;
-    }
-
-}
-
-
 
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
