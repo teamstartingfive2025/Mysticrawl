@@ -61,16 +61,6 @@ void Fight::fightMenu(Player& player) {
         }
         });
 
-    // --- RUN OPTION --- (retired; fleeing handled by Move Somewhere)
-#if 0
-    fightOptions.push_back({
-        "Run",
-        [&player, room, this]() {
-            // existing run logic (kept for reference)
-        }
-        });
-#endif
-
 
     // 4. Display the fight menu and handle input
 
