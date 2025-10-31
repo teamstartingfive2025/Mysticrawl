@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+
 using namespace std;
 
 // Prints details about the current room and visible items
@@ -85,22 +86,39 @@ void Player::move() {
         return;
     }
 
+	// Check if enemy will block movement
+    string enemyBlockingExit = "";
+
+    for (Enemy* enemy : currentRoom->getEnemies()) {
+            if (enemy && enemy->isBlockingExit()) {
+				enemyBlockingExit = enemy->getName();
+                break;
+            }
+	}
+
 	vector< tuple<string, function<void()>> > moveOptions;
     for (const auto& exit : currentRoom->getExits()) {
-        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit]() {
+        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit, enemyBlockingExit]() {
+            if (!enemyBlockingExit.empty()) {
+                cout << "You tried to escape " << exit.getDirection() << " but " << enemyBlockingExit << " blocks your way.\n";
+				return;
+            }
+
             if (exit.isLocked()) {
                 cout << "The way " << exit.getDirection() << " is locked.\n";
                 return;
             }
+
             setCurrentRoom(exit.getDestination());
             cout << "You move " << exit.getDirection() << ".\n";
             look();
         } });
-	}
+    }
 
     RefreshSelectionMenu(moveOptions);
     SelectMenuOption();
 }
+
 
 // Displays the player's inventory contents
 void Player::showInventory() const {
@@ -233,4 +251,5 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
         cout << "The " << target.getName()
             << " still has " << target.getHealth() << " HP left.\n";
     }
+
 }

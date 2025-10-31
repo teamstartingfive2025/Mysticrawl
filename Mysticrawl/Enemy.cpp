@@ -42,6 +42,17 @@ bool Enemy::hostilityTrigger() {
     return d(rng) < 60;
 }
 
+bool Enemy::isBlockingExit() {
+    static std::mt19937 rng(
+        (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
+    );
+
+    std::uniform_int_distribution<int> d(0, 99);
+
+    // Tune as needed
+    return d(rng) < 40; // 40% success
+}
+
 void Enemy::DisplayIntroText() {
     cout << introText << endl;
 }

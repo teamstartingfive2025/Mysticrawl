@@ -59,9 +59,6 @@ void Fight::fightMenu(Player& player) {
         }
         });
 
-
-
-
     // 4. Display the fight menu and handle input
 
     RefreshSelectionMenu(fightOptions);
