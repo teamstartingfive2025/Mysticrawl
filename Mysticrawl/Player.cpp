@@ -89,40 +89,32 @@ void Player::move()
         return;
     }
 
-    // If enemies are alive, inform the player this will try to flee
-    bool hasAliveEnemyForMove = false;
-    for (Enemy* e : currentRoom->getEnemies()) {
-        if (e && e->isAlive()) { hasAliveEnemyForMove = true; break; }
-    }
-    if (hasAliveEnemyForMove) {
-        cout << "(An enemy blocks your path: choosing an exit will attempt to flee. "
-            "Success: you move. Failure: enemy counterattacks.)\n\n";
-    }
+	// Check if enemy will block movement
+    string enemyBlockingExit = "";
 
-    vector< tuple<string, function<void()>> > moveOptions;
+    for (Enemy* enemy : currentRoom->getEnemies()) {
+            if (enemy && enemy->isBlockingExit()) {
+				enemyBlockingExit = enemy->getName();
+                break;
+            }
+	}
+
+	vector< tuple<string, function<void()>> > moveOptions;
     for (const auto& exit : currentRoom->getExits()) {
-        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit]() {
+        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit, enemyBlockingExit]() {
+            if (!enemyBlockingExit.empty()) {
+                cout << "You tried to escape " << exit.getDirection() << " but " << enemyBlockingExit << " blocks your way.\n";
+				return;
+            }
+
             if (exit.isLocked()) {
                 cout << "The way " << exit.getDirection() << " is locked.\n";
                 return;
             }
 
-            // If enemies are present and alive, this is a run attempt toward that exit
-            bool hasAliveEnemy = false;
-            for (Enemy* e : currentRoom->getEnemies()) {
-                if (e && e->isAlive()) { hasAliveEnemy = true; break; }
-            }
-
-            if (hasAliveEnemy) {
-                cout << "You try to run " << exit.getDirection() << "...\n";
-                (void)attemptFleeTo(exit.getDestination()); // success moves & looks; failure counterattacks
-            }
- else {
-                // Normal movement (no enemies blocking)
-                setCurrentRoom(exit.getDestination());
-                cout << "You move " << exit.getDirection() << ".\n";
-                look();
-            }
+            setCurrentRoom(exit.getDestination());
+            cout << "You move " << exit.getDirection() << ".\n";
+            look();
         } });
     }
 
@@ -138,6 +130,29 @@ void Player::showInventory() const {
     for (auto& item : inventory) cout << " " << item->getName();
     cout << "\n";
 }
+
+// Displays selection menu of all items in player inventory and returns player choice
+shared_ptr<Item> Player::itemSelectMenu() {
+    shared_ptr<Item> selection;
+    
+    vector< tuple<string, function<void()>>> itemOptions;
+    for (const auto& item : inventory) {
+        itemOptions.push_back({ item->getName(), [item, &selection]() { selection = item; } });
+    }
+    RefreshSelectionMenu(itemOptions);
+    SelectMenuOption();
+
+    return selection;
+}
+
+// Manages item usage
+void Player::useItem(shared_ptr<Item> item) {
+    item->use(this);
+
+    if(item->isConsumable()) inventory.erase(find(inventory.begin(), inventory.end(), item)); //delete consumables after use
+}
+
+bool Player::inventoryEmpty() { return inventory.empty(); }
 
 // Checks whether a specific item exists in the player's inventory
 bool Player::hasItem(const string& itemName) const {
@@ -166,7 +181,6 @@ int Player::takeDamage(int amount) {
     if (amount <= 0) return 0;
     int actual = std::min(amount, health);
     health -= actual;
-    if (health < 0) health = 0;
     return actual;
 }
 

@@ -67,15 +67,6 @@ public:
     void addEnemy(Enemy* enemy) { enemies.push_back(enemy); }
     vector<Enemy*>& getEnemies() { return enemies; }
     const vector<Enemy*>& getEnemies() const { return enemies; }
-
-    //movement is blocked if any alive enemy is in this room
-    bool hasBlockingEnemy() const {
-        for (Enemy* e : enemies) {
-            if (e && e->isAlive()) return true;
-        }
-        return false;
-    }
-
 };
 
 /**

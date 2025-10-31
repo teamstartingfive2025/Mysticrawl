@@ -4,7 +4,9 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Key.h"
+#include "Potion.h"
 #include "Fight.h"
+
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -12,6 +14,8 @@
 #include <thread>
 #include <chrono>
 #include <vector>
+#include <string>
+
 using namespace std;
 
 void Exit::unlock() {
@@ -66,6 +70,8 @@ void StartDungeon() {
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
     fightRoom.addEnemy(rat);
 
+    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
@@ -85,15 +91,17 @@ void StartDungeon() {
     try {
         while (true) {
             vector< tuple<string, function<void()>> > options;
-        
+
             options = {
                 {"Look around", [&player]() { player.look(); }},
                 {"Investigate the area", [&player]() { player.investigate(); }},
                 {"Check Inventory", [&player]() { player.showInventory(); }},
 				{"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
-                
             };
+            if (!player.inventoryEmpty()) {
+                options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  }});
+            }
 
             //only give fight option if enemy is present
             if (!player.getCurrentRoom()->getEnemies().empty()) {
@@ -102,6 +110,7 @@ void StartDungeon() {
                 } });
             }
 
+
             options.push_back(
                 { "Exit Game", [&]() {
                     WaitForEnterPrompt("You leave the dungeon for now...\n\n");
@@ -109,20 +118,19 @@ void StartDungeon() {
                 }}
             );
 
-            if (!player.shouldSkipNextEnemyTurn()) {
-                for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
-                    if (enemy && enemy->hostilityTrigger()) {
-                        int damage = enemy->attack(player);
-                        cout << enemy->getName() << " attacked you, health decreased by " << damage
-                            << ", your new health is " << player.getHealth() << "\n\n";
+            for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
+                if (enemy && enemy->hostilityTrigger()) {
+                    int damage = enemy->attack(player);
+                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
+
+                    if (player.getHealth() <= 0) {
+                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
+                        return;
                     }
+
+                    cout << attackMessage << endl;
                 }
             }
-            player.displayHealthBar();
-
-            // Reset the per-player flag once per loop
-            player.setSkipNextEnemyTurn(false);
-
 
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);

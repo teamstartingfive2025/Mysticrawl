@@ -31,7 +31,7 @@ int Enemy::attack(Player& target) {
     int damage = dmgDist(rng);
 
     // Apply damage to player
-    target.applyDamage(damage);
+    target.takeDamage(damage);
 
     return damage;
 }
@@ -40,6 +40,17 @@ bool Enemy::hostilityTrigger() {
     // 60% chance to be hostile on spawn
     uniform_int_distribution<int> d(0, 99);
     return d(rng) < 60;
+}
+
+bool Enemy::isBlockingExit() {
+    static std::mt19937 rng(
+        (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
+    );
+
+    std::uniform_int_distribution<int> d(0, 99);
+
+    // Tune as needed
+    return d(rng) < 40; // 40% success
 }
 
 void Enemy::DisplayIntroText() {

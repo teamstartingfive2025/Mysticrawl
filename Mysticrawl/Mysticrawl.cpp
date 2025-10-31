@@ -33,7 +33,7 @@ void displayTitleScreen() {
 
         Prompt& prompt = Prompt::GetInstance();
 
-        cout << Constants::UI::WELCOME_MESSAGE << endl;
+        cout << Constants::UI::WELCOME_MESSAGE;
         cout << Constants::Story::BACKSTORY << endl;
         cout << Constants::UI::NAVIGATE_TEXT << endl;
         cout << Constants::UI::CONTINUE_TEXT << endl;

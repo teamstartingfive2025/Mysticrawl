@@ -26,6 +26,9 @@ public:
 
 	// Display introductory text when enemy appears
     void DisplayIntroText();
+
+	// Checks if the enemy is blocking an exit
+    bool isBlockingExit();
 private:
     string name;
 	string introText = "";
