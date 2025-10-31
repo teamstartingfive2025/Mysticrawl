@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+
 using namespace std;
 
 // Prints details about the current room and visible items
@@ -118,6 +119,7 @@ void Player::move()
     RefreshSelectionMenu(moveOptions);
     SelectMenuOption();
 }
+
 
 // Displays the player's inventory contents
 void Player::showInventory() const {
@@ -250,4 +252,5 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
         cout << "The " << target.getName()
             << " still has " << target.getHealth() << " HP left.\n";
     }
+
 }
