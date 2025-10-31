@@ -17,7 +17,6 @@ using namespace std;
 void Exit::unlock() {
     locked = false;
 }
-bool skipNextHostility = false; // shared global flag
 
 Room::Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems)
     : name(name), description(description), items(items), hiddenItems(hiddenItems) {
@@ -110,7 +109,7 @@ void StartDungeon() {
                 }}
             );
 
-            if (!skipNextHostility) {
+            if (!player.shouldSkipNextEnemyTurn()) {
                 for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
                     if (enemy && enemy->hostilityTrigger()) {
                         int damage = enemy->attack(player);
@@ -120,7 +119,10 @@ void StartDungeon() {
                 }
             }
             player.displayHealthBar();
-            skipNextHostility = false; // reset each turn
+
+            // Reset the per-player flag once per loop
+            player.setSkipNextEnemyTurn(false);
+
 
 
 		    player.getCurrentRoom()->RefreshSelectionMenu(options);

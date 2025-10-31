@@ -29,7 +29,6 @@ void Player::look() const {
         if (enemy) enemy->DisplayIntroText();
     }
 }
-extern bool skipNextHostility;
 
 void Player::investigate() {
     if (currentRoom->getHiddenItems().empty()) {
@@ -244,22 +243,24 @@ bool Player::attemptFleeTo(Room* destination) {
         cout << "You slip past the " << blocker->getName() << " and escape!\n\n";
         setCurrentRoom(destination);
 
-        skipNextHostility = true;
+        setSkipNextEnemyTurn(true);
 
         look();
         return true;
     }
+
     else {
         cout << "You fail to escape! The " << blocker->getName() << " strikes!\n";
         int dmg = blocker->attack(*this);
         cout << "enemy attacked you, health decreased by " << dmg
             << ", your new health is " << getHealth() << "\n\n";
 
-        skipNextHostility = true;
+        setSkipNextEnemyTurn(true);
 
         // Do NOT print displayHealthBar() here; the dungeon loop prints it once per tick.
         return false;
     }
+
 }
 
 

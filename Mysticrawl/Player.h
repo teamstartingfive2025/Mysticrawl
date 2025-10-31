@@ -22,7 +22,11 @@ private:
     std::string playerName;
     int health;
     int maxHealth;
+
+    bool skipNextEnemyTurn = false;
+
     bool calculateRunChance() const;
+
 
 public:
     // Constructor initializes the player at the starting room
@@ -73,6 +77,10 @@ public:
 
     int getHealth() const { return health; }
     const std::string& getName() const { return playerName; }
+
+    // accessors for the per-player skip flag
+    void setSkipNextEnemyTurn(bool v) { skipNextEnemyTurn = v; }
+    bool shouldSkipNextEnemyTurn() const { return skipNextEnemyTurn; }
 
     // changeHealth accepts positive (heal) or negative (damage) values
     void changeHealth(int delta) { health += delta; }
