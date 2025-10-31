@@ -79,24 +79,41 @@ void Player::pickup() {
 }
 
 // Allows the player to move between rooms
-void Player::move() {
+void Player::move()
+{
     if (currentRoom->getExits().empty()) {
         cout << "You don't see any exits.\n";
         return;
     }
 
+	// Check if enemy will block movement
+    string enemyBlockingExit = "";
+
+    for (Enemy* enemy : currentRoom->getEnemies()) {
+            if (enemy && enemy->isBlockingExit()) {
+				enemyBlockingExit = enemy->getName();
+                break;
+            }
+	}
+
 	vector< tuple<string, function<void()>> > moveOptions;
     for (const auto& exit : currentRoom->getExits()) {
-        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit]() {
+        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit, enemyBlockingExit]() {
+            if (!enemyBlockingExit.empty()) {
+                cout << "You tried to escape " << exit.getDirection() << " but " << enemyBlockingExit << " blocks your way.\n";
+				return;
+            }
+
             if (exit.isLocked()) {
                 cout << "The way " << exit.getDirection() << " is locked.\n";
                 return;
             }
+
             setCurrentRoom(exit.getDestination());
             cout << "You move " << exit.getDirection() << ".\n";
             look();
         } });
-	}
+    }
 
     RefreshSelectionMenu(moveOptions);
     SelectMenuOption();
