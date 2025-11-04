@@ -2,7 +2,8 @@
 #include <tuple>
 #include <functional>
 #include "Constants.h"
-#include "UI.h"
+#include "Input.h"
+#include "Prompt.h"
 #include "Dungeon.h"   // Include our new dungeon system
 using namespace std;
 

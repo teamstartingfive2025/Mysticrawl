@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "UI.h"
 #include "Enemy.h"
 #include "Interactable.h"
 #include "Item.h"

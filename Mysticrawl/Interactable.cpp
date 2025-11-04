@@ -1,5 +1,5 @@
 #include "Interactable.h"
-#include "UI.h"
+#include "SelectionMenu.h"
 
 void Interactable::SelectMenuOption() {
     menu.MakeSelection();
