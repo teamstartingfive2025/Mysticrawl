@@ -1,6 +1,7 @@
 #pragma once
 #include "Item.h"
 #include "Dungeon.h"
+#include "Exit.h"
 
 /**
  * Key item that can unlock a specific exit in the dungeon.

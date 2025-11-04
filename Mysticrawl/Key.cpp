@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Key.h"
+#include "Exit.h"
 using namespace std;
 
 void Key::unlockExit() {
