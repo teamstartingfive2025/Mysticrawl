@@ -2,6 +2,10 @@
 
 #include "Room.h"
 #include <string>
+#include <tuple>
+#include <functional>
+#include <variant>
+
 using namespace std;
 
 /**
@@ -12,14 +16,17 @@ using namespace std;
 class Exit {
 private:
     string direction;
-    bool locked;
+
+    // Keeps track of keys used to unlock this exit and the unlock status
+    vector<function<bool()>> lockStatusFunctions; // Fixed type
+
     Room* destination;
 public:
-    Exit(string direction, Room* destination, bool locked = false)
-        : direction(direction), destination(destination), locked(locked) {
-    }
+    Exit(string direction, Room* destination, vector<function<bool()>> lockStatusFunctions = {}) :
+        direction(direction), destination(destination), lockStatusFunctions(lockStatusFunctions) {}
+
+
     string getDirection() const { return direction; }
     Room* getDestination() const { return destination; }
-    bool isLocked() const { return locked; }
-    void unlock();
+    bool isLocked() const;
 };

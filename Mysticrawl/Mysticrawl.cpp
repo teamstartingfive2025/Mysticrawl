@@ -7,8 +7,10 @@
 #include "Room.h"
 #include "Exit.h"
 #include "Potion.h"
+#include "Item.h"
 #include "Key.h"
 #include "Fight.h"
+#include "Exit.h"
 
 using namespace std;
 
@@ -40,20 +42,23 @@ void startDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
+    // --- Initialize the player ---
+    Player player(&spawnRoom, "Hero", 100);
+
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
     fightRoom.addEnemy(rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
     // Connect rooms via exits
-    spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
-    spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
+    shared_ptr<Key> key = make_shared<Key>();
+    spawnRoom.setExits({ Exit("east", &nextRoom, { [&]() -> bool { return player.hasItem(key); } }) });
+    key->setName("Key");
+    key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
+    spawnRoom.addHiddenItem(key);
 
     nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
     fightRoom.setExits({ Exit("west", &nextRoom) });
-
-    // --- Initialize the player ---
-    Player player(&spawnRoom, "Hero", 100);
 
     // --- Initialize fight manager ---
     Fight fight;

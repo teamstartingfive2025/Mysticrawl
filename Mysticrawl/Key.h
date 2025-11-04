@@ -8,8 +8,13 @@
  */
 class Key : public Item {
 private:
-	Exit* exitKeyUnlocks;
+	Exit* exitKeyUnlockDestination;
 public:
-	Key(string name, Exit* exitKeyUnlocks) : Item(name), exitKeyUnlocks(exitKeyUnlocks) {}
-	void unlockExit();
+	Key() {}
+	Key(string name, Exit* exitKeyUnlockDestination) 
+		: Item(name), exitKeyUnlockDestination(exitKeyUnlockDestination) {}
+	void printUnlockText();
+	void setExitKeyUnlockDestination(Exit *exitKeyUnlockDestination) { 
+		this->exitKeyUnlockDestination = exitKeyUnlockDestination;
+	}
 };

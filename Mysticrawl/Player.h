@@ -73,7 +73,7 @@ public:
     bool inventoryEmpty();
 
     // Checks if the player currently has a specific item
-    bool hasItem(const string& itemName) const;
+    bool hasItem(const shared_ptr<Item> itemPointer) const;
 
     // Accessor and mutator for the current room pointer
     Room* getCurrentRoom() const;

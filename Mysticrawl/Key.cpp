@@ -3,9 +3,8 @@
 #include "Exit.h"
 using namespace std;
 
-void Key::unlockExit() {
-	if (exitKeyUnlocks != nullptr && exitKeyUnlocks->isLocked()) {
-		exitKeyUnlocks->unlock();
-		cout << "You use the " << getName() << " to unlock the " << exitKeyUnlocks->getDirection() << " exit.\n";
+void Key::printUnlockText() {
+	if (exitKeyUnlockDestination != nullptr && exitKeyUnlockDestination->isLocked()) {
+		cout << "You use the " << getName() << " to unlock the " << exitKeyUnlockDestination->getDirection() << " exit.\n";
 	}
 }

@@ -64,8 +64,8 @@ void Player::pickup() {
                     shared_ptr<Item> pickedItem = roomItems[i];
                     cout << "You pick up the " << pickedItem->getName() << ".\n";
 
-                    if (auto key = std::dynamic_pointer_cast<Key>(pickedItem)) {
-                        key->unlockExit();
+                    if (auto key = dynamic_pointer_cast<Key>(pickedItem)) {
+                        key->printUnlockText();
                     }
 
                     inventory.push_back(pickedItem);
@@ -153,9 +153,11 @@ void Player::useItem(shared_ptr<Item> item) {
 bool Player::inventoryEmpty() { return inventory.empty(); }
 
 // Checks whether a specific item exists in the player's inventory
-bool Player::hasItem(const string& itemName) const {
-    for (const auto& item : inventory)
-        if (item->getName() == itemName) return true;
+bool Player::hasItem(const shared_ptr<Item> itemPointer) const {
+    for (const auto& item : inventory) {
+        if (item == itemPointer)
+            return true;
+    }
     return false;
 }
 
