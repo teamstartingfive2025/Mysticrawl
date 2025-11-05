@@ -6,6 +6,8 @@
 #include "Enemy.h"
 #include "Interactable.h"
 #include "Item.h"
+#include "Mechanism.h"  
+
 using namespace std;
 // Forward declaration to break circular dependency
 class Enemy;
@@ -43,6 +45,7 @@ private:
     vector<shared_ptr<Item>> hiddenItems;        // Items that must be discovered by investigation
     vector<Exit> exits;          // Adjacent rooms by direction (e.g., "east")
 	vector<Enemy*> enemies;        // Enemies present in the room
+    vector<shared_ptr<SimpleMechanism>> mechanisms;
 
 public:
     Room(string name, string description, vector<shared_ptr<Item>> items = {}, vector<shared_ptr<Item>> hiddenItems = {});
@@ -66,6 +69,9 @@ public:
 
     void addEnemy(Enemy* enemy) { enemies.push_back(enemy); }
     vector<Enemy*>& getEnemies() { return enemies; }
+
+    void addMechanism(shared_ptr<SimpleMechanism> mech);
+    const vector<shared_ptr<SimpleMechanism>>& getMechanisms() const;
 };
 
 /**
