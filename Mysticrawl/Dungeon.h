@@ -30,6 +30,8 @@ public:
     Room* getDestination() const { return destination; }
     bool isLocked() const { return locked; }
     void unlock();
+    void setLocked(bool lockState) { locked = lockState; }
+
 };
 
 /**
