@@ -67,7 +67,7 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-    // New N/S rooms
+    // Template N/S Rooms
     Room northRoom(
         "North Corridor",
         "A narrow passage runs north-south. The air is colder here, and the stones are slick with moss.\n"
