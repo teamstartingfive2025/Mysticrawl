@@ -6,7 +6,7 @@
 #include "Key.h"
 #include "Potion.h"
 #include "Fight.h"
-
+#include "Mechanism.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -80,10 +80,21 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
+
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n", 5);
     fightRoom.addEnemy(rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+
+    Room leverRoom(
+        "Lever Room",
+        "You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+    );
+
+    Room buttonRoom(
+        "Button Room",
+        "The air smells of dust. A round stone button is embedded in the far wall."
+    );
 
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
