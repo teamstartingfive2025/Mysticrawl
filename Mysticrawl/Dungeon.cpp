@@ -67,7 +67,7 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
+    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n", 5);
     fightRoom.addEnemy(rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
