@@ -272,7 +272,7 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
         auto& mechs = currentRoom->getMechanisms();
 
         if (mechs.empty()) {
-            cout << "There’s nothing here to interact with.\n";
+            cout << "There is nothing here to interact with.\n";
             return;
         }
 
