@@ -121,11 +121,11 @@ void StartDungeon() {
             auto exit = leverRoom.getExit("east"); // use . instead of ->
             if (exit) {
                 if (state) {
-                    cout << "You hear gears turning, the eastern door unlocks!\n";
+                    cout << "You hear gears turning — the eastern door unlocks!\n";
                     exit->setLocked(false);
                 }
                 else {
-                    cout << "The lever resets, the door locks again.\n";
+                    cout << "The lever resets — the door locks again.\n";
                     exit->setLocked(true);
                 }
             }
@@ -137,7 +137,7 @@ void StartDungeon() {
     auto button = make_shared<SimpleMechanism>(
         "Stone Button", false,
         [&buttonRoom](bool) {
-            cout << "A hidden panel opens revealing a glittering amulet!\n";
+            cout << "You press the button — a hidden panel opens revealing a glittering amulet!\n";
             auto amulet = make_shared<Item>("Glittering Amulet");
             buttonRoom.addItem(amulet); 
         }
