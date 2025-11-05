@@ -8,19 +8,21 @@
 // - Cannot be picked up (like items), only interacted with
 // - Calls a function when used (unlock door, reveal item, etc.)
 
-class Mechanism : public Interactable {
-protected:
-    bool isLever;                          // true = lever, false = button
-    bool state;                            // current state (for lever)
-    std::function<void(bool)> action;      // callback for triggering environment effects
+class SimpleMechanism {
+private:
+    std::string name;                     // what it's called
+    bool isLever;                         // true = lever, false = button
+    bool state;                           // current state (for lever only)
+    std::function<void(bool)> onUse;      // function to call when used
 
 public:
-    Mechanism(const std::string& name, bool leverType, std::function<void(bool)> onUse);
+    // Constructor
+    SimpleMechanism(const std::string& name, bool leverType,
+        std::function<void(bool)> action);
 
-    // Virtual function to override in derived classes
-    virtual void use() = 0;
+    // Use the mechanism (press or toggle)
+    void use();
 
-    // Common helper functions
-    bool getState() const;
-    std::string getDescription() const override;
+    // Description text for display
+    std::string getDescription() const;
 };
