@@ -9,21 +9,28 @@ SimpleMechanism::SimpleMechanism(const std::string& name, bool leverType,
     onUse(action) {}      // Store the function that runs when used
 
 
-// ------------------------------------------------------------
 // use()
-// ------------------------------------------------------------
 // Handles what happens when the player interacts with this mechanism.
 // If it’s a lever, it toggles up/down each time.
 // If it’s a button, it just runs once and plays a message.
-// ------------------------------------------------------------
+
 void SimpleMechanism::use() {
     if (isLever) {
         // Flip the lever’s state
         state = !state;
 
         // Print a simple message describing the change
-        std::cout << "You pull the " << name << " "
-            << (state ? "down" : "up") << ".\n";
+        std::cout << "You pull the " << name << " ";
+
+        if (state) {
+            std::cout << "down";
+        }
+        else {
+            std::cout << "up";
+        }
+
+        std::cout << ".\n";
+
 
         // Run the lever’s action with its current state
         // (true = down, false = up)
@@ -34,20 +41,30 @@ void SimpleMechanism::use() {
         std::cout << "You press the " << name
             << ". A distant clank echoes...\n";
 
-        // Call the assigned function (pass true to indicate activation)
+        // Call the assigned function 
         onUse(true);
     }
 }
 
 
-// ------------------------------------------------------------
 // getDescription()
-// ------------------------------------------------------------
 // Returns a short description for display in the room.
-// This is what the player sees when they “look” or “investigate.”
-// ------------------------------------------------------------
 std::string SimpleMechanism::getDescription() const {
-    if (isLever)
-        return name + " (" + (state ? "down" : "up") + ")";
-    return name + " (button)";
+    std::string description = name + " ";
+
+    if (isLever) {
+        description += "(";
+        if (state) {
+            description += "down";
+        }
+        else {
+            description += "up";
+        }
+        description += ")";
+    }
+    else {
+        description += "(button)";
+    }
+
+    return description;
 }
