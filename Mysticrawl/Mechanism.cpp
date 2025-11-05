@@ -53,17 +53,15 @@ string SimpleMechanism::getDescription() const {
     string description = name + " ";
 
     if (isLever) {
-        description += "(";
         if (state) {
-            description += "down";
+            description += "(down)";
         }
         else {
-            description += "up";
+            description += "(up)";
         }
-        description += ")";
     }
     else {
-        description += "(button)";
+        description;
     }
 
     return description;
