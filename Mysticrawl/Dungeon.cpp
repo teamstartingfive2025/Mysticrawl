@@ -6,7 +6,7 @@
 #include "Key.h"
 #include "Potion.h"
 #include "Fight.h"
-
+#include "Mechanism.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -37,6 +37,19 @@ Exit* Room::getExit(const string& exitName) {
         }
     }
     return nullptr;
+}
+
+// addMechanism()
+// Adds a new lever or button to the room’s mechanism list.
+void Room::addMechanism(shared_ptr<SimpleMechanism> mech) {
+    mechanisms.push_back(mech);
+}
+
+// getMechanisms()
+// Returns all mechanisms currently in the room.
+// Used by the player when they look or interact.
+const vector<shared_ptr<SimpleMechanism>>& Room::getMechanisms() const {
+    return mechanisms;
 }
 
 /**
@@ -83,6 +96,16 @@ void StartDungeon() {
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
+    Room leverRoom(
+        "Lever Room",
+        "You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+    );
+
+    Room buttonRoom(
+        "Button Room",
+        "The air smells of dust. A round stone button is embedded in the far wall."
+    );
+
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
@@ -110,6 +133,18 @@ void StartDungeon() {
         });
 
 
+    leverRoom.addMechanism(lever);
+
+    auto button = make_shared<SimpleMechanism>(
+        "Stone Button", false,
+        [&buttonRoom](bool) {
+            cout << "A hidden panel opens revealing a glittering amulet!\n";
+            auto amulet = make_shared<Item>("Glittering Amulet");
+            buttonRoom.addItem(amulet); 
+        }
+    );
+
+    buttonRoom.addMechanism(button);
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
 
@@ -141,6 +176,9 @@ void StartDungeon() {
                 } });
             }
 
+            if (!player.getCurrentRoom()->getMechanisms().empty()) {
+                options.push_back({ "Interact", [&]() { player.interact(); } });
+            }
 
             options.push_back(
                 { "Exit Game", [&]() {

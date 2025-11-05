@@ -57,6 +57,12 @@
     <ClCompile Include="Fight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Potion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mechanism.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -90,6 +96,12 @@
       <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="Fight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Potion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mechanism.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

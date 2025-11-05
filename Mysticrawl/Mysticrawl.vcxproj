@@ -128,6 +128,7 @@
     <ClCompile Include="Fight.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Mechanism.cpp" />
     <ClCompile Include="Mysticrawl.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="Mechanism.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="UI.h" />
