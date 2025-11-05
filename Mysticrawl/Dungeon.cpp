@@ -67,6 +67,17 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
+    // New N/S rooms
+    Room northRoom(
+        "North Corridor",
+        "A narrow passage runs north-south. The air is colder here, and the stones are slick with moss.\n"
+    );
+
+    Room southRoom(
+        "South Cellar",
+        "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
+    );
+
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
     fightRoom.addEnemy(rat);
 
