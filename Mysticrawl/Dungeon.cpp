@@ -87,8 +87,28 @@ void StartDungeon() {
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
 
-    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
-    fightRoom.setExits({ Exit("west", &nextRoom) });
+    // Next Room connects in all four directions
+    nextRoom.setExits({
+        Exit("west",  &spawnRoom),
+        Exit("east",  &fightRoom),
+        Exit("north", &northRoom),
+        Exit("south", &southRoom)
+        });
+
+    // Fight room unchanged besides its west return
+    fightRoom.setExits({
+        Exit("west", &nextRoom)
+        });
+
+    // New rooms return to Next Room
+    northRoom.setExits({
+        Exit("south", &nextRoom)
+        });
+
+    southRoom.setExits({
+        Exit("north", &nextRoom)
+        });
+
 
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
