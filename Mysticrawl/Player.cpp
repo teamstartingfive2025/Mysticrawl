@@ -34,6 +34,14 @@ void Player::look() const {
         if (enemy) enemy->DisplayIntroText();
     }
 
+    cout << "\nExits:\n";
+    for (const auto& exit : currentRoom->getExits()) {
+        cout << " - " << exit.getDirection();
+        if (exit.isLocked())
+            cout << " (locked)\n";
+        else
+            cout << " (unlocked)\n";
+    }
 }
 
 void Player::investigate() {
