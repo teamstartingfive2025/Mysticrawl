@@ -7,6 +7,7 @@
 #include "Potion.h"
 #include "Fight.h"
 #include "Mechanism.h"
+#include "EnemyTemplates.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -81,7 +82,7 @@ void StartDungeon() {
     );
 
 
-    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n", 5);
+    Enemy* rat = RatTemplate;
     fightRoom.addEnemy(rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));

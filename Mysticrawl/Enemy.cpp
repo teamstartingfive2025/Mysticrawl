@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-Enemy::Enemy(string n, string t, int hp) : name(n), introText(t), health(hp) {
+Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec) {
     // seed RNG with time-based seed
     rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
 }
@@ -21,13 +21,13 @@ void Enemy::takeDamage(int amount) {
 
 bool Enemy::block() {
     uniform_int_distribution<int> d(0, 99);
-    // 20% chance to block for this enemy type (arbitrary)
-    return d(rng) < 20;
+
+    return d(rng) < blockChance;
 }
 
 int Enemy::attack(Player& target) {
     // For a rat: small bite damage 1-3
-    uniform_int_distribution<int> dmgDist(1, 3);
+    uniform_int_distribution<int> dmgDist(damageMin, damageMax);
     int damage = dmgDist(rng);
 
     // Apply damage to player
@@ -50,7 +50,7 @@ bool Enemy::isBlockingExit() {
     std::uniform_int_distribution<int> d(0, 99);
 
     // Tune as needed
-    return d(rng) < 40; // 40% success
+    return d(rng) < blockExitChance; // 40% success
 }
 
 void Enemy::DisplayIntroText() {

@@ -6,7 +6,7 @@ using namespace std;
 class Player;
 class Enemy {
 public:
-    Enemy(string n, string t, int hp = 5);
+    Enemy(string n, string t, int hp = 5, int bc, int dMin, int dMax, int bec);
 
     const std::string& getName() const;
     int getHealth() const;
@@ -33,6 +33,10 @@ private:
     string name;
 	string introText = "";
     int health;
+    int blockChance;
+    int damageMin;
+    int damageMax;
+    int blockExitChance;
 
     // random engine for decisions
     std::mt19937 rng;
