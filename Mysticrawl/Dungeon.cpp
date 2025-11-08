@@ -191,6 +191,9 @@ void StartDungeon() {
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
                 if (enemy && enemy->hostilityTrigger()) {
                     enemy->action(player);
+                    if (player.getHealth() <= 0) {
+                        return;
+                    }
                 }
             }
 

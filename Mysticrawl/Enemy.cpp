@@ -26,15 +26,32 @@ bool Enemy::block() {
 }
 
 void Enemy::action(Player& target) {
-    int damage = attack(target);
-    string attackMessage = name + " attacked you, health decreased by " + to_string(damage);
+    cout << "action called";
+    uniform_int_distribution<int> d(0, 99);
 
-    if (target.getHealth() <= 0) {
-        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
-        return;
+    int choice = d(rng);
+    cout << choice;
+
+    if (choice > 29)
+    {
+        int damage = attack(target);
+        string attackMessage = name + " attacked you, health decreased by " + to_string(damage);
+
+        if (target.getHealth() <= 0) {
+            WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
+            return;
+        }
+
+        cout << attackMessage << endl;
+    }
+    else if (choice > 14) {
+        cout << "Rat idles!";
+    }
+    else {
+        cout << "Rat taunts!";
     }
 
-    cout << attackMessage << endl;
+    
 }
 
 int Enemy::attack(Player& target) {
