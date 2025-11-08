@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec) {
+Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt) {
     // seed RNG with time-based seed
     rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
 }
@@ -26,11 +26,12 @@ bool Enemy::block() {
 }
 
 void Enemy::action(Player& target) {
+    cout << "action called\n";
     uniform_int_distribution<int> d(0, 99);
 
     int choice = d(rng);
 
-    if (choice > 29)
+    if (choice > (100 - attackChance - 1)) //chance to attack
     {
         int damage = attack(target);
         string attackMessage = name + " attacked you, health decreased by " + to_string(damage);
@@ -42,10 +43,12 @@ void Enemy::action(Player& target) {
 
         cout << attackMessage << endl;
     }
-    else if (choice > 14) {
+    else if (choice > (100 - attackChance - idleChance)) //chance to idle
+    { 
         cout << "Rat idles!";
     }
-    else {
+    else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
+    {
         cout << "Rat taunts!";
     }
 

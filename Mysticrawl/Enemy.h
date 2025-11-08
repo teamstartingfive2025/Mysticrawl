@@ -7,7 +7,7 @@ class Player;
 class Dungeon;  
 class Enemy {
 public:
-    Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec);
+    Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt);
 
     const std::string& getName() const;
     int getHealth() const;
@@ -41,6 +41,9 @@ private:
     int damageMin;
     int damageMax;
     int blockExitChance;
+    int attackChance;
+    int idleChance;
+    int tauntChance;
 
     // random engine for decisions
     std::mt19937 rng;

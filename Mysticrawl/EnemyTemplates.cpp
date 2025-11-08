@@ -6,5 +6,8 @@ Enemy RatTemplate(
     20, // block chance (%)
     1,  // min damage
     3,  // max damage
-    40  // block exit chance (%)
+    40, // block exit chance (%)
+    70, // attack chance (%)
+    15, // idle chance (%)
+    15  // taunt chance (%)
 );
