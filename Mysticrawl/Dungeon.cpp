@@ -19,6 +19,8 @@
 
 using namespace std;
 
+class Enemy;
+
 void Exit::unlock() {
     locked = false;
 }
@@ -81,9 +83,8 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-
-    Enemy* rat = RatTemplate;
-    fightRoom.addEnemy(rat);
+    Enemy rat = RatTemplate;
+    fightRoom.addEnemy(&rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
@@ -189,15 +190,7 @@ void StartDungeon() {
 
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
                 if (enemy && enemy->hostilityTrigger()) {
-                    int damage = enemy->attack(player);
-                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
-
-                    if (player.getHealth() <= 0) {
-                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
-                        return;
-                    }
-
-                    cout << attackMessage << endl;
+                    enemy->action(player);
                 }
             }
 

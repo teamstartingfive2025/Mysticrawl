@@ -4,13 +4,17 @@
 using namespace std;
 
 class Player;
+class Dungeon;  
 class Enemy {
 public:
-    Enemy(string n, string t, int hp = 5, int bc, int dMin, int dMax, int bec);
+    Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec);
 
     const std::string& getName() const;
     int getHealth() const;
     bool isAlive() const;
+
+    //Decide what action to take when hostile
+    void action(Player& target);
 
     // Attack the player. Returns damage dealt.
     int attack(Player& target);

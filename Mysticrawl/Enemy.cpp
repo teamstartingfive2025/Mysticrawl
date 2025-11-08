@@ -25,6 +25,18 @@ bool Enemy::block() {
     return d(rng) < blockChance;
 }
 
+void Enemy::action(Player& target) {
+    int damage = attack(target);
+    string attackMessage = name + " attacked you, health decreased by " + to_string(damage);
+
+    if (target.getHealth() <= 0) {
+        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
+        return;
+    }
+
+    cout << attackMessage << endl;
+}
+
 int Enemy::attack(Player& target) {
     // For a rat: small bite damage 1-3
     uniform_int_distribution<int> dmgDist(damageMin, damageMax);
