@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+#include "UI.h"
 
 using namespace std;
 
@@ -21,10 +22,25 @@ void Player::look() const {
     else {
         cout << "You don't see any items.\n";
     }
-
+    // Show mechanisms in the room (like levers or buttons)
+    if (!currentRoom->getMechanisms().empty()) {
+        cout << "\nYou notice the following mechanisms:\n";
+        for (const auto& mech : currentRoom->getMechanisms()) {
+            cout << " - " << mech->getDescription() << "\n";
+        }
+    }
     auto& enemies = currentRoom->getEnemies();
     for (Enemy* enemy : enemies) {
         if (enemy) enemy->DisplayIntroText();
+    }
+
+    cout << "\nExits:\n";
+    for (const auto& exit : currentRoom->getExits()) {
+        cout << " - " << exit.getDirection();
+        if (exit.isLocked())
+            cout << " (locked)\n";
+        else
+            cout << " (unlocked)\n";
     }
 }
 
@@ -252,5 +268,32 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
         cout << "The " << target.getName()
             << " still has " << target.getHealth() << " HP left.\n";
     }
-
 }
+    void Player::interact() {
+        auto& mechs = currentRoom->getMechanisms();
+
+        if (mechs.empty()) {
+            cout << "There is nothing here to interact with.\n";
+            return;
+        }
+
+        // Create a list of menu options from available mechanisms
+        vector<tuple<string, function<void()>>> interactOptions;
+
+        for (const auto& mech : mechs) {
+            // Each menu item triggers that mechanism's use() function
+            interactOptions.push_back({
+                mech->getDescription(),
+                [mech]() { mech->use(); }
+                });
+        }
+
+        // Optional exit option so the player can back out
+        interactOptions.push_back({
+            "Cancel", []() { cout << "You step away from the mechanisms.\n"; }
+            });
+
+        // Refresh and show the arrow-key menu
+        RefreshSelectionMenu(interactOptions);
+        SelectMenuOption();
+    }

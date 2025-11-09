@@ -6,7 +6,7 @@
 #include "Key.h"
 #include "Potion.h"
 #include "Fight.h"
-
+#include "Mechanism.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -39,6 +39,19 @@ Exit* Room::getExit(const string& exitName) {
     return nullptr;
 }
 
+// addMechanism()
+// Adds a new lever or button to the room’s mechanism list.
+void Room::addMechanism(shared_ptr<SimpleMechanism> mech) {
+    mechanisms.push_back(mech);
+}
+
+// getMechanisms()
+// Returns all mechanisms currently in the room.
+// Used by the player when they look or interact.
+const vector<shared_ptr<SimpleMechanism>>& Room::getMechanisms() const {
+    return mechanisms;
+}
+
 /**
  * The StartDungeon function runs the dungeon portion of the game.
  * It sets up the initial rooms, links them together, initializes the player,
@@ -67,18 +80,70 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
+
+    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n", 5);
     fightRoom.addEnemy(rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+
+    Room leverRoom(
+        "Lever Room",
+        "You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+    );
+
+    Room buttonRoom(
+        "Button Room",
+        "The air smells of dust. A round stone button is embedded in the far wall."
+    );
 
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
 
     nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
-    fightRoom.setExits({ Exit("west", &nextRoom) });
+    fightRoom.setExits({
+        Exit("west", &nextRoom),
+        Exit("east", &leverRoom, false) // unlocked door
+        });
 
+    leverRoom.setExits({
+        Exit("west", &fightRoom),
+        Exit("east", &buttonRoom, true) // locked initially
+        });
+
+    buttonRoom.setExits({
+        Exit("west", &leverRoom)
+        });
+
+    auto lever = make_shared<SimpleMechanism>(
+        "Iron Lever", true, // true = lever type
+        [&leverRoom](bool state) {                // capture leverRoom by reference
+            auto exit = leverRoom.getExit("east"); // use . instead of ->
+            if (exit) {
+                if (state) {
+                    cout << "You hear gears turning, the eastern door unlocks!\n";
+                    exit->setLocked(false);
+                }
+                else {
+                    cout << "The lever resets, the door locks again.\n";
+                    exit->setLocked(true);
+                }
+            }
+        }
+    );
+
+    leverRoom.addMechanism(lever);
+
+    auto button = make_shared<SimpleMechanism>(
+        "Stone Button", false,
+        [&buttonRoom](bool) {
+            cout << "A hidden panel opens revealing a glittering amulet!\n";
+            auto amulet = make_shared<Item>("Glittering Amulet");
+            buttonRoom.addItem(amulet); 
+        }
+    );
+
+    buttonRoom.addMechanism(button);
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
 
@@ -110,6 +175,9 @@ void StartDungeon() {
                 } });
             }
 
+            if (!player.getCurrentRoom()->getMechanisms().empty()) {
+                options.push_back({ "Interact", [&]() { player.interact(); } });
+            }
 
             options.push_back(
                 { "Exit Game", [&]() {
