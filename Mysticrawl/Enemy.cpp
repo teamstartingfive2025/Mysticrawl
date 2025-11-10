@@ -26,7 +26,6 @@ bool Enemy::block() {
 }
 
 void Enemy::action(Player& target) {
-    cout << "action called\n";
     uniform_int_distribution<int> d(0, 99);
 
     int choice = d(rng);
