@@ -133,8 +133,6 @@ void StartDungeon() {
         });
 
 
-    leverRoom.addMechanism(lever);
-
     auto button = make_shared<SimpleMechanism>(
         "Stone Button", false,
         [&buttonRoom](bool) {
