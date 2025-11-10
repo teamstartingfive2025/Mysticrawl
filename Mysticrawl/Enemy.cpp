@@ -49,6 +49,7 @@ void Enemy::action(Player& target) {
     else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
     {
         cout << "Rat taunts!";
+        tauntMultiplier += 0.5;
     }
 
     
@@ -57,10 +58,11 @@ void Enemy::action(Player& target) {
 int Enemy::attack(Player& target) {
     // For a rat: small bite damage 1-3
     uniform_int_distribution<int> dmgDist(damageMin, damageMax);
-    int damage = dmgDist(rng);
+    int damage = dmgDist(rng) * tauntMultiplier;
 
     // Apply damage to player
     target.takeDamage(damage);
+    tauntMultiplier = 1;
 
     return damage;
 }

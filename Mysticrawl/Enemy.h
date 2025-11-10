@@ -44,6 +44,7 @@ private:
     int attackChance;
     int idleChance;
     int tauntChance;
+    double tauntMultiplier = 1;
 
     // random engine for decisions
     std::mt19937 rng;
