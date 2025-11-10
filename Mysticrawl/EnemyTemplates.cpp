@@ -7,7 +7,7 @@ Enemy RatTemplate(
     1,  // min damage
     3,  // max damage
     40, // block exit chance (%)
-    70, // attack chance (%)
-    15, // idle chance (%)
-    15  // taunt chance (%)
+    70, // attack chance (%) *
+    15, // idle chance (%)   *These must add up to 100
+    15  // taunt chance (%)  *
 );

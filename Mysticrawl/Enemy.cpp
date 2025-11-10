@@ -26,11 +26,11 @@ bool Enemy::block() {
 }
 
 void Enemy::action(Player& target) {
-    uniform_int_distribution<int> d(0, 99);
+    uniform_int_distribution<int> d(1, 100);
 
     int choice = d(rng);
 
-    if (choice > (100 - attackChance - 1)) //chance to attack
+    if (choice > (100 - attackChance)) //chance to attack
     {
         int damage = attack(target);
         string attackMessage = name + " attacked you, health decreased by " + to_string(damage);
