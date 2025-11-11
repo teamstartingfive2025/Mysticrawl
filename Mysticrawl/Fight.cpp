@@ -33,7 +33,6 @@ void Fight::fightMenu(Player& player) {
             if (!target->isAlive()) {
                 cout << target->getName() << " is defeated!\n";
                 enemies.erase(enemies.begin());
-                delete target; // prevent memory leak
             }
         }
         });

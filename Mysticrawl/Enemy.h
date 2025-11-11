@@ -4,13 +4,17 @@
 using namespace std;
 
 class Player;
+class Dungeon;  
 class Enemy {
 public:
-    Enemy(string n, string t, int hp = 5);
+    Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt);
 
     const std::string& getName() const;
     int getHealth() const;
     bool isAlive() const;
+
+    //Decide what action to take when hostile
+    void action(Player& target);
 
     // Attack the player. Returns damage dealt.
     int attack(Player& target);
@@ -33,6 +37,14 @@ private:
     string name;
 	string introText = "";
     int health;
+    int blockChance;
+    int damageMin;
+    int damageMax;
+    int blockExitChance;
+    int attackChance;
+    int idleChance;
+    int tauntChance;
+    double tauntMultiplier = 1;
 
     // random engine for decisions
     std::mt19937 rng;
