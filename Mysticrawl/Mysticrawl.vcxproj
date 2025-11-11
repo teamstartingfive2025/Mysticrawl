@@ -125,6 +125,8 @@
   <ItemGroup>
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyTemplates.cpp" />
+    <ClCompile Include="EnemyTemplates.h" />
     <ClCompile Include="Fight.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="Key.cpp" />

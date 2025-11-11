@@ -7,6 +7,7 @@
 #include "Potion.h"
 #include "Fight.h"
 #include "Mechanism.h"
+#include "EnemyTemplates.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -17,6 +18,8 @@
 #include <string>
 
 using namespace std;
+
+class Enemy;
 
 void Exit::unlock() {
     locked = false;
@@ -40,7 +43,7 @@ Exit* Room::getExit(const string& exitName) {
 }
 
 // addMechanism()
-// Adds a new lever or button to the room’s mechanism list.
+// Adds a new lever or button to the roomâ€™s mechanism list.
 void Room::addMechanism(shared_ptr<SimpleMechanism> mech) {
     mechanisms.push_back(mech);
 }
@@ -80,8 +83,28 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
+    // New N/S rooms
+    Room northRoom(
+        "North Corridor",
+        "A narrow passage runs north-south. The air is colder here, and the stones are slick with moss.\n"
+    );
 
-    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n", 5);
+    Room southRoom(
+        "South Cellar",
+        "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
+    );
+
+   Enemy* rat = new Enemy("Rat", 
+    "A rat suddenly appears! It bites you and scurries away.\n",
+    5,      // health
+    10,     // blockChance
+    1, 3,   // damage range
+    20,     // blockExitChance
+    50,     // attackChance
+    30,     // idleChance
+    10      // tauntChance
+);
+
     fightRoom.addEnemy(rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
@@ -100,7 +123,28 @@ void StartDungeon() {
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
 
-    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
+    // Next Room connects in all four directions
+    nextRoom.setExits({
+        Exit("west",  &spawnRoom),
+        Exit("east",  &fightRoom),
+        Exit("north", &northRoom),
+        Exit("south", &southRoom)
+        });
+
+    // Fight room unchanged besides its west return
+    fightRoom.setExits({
+        Exit("west", &nextRoom)
+        });
+
+    // New rooms return to Next Room
+    northRoom.setExits({
+        Exit("south", &nextRoom)
+        });
+
+    southRoom.setExits({
+        Exit("north", &nextRoom)
+        });
+
     fightRoom.setExits({
         Exit("west", &nextRoom),
         Exit("east", &leverRoom, false) // unlocked door
@@ -187,16 +231,11 @@ void StartDungeon() {
             );
 
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
-                if (enemy && enemy->hostilityTrigger()) {
-                    int damage = enemy->attack(player);
-                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
-
+                if (enemy) {
+                    enemy->action(player);
                     if (player.getHealth() <= 0) {
-                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
                         return;
                     }
-
-                    cout << attackMessage << endl;
                 }
             }
 
