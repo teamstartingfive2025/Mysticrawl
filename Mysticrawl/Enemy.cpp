@@ -1,14 +1,8 @@
 #include "Enemy.h"
 #include "Player.h"
-#include <chrono>
-#include <random>
+#include "Random.h"
 #include <string>
 using namespace std;
-
-Enemy::Enemy(string n, string t, int hp) : name(n), introText(t), health(hp) {
-    // seed RNG with time-based seed
-    rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
-}
 
 const string& Enemy::getName() const { return name; }
 int Enemy::getHealth() const { return health; }
@@ -20,15 +14,13 @@ void Enemy::takeDamage(int amount) {
 }
 
 bool Enemy::block() {
-    uniform_int_distribution<int> d(0, 99);
     // 20% chance to block for this enemy type (arbitrary)
-    return d(rng) < 20;
+    return Random::GetInstance().randInt(0, 99) < 20;
 }
 
 int Enemy::attack(Player& target) {
     // For a rat: small bite damage 1-3
-    uniform_int_distribution<int> dmgDist(1, 3);
-    int damage = dmgDist(rng);
+    int damage = Random::GetInstance().randInt(1, 3);
 
     // Apply damage to player
     target.takeDamage(damage);
@@ -38,19 +30,12 @@ int Enemy::attack(Player& target) {
 
 bool Enemy::hostilityTrigger() {
     // 60% chance to be hostile on spawn
-    uniform_int_distribution<int> d(0, 99);
-    return d(rng) < 60;
+    return Random::GetInstance().randInt(0, 99) < 60;
 }
 
 bool Enemy::isBlockingExit() {
-    static std::mt19937 rng(
-        (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
-    );
-
-    std::uniform_int_distribution<int> d(0, 99);
-
     // Tune as needed
-    return d(rng) < 40; // 40% success
+    return Random::GetInstance().randInt(0, 99) < 40; // 40% success
 }
 
 void Enemy::DisplayIntroText() {

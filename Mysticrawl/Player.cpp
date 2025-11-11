@@ -2,6 +2,7 @@
 #include "Room.h"
 #include "Enemy.h"
 #include "Key.h"
+#include "Random.h"
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
@@ -231,11 +232,8 @@ void Player::displayHealthBar(int width) const {
 
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
-    // Seed the random number generator
-    srand(static_cast<unsigned int>(time(nullptr)));
-
     // Generate random damage between 2 and 6
-    int damage = rand() % 5 + 2;  // Range: 2–6 damage
+	int damage = Random::GetInstance().randInt(2, 6);
 
     // Print attack message
     cout << "You swing your fists at the " << target.getName()

@@ -1,4 +1,5 @@
 #include "Weapons.h"
+#include "Random.h"
 #include <random>
 #include <chrono>
 #include <string>
@@ -58,20 +59,8 @@ void Weapon::setPower(int p) noexcept
 
 int Weapon::attackRoll() const 
 {
-    static thread_local std::mt19937 rng
-    {
-        static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count())
-    };
-
     if (type_ == WeaponType::Sword) 
-    {
-        std::uniform_int_distribution<int> d(std::max(1, power_ - 1), power_ + 3);
-        return d(rng);
-    }
-
+        return Random::GetInstance().randInt(std::max(1, power_ - 1), power_ + 3);
     else 
-    {
-        std::uniform_int_distribution<int> d(std::max(1, power_ - 2), power_ + 2);
-        return d(rng);
-    }
+        return Random::GetInstance().randInt(std::max(1, power_ - 2), power_ + 2);
 }
