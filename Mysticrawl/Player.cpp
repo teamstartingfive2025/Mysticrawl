@@ -112,23 +112,30 @@ void Player::move() {
             }
 	}
 
-	vector< tuple<string, function<void()>> > moveOptions;
+    vector< tuple<string, function<void()>> > moveOptions;
+
     for (const auto& exit : currentRoom->getExits()) {
-        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit, enemyBlockingExit]() {
-            if (!enemyBlockingExit.empty()) {
-                cout << "You tried to escape " << exit.getDirection() << " but " << enemyBlockingExit << " blocks your way.\n";
-				return;
-            }
+        string label = string("Go ") + exit.getDirection() + " ";
 
-            if (exit.isLocked()) {
-                cout << "The way " << exit.getDirection() << " is locked.\n";
-                return;
-            }
+        moveOptions.emplace_back(
+            label,
+            [this, exit, enemyBlockingExit]() {
+                if (!enemyBlockingExit.empty()) {
+                    cout << "You tried to escape " << exit.getDirection()
+                        << " but " << enemyBlockingExit << " blocks your way.\n";
+                    return;
+                }
 
-            setCurrentRoom(exit.getDestination());
-            cout << "You move " << exit.getDirection() << ".\n";
-            look();
-        } });
+                if (exit.isLocked()) {
+                    cout << "The way " << exit.getDirection() << " is locked.\n";
+                    return;
+                }
+
+                setCurrentRoom(exit.getDestination());
+                cout << "You move " << exit.getDirection() << ".\n";
+                look();
+            }
+        );
     }
 
     RefreshSelectionMenu(moveOptions);
