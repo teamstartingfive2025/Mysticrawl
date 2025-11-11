@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <functional>
 #include <random>
 using namespace std;
 
@@ -8,6 +9,7 @@ class Dungeon;
 class Enemy {
 public:
     Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt);
+    Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, function <void> sp); //overloaded constructor for enemies with special abilities
 
     const std::string& getName() const;
     int getHealth() const;
@@ -45,6 +47,7 @@ private:
     int idleChance;
     int tauntChance;
     double tauntMultiplier = 1;
+    function <void> special;
 
     // random engine for decisions
     std::mt19937 rng;

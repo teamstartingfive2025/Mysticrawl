@@ -10,6 +10,11 @@ Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, in
     rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
 }
 
+Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, function <void> sp) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp) {
+    // seed RNG with time-based seed
+    rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
+}
+
 const string& Enemy::getName() const { return name; }
 int Enemy::getHealth() const { return health; }
 bool Enemy::isAlive() const { return health > 0; }
