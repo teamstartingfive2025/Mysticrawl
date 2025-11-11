@@ -11,3 +11,15 @@ Enemy RatTemplate(
     15, // idle chance (%)   *These must add up to 100
     15  // taunt chance (%)  *
 );
+
+Enemy GreaterRatTemplate(
+    "Greater Rat", "A greater rat suddenly appears! Looks like it means business...\n",
+    10, // hit points
+    40, // block chance (%)
+    3,  // min damage
+    6,  // max damage
+    40, // block exit chance (%)
+    80, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    15  // taunt chance (%)  *
+);
