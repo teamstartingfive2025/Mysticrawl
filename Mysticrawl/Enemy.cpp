@@ -40,16 +40,16 @@ void Enemy::action(Player& target) {
             return;
         }
 
-        cout << attackMessage << endl;
+        cout << endl << attackMessage << endl;
     }
     else if (choice > (100 - attackChance - idleChance)) //chance to idle
     { 
-        cout << "Rat idles!";
+        cout << "\nRat idles!\n";
     }
     else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
     {
-        cout << "Rat taunts!";
         tauntMultiplier += 0.5;
+        cout << "\nRat taunts!  Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << "%\n";
     }
 
     
