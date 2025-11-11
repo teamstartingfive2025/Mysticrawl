@@ -145,6 +145,39 @@ void StartDungeon() {
         Exit("north", &nextRoom)
         });
 
+    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
+    fightRoom.setExits({
+        Exit("west", &nextRoom),
+        Exit("east", &leverRoom, false) // unlocked door
+        });
+
+    leverRoom.setExits({
+        Exit("west", &fightRoom),
+        Exit("east", &buttonRoom, true) // locked initially
+        });
+
+    buttonRoom.setExits({
+        Exit("west", &leverRoom)
+        });
+
+    auto lever = make_shared<SimpleMechanism>(
+        "Iron Lever", true, // true = lever type
+        [&leverRoom](bool state) {                // capture leverRoom by reference
+            auto exit = leverRoom.getExit("east"); // use . instead of ->
+            if (exit) {
+                if (state) {
+                    cout << "You hear gears turning, the eastern door unlocks!\n";
+                    exit->setLocked(false);
+                }
+                else {
+                    cout << "The lever resets, the door locks again.\n";
+                    exit->setLocked(true);
+                }
+            }
+        }
+    );
+
+    leverRoom.addMechanism(lever);
 
     auto button = make_shared<SimpleMechanism>(
         "Stone Button", false,
