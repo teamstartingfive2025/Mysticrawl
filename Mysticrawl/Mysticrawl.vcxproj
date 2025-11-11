@@ -133,6 +133,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Potion.cpp" />
     <ClCompile Include="Prompt.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="Weapons.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="Prompt.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="SelectionMenu.h" />
     <ClInclude Include="Weapons.h" />
