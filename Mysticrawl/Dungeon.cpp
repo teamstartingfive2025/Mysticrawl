@@ -145,7 +145,6 @@ void StartDungeon() {
         Exit("north", &nextRoom)
         });
 
-    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
     fightRoom.setExits({
         Exit("west", &nextRoom),
         Exit("east", &leverRoom, false) // unlocked door
