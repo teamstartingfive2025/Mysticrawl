@@ -7,6 +7,7 @@
 #include "Potion.h"
 #include "Fight.h"
 #include "Mechanism.h"
+#include "EnemyTemplates.h"
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -17,6 +18,8 @@
 #include <string>
 
 using namespace std;
+
+class Enemy;
 
 void Exit::unlock() {
     locked = false;
@@ -80,9 +83,8 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-
-    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n", 5);
-    fightRoom.addEnemy(rat);
+    Enemy rat = RatTemplate;
+    fightRoom.addEnemy(&rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
@@ -187,16 +189,11 @@ void StartDungeon() {
             );
 
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
-                if (enemy && enemy->hostilityTrigger()) {
-                    int damage = enemy->attack(player);
-                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
-
+                if (enemy) {
+                    enemy->action(player);
                     if (player.getHealth() <= 0) {
-                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
                         return;
                     }
-
-                    cout << attackMessage << endl;
                 }
             }
 
