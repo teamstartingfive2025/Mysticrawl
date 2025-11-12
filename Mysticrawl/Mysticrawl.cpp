@@ -10,7 +10,6 @@
 #include "Item.h"
 #include "Key.h"
 #include "Fight.h"
-#include "Exit.h"
 
 using namespace std;
 
@@ -42,8 +41,16 @@ void startDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
+    Room wizardRoom(
+		"Wizard's Lair",
+		"The air crackles with magical energy. Ancient tomes and potions clutter the space.\n"
+    );
+
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
+
+	Enemy* wizard = new Enemy("Evil Wizard", "An evil wizard glares at you, ready to cast a spell!\n", 30);
+    wizardRoom.addEnemy(wizard);
 
     Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
     fightRoom.addEnemy(rat);
@@ -57,7 +64,8 @@ void startDungeon() {
     key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
     spawnRoom.addHiddenItem(key);
 
-    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
+    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("north", &wizardRoom), Exit("east", &fightRoom) });
+	wizardRoom.setExits({ Exit("south", &nextRoom) });
     fightRoom.setExits({ Exit("west", &nextRoom) });
 
     // --- Initialize fight manager ---
@@ -150,9 +158,6 @@ void displayTitleScreen() {
 }
 
 int main() {
-	// Seed random number generator
-    srand((unsigned)time(nullptr));
-
     displayTitleScreen();
     return 0;
 }
