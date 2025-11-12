@@ -37,12 +37,12 @@ void Enemy::action(Player& target) {
     }
     else if (choice > (100 - attackChance - idleChance)) //chance to idle
     {
-        cout << "\nRat idles!\n";
+        cout << endl << name << " idles!\n";
     }
     else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
     {
         tauntMultiplier += 0.5;
-        cout << "\nRat taunts!  Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << "%\n";
+        cout << endl << name << " taunts! Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << " % \n";
     }
     else if (choice > (100 - attackChance - idleChance - tauntChance - specialChance)) //chance to use special attack
     {
@@ -52,7 +52,6 @@ void Enemy::action(Player& target) {
 }
 
 int Enemy::attack(Player& target) {
-    // For a rat: small bite damage 1-3
     int damage = Random::GetInstance().randInt(damageMin, damageMax);
 
     // Apply damage to player

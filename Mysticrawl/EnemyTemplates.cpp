@@ -20,7 +20,7 @@ Enemy GreaterRatTemplate(
         self->resetProbabilities(0, 0, 0, 100); // once it begins its special attack, the Greater Rat will always choose Special for its action until it has charged and used its attack
         
         if (self->getSpecialInt() == 3) { // charge for 2 turns, attack on the third
-            cout << "The Greater Rat unleashes a special attack!\n";
+            cout << "\nThe Greater Rat unleashes a special attack!\n";
             self->setTauntMultiplier(self->getTauntMultiplier() + 4.0); // this attack is additively 4x as effective
             self->attack(target);
             self->resetProbabilities(60, 5, 15, 20); // reset probabilities back to normal. there should be a constants sheet with all this information so we don't have to repeat magic numbers in the constructor like this, but it's already midnight and I'm not doing that right now.
