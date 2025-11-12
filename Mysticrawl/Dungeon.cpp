@@ -98,6 +98,14 @@ void StartDungeon() {
         "The air smells of dust. A round stone button is embedded in the far wall."
     );
 
+    Room greaterRatRoom(
+        "The trial of the Greater Rat",
+        "Special attack demo. This room definitely doesn't have to be in the final game."
+    );
+
+    Enemy gRat = GreaterRatTemplate;
+    greaterRatRoom.addEnemy(&gRat);
+
     // Connect rooms via exits
     spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
     spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
@@ -105,7 +113,12 @@ void StartDungeon() {
     nextRoom.setExits({ Exit("west", &spawnRoom), Exit("east", &fightRoom) });
     fightRoom.setExits({
         Exit("west", &nextRoom),
-        Exit("east", &leverRoom, false) // unlocked door
+        Exit("east", &leverRoom, false), // unlocked door
+        Exit("north", &greaterRatRoom, false)
+        });
+
+    greaterRatRoom.setExits({
+        Exit("south", &fightRoom, false)
         });
 
     leverRoom.setExits({

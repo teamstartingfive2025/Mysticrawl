@@ -31,7 +31,7 @@ Enemy GreaterRatTemplate(
         }
     },
     "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...\n",
-    10, // hit points
+    12, // hit points
     40, // block chance (%)
     3,  // min damage
     6,  // max damage
