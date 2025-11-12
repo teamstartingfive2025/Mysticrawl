@@ -5,9 +5,13 @@
 #include "Enemy.h"
 #include "Interactable.h"
 #include "Item.h"
+#include "SimpleMechanism.h"
+
+
 using namespace std;
 // Forward declaration to break circular dependency
-
+class Enemy;
+class Room;
 
 /**
  * Starts the dungeon gameplay loop.

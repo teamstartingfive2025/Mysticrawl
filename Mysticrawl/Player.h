@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Interactable.h"
 #include "Item.h"
+#include "SimpleMechanism.h"
 using namespace std;
 
 // Forward declarations to avoid circular dependency
@@ -63,7 +64,8 @@ public:
 
     // Displays all items the player has collected
     void showInventory() const;
-
+    
+    void interact();
     // Displays selection menu of all items the player has collected
     shared_ptr<Item> itemSelectMenu();
 
@@ -80,7 +82,7 @@ public:
     void setCurrentRoom(Room* room);
 
     int getHealth() const { return health; }
-    const std::string& getName() const { return playerName; }
+    const string& getName() const { return playerName; }
 
     // changeHealth accepts positive (heal) or negative (damage) values
     void changeHealth(int delta) { health += delta; }

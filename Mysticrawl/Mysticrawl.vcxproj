@@ -125,10 +125,13 @@
   <ItemGroup>
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyTemplates.cpp" />
+    <ClCompile Include="EnemyTemplates.h" />
     <ClCompile Include="Exit.cpp" />
     <ClCompile Include="Fight.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="SimpleMechanism.cpp" />
     <ClCompile Include="Mysticrawl.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -149,6 +152,7 @@
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="SimpleMechanism.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="Prompt.h" />

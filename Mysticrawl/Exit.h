@@ -16,17 +16,16 @@ using namespace std;
 class Exit {
 private:
     string direction;
-
     // Keeps track of keys used to unlock this exit and the unlock status
     vector<function<bool()>> lockStatusFunctions; // Fixed type
-
     Room* destination;
 public:
     Exit(string direction, Room* destination, vector<function<bool()>> lockStatusFunctions = {}) :
-        direction(direction), destination(destination), lockStatusFunctions(lockStatusFunctions) {}
-
+        direction(direction), destination(destination), lockStatusFunctions(lockStatusFunctions) {
+    }
 
     string getDirection() const { return direction; }
     Room* getDestination() const { return destination; }
     bool isLocked() const;
+    void addLock(function<bool()> lock) { lockStatusFunctions.push_back(lock); };
 };

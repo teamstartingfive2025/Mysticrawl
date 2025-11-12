@@ -17,3 +17,16 @@ Exit* Room::getExit(const string& exitName) {
     }
     return nullptr;
 }
+
+// addMechanism()
+// Adds a new lever or button to the room’s mechanism list.
+void Room::addMechanism(shared_ptr<SimpleMechanism> mech) {
+    mechanisms.push_back(mech);
+}
+
+// getMechanisms()
+// Returns all mechanisms currently in the room.
+// Used by the player when they look or interact.
+const vector<shared_ptr<SimpleMechanism>>& Room::getMechanisms() const {
+    return mechanisms;
+}

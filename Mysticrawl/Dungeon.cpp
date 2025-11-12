@@ -6,6 +6,8 @@
 #include "Key.h"
 #include "Potion.h"
 #include "Fight.h"
+#include "SimpleMechanism.h"
+#include "EnemyTemplates.h"
 #include "Prompt.h"
 
 #include <iostream>
@@ -55,13 +57,43 @@ void StartDungeon() {
     // --- Initialize the player ---
     Player player(&spawnRoom, "Hero", 100);
 
-    Enemy* wizard = new Enemy("Evil Wizard", "An evil wizard glares at you, ready to cast a spell!\n", 30);
-    wizardRoom.addEnemy(wizard);
+	Enemy wizard = WizardTemplate;
+    wizardRoom.addEnemy(&wizard);
 
-    Enemy* rat = new Enemy("Rat", "A rat suddenly appears! It bites you and scurries away.\n", 5);
-    fightRoom.addEnemy(rat);
+    // New N/S rooms
+    Room northRoom(
+        "North Corridor",
+        "A narrow passage runs north-south. The air is colder here, and the stones are slick with moss.\n"
+    );
+
+    Room southRoom(
+        "South Cellar",
+        "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
+    );
+
+    Enemy rat = RatTemplate;
+
+    fightRoom.addEnemy(&rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+
+    Room leverRoom(
+        "Lever Room",
+        "You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+    );
+
+    Room buttonRoom(
+        "Button Room",
+        "The air smells of dust. A round stone button is embedded in the far wall."
+    );
+
+    Room greaterRatRoom(
+        "The trial of the Greater Rat",
+        "Special attack demo. This room definitely doesn't have to be in the final game."
+    );
+
+    Enemy gRat = GreaterRatTemplate;
+    greaterRatRoom.addEnemy(&gRat);
 
     // Connect rooms via exits
     shared_ptr<Key> key = make_shared<Key>();
@@ -70,9 +102,79 @@ void StartDungeon() {
     key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
     spawnRoom.addHiddenItem(key);
 
-    nextRoom.setExits({ Exit("west", &spawnRoom), Exit("north", &wizardRoom), Exit("east", &fightRoom) });
-    wizardRoom.setExits({ Exit("south", &nextRoom) });
-    fightRoom.setExits({ Exit("west", &nextRoom) });
+    // Next Room connects in all four directions
+    nextRoom.setExits({
+        Exit("west",  &spawnRoom),
+        Exit("east",  &fightRoom),
+        Exit("north", &wizardRoom),
+        Exit("south", &southRoom)
+    });
+
+    wizardRoom.setExits({
+        Exit("south", &nextRoom)
+    });
+
+    // Fight room unchanged besides its west return
+    fightRoom.setExits({
+        Exit("west", &nextRoom)
+    });
+
+    // New rooms return to Next Room
+    northRoom.setExits({
+        Exit("south", &nextRoom)
+    });
+
+    southRoom.setExits({
+        Exit("north", &nextRoom)
+    });
+
+    fightRoom.setExits({
+        Exit("west", &nextRoom),
+        Exit("east", &leverRoom),
+        Exit("north", &greaterRatRoom)
+    });
+
+    greaterRatRoom.setExits({
+        Exit("south", &fightRoom)
+    });
+
+    leverRoom.setExits({
+        Exit("west", &fightRoom),
+        Exit("east", &buttonRoom) // locked initially
+    });
+
+    buttonRoom.setExits({
+        Exit("west", &leverRoom)
+    });
+
+    shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
+        "Iron Lever", true, // true = lever type
+        [&leverRoom](bool state) {                // capture leverRoom by reference
+            if (exit) {
+                if (state) {
+                    cout << "You hear gears turning, the eastern door unlocks!\n";
+                }
+                else {
+                    cout << "The lever resets, the door locks again.\n";
+                }
+            }
+        }
+    );
+
+    leverRoom.getExit("east")->addLock([&]() -> bool { return lever->getState(); });
+
+    leverRoom.addMechanism(lever);
+
+    auto button = make_shared<SimpleMechanism>(
+        "Stone Button", false,
+        [&buttonRoom](bool) {
+            cout << "A hidden panel opens revealing a glittering amulet!\n";
+            auto amulet = make_shared<Item>("Glittering Amulet");
+            buttonRoom.addItem(amulet); 
+        }
+    );
+
+    buttonRoom.addMechanism(button);
 
     // --- Initialize fight manager ---
     Fight fight;
@@ -102,6 +204,9 @@ void StartDungeon() {
                 } });
             }
 
+            if (!player.getCurrentRoom()->getMechanisms().empty()) {
+                options.push_back({ "Interact", [&]() { player.interact(); } });
+            }
 
             options.push_back(
                 { "Exit Game", [&]() {
@@ -111,16 +216,11 @@ void StartDungeon() {
             );
 
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
-                if (enemy && enemy->hostilityTrigger()) {
-                    int damage = enemy->attack(player);
-                    string attackMessage = enemy->getName() + " attacked you, health decreased by " + to_string(damage);
-
+                if (enemy) {
+                    enemy->action(player);
                     if (player.getHealth() <= 0) {
-                        WaitForEnterPrompt(attackMessage + Constants::Gameplay::GAME_OVER_TEXT);
                         return;
                     }
-
-                    cout << attackMessage << endl;
                 }
             }
 
