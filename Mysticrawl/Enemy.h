@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
 #include <functional>
-#include <random>
 using namespace std;
 
 class Player;
 class Enemy {
 public:
+    Enemy(string n, string t, int hp);
     Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt);
     Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint); //overloaded constructor for enemies with special abilities
     Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint, function <void(Enemy* self, Player& target)> ef); //overloaded constructor for enemies with special abilities
@@ -19,7 +19,7 @@ public:
     void action(Player& target);
 
     // Attack the player. Returns damage dealt.
-    int attack(Player& target);
+    int attack(Player& target);   // LV - need to omit for test automation, player object initiation not easily accomplished in current design 26-Oct
 
     // Optionally block (not used in this simple rat example)
     bool block();
@@ -55,16 +55,16 @@ private:
     string name;
     string introText = "";
     int health;
-    int blockChance;
-    int damageMin;
-    int damageMax;
-    int blockExitChance;
-    int attackChance;
-    int idleChance;
-    int tauntChance;
-    int specialChance;
-    int specialInt; //integer used for special attacks across turns
-    double tauntMultiplier = 1;
-    function<void(Enemy*, Player& target)> special;
-	function<void(Enemy* self, Player& player)> encounterFunction;
+    int blockChance = 0;
+    int damageMin = 0;
+    int damageMax = 0;
+    int blockExitChance = 0;
+    int attackChance = 0;
+    int idleChance = 0;
+    int tauntChance = 0;
+    int specialChance = 0;
+    int specialInt = 0; //integer used for special attacks across turns
+    double tauntMultiplier = 1.0;
+    function<void(Enemy*, Player& target)> special = nullptr;
+    function<void(Enemy* self, Player& player)> encounterFunction = nullptr;
 };

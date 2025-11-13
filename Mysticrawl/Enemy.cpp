@@ -5,6 +5,8 @@
 #include <string>
 using namespace std;
 
+Enemy::Enemy(string n, string t, int hp) : name(n), introText(t), health(hp) {}
+
 Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt) {
     specialChance = 0;
     specialInt = 0;
@@ -23,6 +25,8 @@ int Enemy::getHealth() const { return health; }
 bool Enemy::isAlive() const { return health > 0; }
 
 void Enemy::takeDamage(int amount) {
+	if (amount < 0) return;
+
     health -= amount;
     if (health < 0) health = 0;
 }
@@ -55,6 +59,11 @@ void Enemy::action(Player& target) {
 
 }
 
+/*
+ * For automated test, DON't call this method, need initialized player, but player requires initialized rooms, which are buried in the main game loop function
+ *   Note: player object is not accessible, nor are the rooms accessible outside the main game loop function - need to refactor for test automation
+ */
+
 int Enemy::attack(Player& target) {
     int damage = Random::GetInstance().randInt(damageMin, damageMax);
 
@@ -72,7 +81,7 @@ int Enemy::attack(Player& target) {
     cout << endl << attackMessage << endl;
 
     return damage;
-}
+}  // END of method to be EXCLUDED from test automation
 
 bool Enemy::hostilityTrigger() {
     // 60% chance to be hostile on spawn
