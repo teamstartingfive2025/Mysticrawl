@@ -1,20 +1,21 @@
 #include "Enemy.h"
 #include "Player.h"
-#include <chrono>
-#include <random>
+#include "Random.h"
+#include "Input.h"
 #include <string>
 using namespace std;
 
 Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt) {
-    // seed RNG with time-based seed
-    rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
     specialChance = 0;
     specialInt = 0;
 }
 
-Enemy::Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint) {
-    // seed RNG with time-based seed
-    rng.seed((unsigned)chrono::high_resolution_clock::now().time_since_epoch().count());
+Enemy::Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint)
+    : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint) {
+}
+
+Enemy::Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint, function <void(Enemy* self, Player& target)> ef)
+    : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint), encounterFunction(ef) {
 }
 
 const string& Enemy::getName() const { return name; }
@@ -27,15 +28,11 @@ void Enemy::takeDamage(int amount) {
 }
 
 bool Enemy::block() {
-    uniform_int_distribution<int> d(0, 99);
-
-    return d(rng) < blockChance;
+    return Random::GetInstance().randInt(0, 99) < blockChance;
 }
 
 void Enemy::action(Player& target) {
-    uniform_int_distribution<int> d(1, 100);
-
-    int choice = d(rng);
+    int choice = Random::GetInstance().randInt(1, 100);
 
     if (choice > (100 - attackChance)) //chance to attack
     {
@@ -44,12 +41,12 @@ void Enemy::action(Player& target) {
     }
     else if (choice > (100 - attackChance - idleChance)) //chance to idle
     {
-        cout << "\nRat idles!\n";
+        cout << endl << name << " idles!\n";
     }
     else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
     {
         tauntMultiplier += 0.5;
-        cout << "\nRat taunts!  Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << "%\n";
+        cout << endl << name << " taunts! Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << " % \n";
     }
     else if (choice > (100 - attackChance - idleChance - tauntChance - specialChance)) //chance to use special attack
     {
@@ -58,11 +55,8 @@ void Enemy::action(Player& target) {
 
 }
 
-// The basic attack
 int Enemy::attack(Player& target) {
-    // For a rat: small bite damage 1-3
-    uniform_int_distribution<int> dmgDist(damageMin, damageMax);
-    int damage = dmgDist(rng) * tauntMultiplier;
+    int damage = Random::GetInstance().randInt(damageMin, damageMax);
 
     // Apply damage to player
     target.takeDamage(damage);
@@ -82,19 +76,12 @@ int Enemy::attack(Player& target) {
 
 bool Enemy::hostilityTrigger() {
     // 60% chance to be hostile on spawn
-    uniform_int_distribution<int> d(0, 99);
-    return d(rng) < 60;
+    return Random::GetInstance().randInt(0, 99) < 60;
 }
 
 bool Enemy::isBlockingExit() {
-    static std::mt19937 rng(
-        (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count()
-    );
-
-    std::uniform_int_distribution<int> d(0, 99);
-
     // Tune as needed
-    return d(rng) < blockExitChance; // 40% success
+    return Random::GetInstance().randInt(0, 99) < 40; // 40% success
 }
 
 void Enemy::resetProbabilities(int attack, int idle, int taunt, int special) {
@@ -105,7 +92,6 @@ void Enemy::resetProbabilities(int attack, int idle, int taunt, int special) {
         specialChance = special;
     }
 }
-
 
 void Enemy::DisplayIntroText() {
     cout << introText << endl;

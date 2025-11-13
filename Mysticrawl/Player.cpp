@@ -1,11 +1,11 @@
 #include "Player.h"
-#include "Dungeon.h"
+#include "Room.h"
 #include "Enemy.h"
 #include "Key.h"
+#include "Random.h"
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
-#include "UI.h"
 
 using namespace std;
 
@@ -80,8 +80,8 @@ void Player::pickup() {
                     shared_ptr<Item> pickedItem = roomItems[i];
                     cout << "You pick up the " << pickedItem->getName() << ".\n";
 
-                    if (auto key = std::dynamic_pointer_cast<Key>(pickedItem)) {
-                        key->unlockExit();
+                    if (auto key = dynamic_pointer_cast<Key>(pickedItem)) {
+                        key->printUnlockText();
                     }
 
                     inventory.push_back(pickedItem);
@@ -96,7 +96,8 @@ void Player::pickup() {
 }
 
 // Allows the player to move between rooms
-void Player::move() {
+void Player::move()
+{
     if (currentRoom->getExits().empty()) {
         cout << "You don't see any exits.\n";
         return;
@@ -133,6 +134,15 @@ void Player::move() {
 
                 setCurrentRoom(exit.getDestination());
                 cout << "You move " << exit.getDirection() << ".\n";
+
+                for (Enemy* enemy : currentRoom->getEnemies())
+                {
+                    function <void(Enemy* self, Player& target)> encounterFunction = enemy->getEncounterFunction();
+                    if (encounterFunction != nullptr) {
+                        encounterFunction(enemy, *this);
+                    }
+                }
+
                 look();
             }
         );
@@ -175,9 +185,11 @@ void Player::useItem(shared_ptr<Item> item) {
 bool Player::inventoryEmpty() { return inventory.empty(); }
 
 // Checks whether a specific item exists in the player's inventory
-bool Player::hasItem(const string& itemName) const {
-    for (const auto& item : inventory)
-        if (item->getName() == itemName) return true;
+bool Player::hasItem(const shared_ptr<Item> itemPointer) const {
+    for (const auto& item : inventory) {
+        if (item == itemPointer)
+            return true;
+    }
     return false;
 }
 
@@ -251,11 +263,8 @@ void Player::displayHealthBar(int width) const {
 
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
-    // Seed the random number generator
-    srand(static_cast<unsigned int>(time(nullptr)));
-
     // Generate random damage between 2 and 6
-    int damage = rand() % 5 + 2;  // Range: 2–6 damage
+	int damage = Random::GetInstance().randInt(2, 6);
 
     // Print attack message
     cout << "You swing your fists at the " << target.getName()

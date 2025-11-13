@@ -1,4 +1,4 @@
-#include "Mechanism.h"
+#include "SimpleMechanism.h"
 
 // Constructor
 SimpleMechanism::SimpleMechanism(const std::string& name, bool leverType,

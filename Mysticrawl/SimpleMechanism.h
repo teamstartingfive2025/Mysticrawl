@@ -26,4 +26,7 @@ public:
 
     // Description text for display
     string getDescription() const;
+
+	// Get current state (for locking mechanisms)
+    bool getState() const { return state; }
 };

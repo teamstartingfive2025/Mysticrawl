@@ -5,11 +5,11 @@
 using namespace std;
 
 class Player;
-class Dungeon;  
 class Enemy {
 public:
     Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt);
     Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint); //overloaded constructor for enemies with special abilities
+    Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint, function <void(Enemy* self, Player& target)> ef); //overloaded constructor for enemies with special abilities
 
     const std::string& getName() const;
     int getHealth() const;
@@ -30,10 +30,10 @@ public:
     // Whether this enemy will be hostile on spawn (chance-based)
     bool hostilityTrigger();
 
-	// Display introductory text when enemy appears
+    // Display introductory text when enemy appears
     void DisplayIntroText();
 
-	// Checks if the enemy is blocking an exit
+    // Checks if the enemy is blocking an exit
     bool isBlockingExit();
 
     // Changes the chances of choosing each action
@@ -46,9 +46,14 @@ public:
     double getTauntMultiplier() { return tauntMultiplier; }
 
     void setTauntMultiplier(double t) { tauntMultiplier = t; }
+
+    function <void(Enemy* self, Player& target)> getEncounterFunction() { return encounterFunction; }
+
+    void setEncounterFunction(function<void(Enemy* self, Player& target)> func) { encounterFunction = func; }
+
 private:
     string name;
-	string introText = "";
+    string introText = "";
     int health;
     int blockChance;
     int damageMin;
@@ -60,9 +65,6 @@ private:
     int specialChance;
     int specialInt; //integer used for special attacks across turns
     double tauntMultiplier = 1;
-    function <void(Enemy*, Player& target)> special;
-
-
-    // random engine for decisions
-    std::mt19937 rng;
+    function<void(Enemy*, Player& target)> special;
+	function<void(Enemy* self, Player& player)> encounterFunction;
 };

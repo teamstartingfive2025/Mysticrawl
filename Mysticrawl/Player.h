@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Interactable.h"
 #include "Item.h"
-#include "Mechanism.h"
+#include "SimpleMechanism.h"
 using namespace std;
 
 // Forward declarations to avoid circular dependency
@@ -75,7 +75,7 @@ public:
     bool inventoryEmpty();
 
     // Checks if the player currently has a specific item
-    bool hasItem(const string& itemName) const;
+    bool hasItem(const shared_ptr<Item> itemPointer) const;
 
     // Accessor and mutator for the current room pointer
     Room* getCurrentRoom() const;

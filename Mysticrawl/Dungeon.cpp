@@ -6,8 +6,10 @@
 #include "Key.h"
 #include "Potion.h"
 #include "Fight.h"
-#include "Mechanism.h"
+#include "SimpleMechanism.h"
 #include "EnemyTemplates.h"
+#include "Prompt.h"
+
 #include <iostream>
 #include <limits>
 #include <cstdlib>
@@ -18,42 +20,6 @@
 #include <string>
 
 using namespace std;
-
-class Enemy;
-
-void Exit::unlock() {
-    locked = false;
-}
-
-Room::Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems)
-    : name(name), description(description), items(items), hiddenItems(hiddenItems) {
-}
-
-void Room::setExits(const vector<Exit>& exits) {
-    this->exits = exits;
-}
-
-Exit* Room::getExit(const string& exitName) {
-    for (auto& exit : exits) { // remove const
-        if (exit.getDirection() == exitName) {
-            return &exit;
-        }
-    }
-    return nullptr;
-}
-
-// addMechanism()
-// Adds a new lever or button to the room’s mechanism list.
-void Room::addMechanism(shared_ptr<SimpleMechanism> mech) {
-    mechanisms.push_back(mech);
-}
-
-// getMechanisms()
-// Returns all mechanisms currently in the room.
-// Used by the player when they look or interact.
-const vector<shared_ptr<SimpleMechanism>>& Room::getMechanisms() const {
-    return mechanisms;
-}
 
 /**
  * The StartDungeon function runs the dungeon portion of the game.
@@ -83,6 +49,17 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
+    Room wizardRoom(
+        "Wizard's Lair",
+        "The air crackles with magical energy. Ancient tomes and potions clutter the space.\n"
+    );
+
+    // --- Initialize the player ---
+    Player player(&spawnRoom, "Hero", 100);
+
+	Enemy wizard = WizardTemplate;
+    wizardRoom.addEnemy(&wizard);
+
     // New N/S rooms
     Room northRoom(
         "North Corridor",
@@ -94,18 +71,9 @@ void StartDungeon() {
         "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
     );
 
-   Enemy* rat = new Enemy("Rat", 
-    "A rat suddenly appears! It bites you and scurries away.\n",
-    5,      // health
-    10,     // blockChance
-    1, 3,   // damage range
-    20,     // blockExitChance
-    50,     // attackChance
-    30,     // idleChance
-    10      // tauntChance
-);
+    Enemy rat = RatTemplate;
 
-    fightRoom.addEnemy(rat);
+    fightRoom.addEnemy(&rat);
 
     fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
@@ -128,66 +96,72 @@ void StartDungeon() {
     greaterRatRoom.addEnemy(&gRat);
 
     // Connect rooms via exits
-    spawnRoom.setExits({ Exit("east", &nextRoom, Constants::Gameplay::DOOR_LOCKED) });
-    spawnRoom.addHiddenItem(make_shared<Key>("Key", spawnRoom.getExit("east")));
+    shared_ptr<Key> key = make_shared<Key>();
+    spawnRoom.setExits({ Exit("east", &nextRoom, { [&]() -> bool { return player.hasItem(key); } }) });
+    key->setName("Key");
+    key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
+    spawnRoom.addHiddenItem(key);
 
     // Next Room connects in all four directions
     nextRoom.setExits({
         Exit("west",  &spawnRoom),
         Exit("east",  &fightRoom),
-        Exit("north", &northRoom),
+        Exit("north", &wizardRoom),
         Exit("south", &southRoom)
-        });
+    });
+
+    wizardRoom.setExits({
+        Exit("south", &nextRoom)
+    });
 
     // Fight room unchanged besides its west return
     fightRoom.setExits({
         Exit("west", &nextRoom)
-        });
+    });
 
     // New rooms return to Next Room
     northRoom.setExits({
         Exit("south", &nextRoom)
-        });
+    });
 
     southRoom.setExits({
         Exit("north", &nextRoom)
-        });
+    });
 
     fightRoom.setExits({
         Exit("west", &nextRoom),
-        Exit("east", &leverRoom, false), // unlocked door
-        Exit("north", &greaterRatRoom, false)
-        });
+        Exit("east", &leverRoom),
+        Exit("north", &greaterRatRoom)
+    });
 
     greaterRatRoom.setExits({
-        Exit("south", &fightRoom, false)
-        });
+        Exit("south", &fightRoom)
+    });
 
     leverRoom.setExits({
         Exit("west", &fightRoom),
-        Exit("east", &buttonRoom, true) // locked initially
-        });
+        Exit("east", &buttonRoom) // locked initially
+    });
 
     buttonRoom.setExits({
         Exit("west", &leverRoom)
-        });
+    });
 
-    auto lever = make_shared<SimpleMechanism>(
+    shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
         "Iron Lever", true, // true = lever type
         [&leverRoom](bool state) {                // capture leverRoom by reference
-            auto exit = leverRoom.getExit("east"); // use . instead of ->
             if (exit) {
                 if (state) {
                     cout << "You hear gears turning, the eastern door unlocks!\n";
-                    exit->setLocked(false);
                 }
                 else {
                     cout << "The lever resets, the door locks again.\n";
-                    exit->setLocked(true);
                 }
             }
         }
     );
+
+    leverRoom.getExit("east")->addLock([&]() -> bool { return lever->getState(); });
 
     leverRoom.addMechanism(lever);
 
@@ -201,8 +175,6 @@ void StartDungeon() {
     );
 
     buttonRoom.addMechanism(button);
-    // --- Initialize the player ---
-    Player player(&spawnRoom, "Hero", 100);
 
     // --- Initialize fight manager ---
     Fight fight;
@@ -218,11 +190,11 @@ void StartDungeon() {
                 {"Look around", [&player]() { player.look(); }},
                 {"Investigate the area", [&player]() { player.investigate(); }},
                 {"Check Inventory", [&player]() { player.showInventory(); }},
-				{"Move Somewhere", [&player]() { player.move(); }},
+                {"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
             };
             if (!player.inventoryEmpty()) {
-                options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  }});
+                options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  } });
             }
 
             //only give fight option if enemy is present
@@ -240,7 +212,7 @@ void StartDungeon() {
                 { "Exit Game", [&]() {
                     WaitForEnterPrompt("You leave the dungeon for now...\n\n");
                     throw runtime_error("exit lambda and dungeon loop");
-                }}
+                } }
             );
 
             for (Enemy* enemy : player.getCurrentRoom()->getEnemies()) {
@@ -254,7 +226,7 @@ void StartDungeon() {
 
             player.displayHealthBar();
 
-		    player.getCurrentRoom()->RefreshSelectionMenu(options);
+            player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
         }
     }
