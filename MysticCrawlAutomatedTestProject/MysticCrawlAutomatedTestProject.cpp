@@ -47,7 +47,6 @@ namespace MysticCrawlAutomatedTestProject
 			Enemy NYCRat(enemy, enemyDescription, initialHP);
 
 			// verify health declines by the expected amount, note damage parameter is "unlimited" (ie not capped)
-			//   verifying zero damage is acceptable, should fail when damage = 5, since 0 returned rather than -5
 			int newHP = initialHP;
 			string outputMessage;
 			for (int damage = 0; damage <= 5; damage++) {
@@ -62,8 +61,27 @@ namespace MysticCrawlAutomatedTestProject
 				Logger::WriteMessage(outputMessage.c_str());
 				Assert::AreEqual(NYCRat.getHealth(), newHP, L"new enemy health not equal to prior enemy health - new damage");
 			}
+		}
 
-			// Note - idea for new test cases, what happens when negative damage is applied?
+		TEST_METHOD(VerifyNegativeDamage)
+		{
+			Logger::WriteMessage("Creating a NYC rat and verifying damage calc and enemy death works as expected\n");
+			std::string enemy = "NYCRat";
+			std::string enemyDescription = "A rat that is scavanges pizza slices!";
+			int initialHP = 10;
+			Enemy NYCRat(enemy, enemyDescription, initialHP);
+
+			// verify health cannot be increased by applying negative damage modifier
+			int newHP = initialHP;
+			string outputMessage;
+			for (int damage = -5; damage <= 0; damage++) {
+
+				NYCRat.takeDamage(damage);  // apply damage to rat
+
+				outputMessage = "Applied damage " + std::to_string(damage) + " returned health " + std::to_string(NYCRat.getHealth()) + "\n";
+				Logger::WriteMessage(outputMessage.c_str());
+				Assert::AreEqual(NYCRat.getHealth(), initialHP, L"negative/zero enemy health is equal to prior enemy health");
+			}
 		}
 	};
 }
