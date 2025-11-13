@@ -127,10 +127,10 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyTemplates.cpp" />
     <ClCompile Include="EnemyTemplates.h" />
-    <ClCompile Include="Exit.cpp" />
     <ClCompile Include="Fight.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Lockable.cpp" />
     <ClCompile Include="SimpleMechanism.cpp" />
     <ClCompile Include="Mysticrawl.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -152,6 +152,7 @@
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="Lockable.h" />
     <ClInclude Include="SimpleMechanism.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Potion.h" />
