@@ -1,5 +1,6 @@
 #include "Room.h"
 #include "Exit.h"
+#include "Container.h"
 
 Room::Room(string name, string description, vector<shared_ptr<Item>> items, vector<shared_ptr<Item>> hiddenItems)
     : name(name), description(description), items(items), hiddenItems(hiddenItems) {

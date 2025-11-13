@@ -9,6 +9,7 @@
 #include "SimpleMechanism.h"
 #include "EnemyTemplates.h"
 #include "Prompt.h"
+#include "Lockable.h"
 
 #include <iostream>
 #include <limits>
