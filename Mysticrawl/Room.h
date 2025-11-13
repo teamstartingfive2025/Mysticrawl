@@ -34,6 +34,7 @@ public:
     void setExits(const vector<Exit>& exits);
     Exit* getExit(const string& exitName);
     const vector<Exit>& getExits() const { return exits; }
+    vector<Exit>& getExits() { return exits; }
 
     string getName() const { return name; }
     string getDescription() const { return description; }

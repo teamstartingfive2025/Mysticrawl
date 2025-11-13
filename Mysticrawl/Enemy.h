@@ -9,6 +9,7 @@ class Enemy {
 public:
     Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt);
     Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint); //overloaded constructor for enemies with special abilities
+    Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint, function <void(Enemy* self, Player& target)> ef); //overloaded constructor for enemies with special abilities
 
     const std::string& getName() const;
     int getHealth() const;
@@ -45,6 +46,11 @@ public:
     double getTauntMultiplier() { return tauntMultiplier; }
 
     void setTauntMultiplier(double t) { tauntMultiplier = t; }
+
+    function <void(Enemy* self, Player& target)> getEncounterFunction() { return encounterFunction; }
+
+    void setEncounterFunction(function<void(Enemy* self, Player& target)> func) { encounterFunction = func; }
+
 private:
     string name;
     string introText = "";
@@ -59,5 +65,6 @@ private:
     int specialChance;
     int specialInt; //integer used for special attacks across turns
     double tauntMultiplier = 1;
-    function <void(Enemy*, Player& target)> special;
+    function<void(Enemy*, Player& target)> special;
+	function<void(Enemy* self, Player& player)> encounterFunction;
 };

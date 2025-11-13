@@ -1,5 +1,9 @@
 #include "EnemyTemplates.h"
+#include "Player.h"
+#include "Room.h"
+#include "Exit.h"
 #include <iostream>
+#include <functional>
 using namespace std;
 
 Enemy RatTemplate(
@@ -44,6 +48,26 @@ Enemy GreaterRatTemplate(
 );
 
 Enemy WizardTemplate(
-    "Evil Wizard", "An evil wizard glares at you, ready to cast a spell!\n", 
-	30, 30, 5, 10, 20, 50, 20, 15
+    [&](Enemy* self, Player& target) {},
+    "Evil Wizard", "An evil wizard glares at you, ready to cast a spell!\n",
+    30, // hit points
+    30, // block chance
+    5,  // min damage
+    10, // max damage
+    20, // block exit chance
+    50, // attack chance
+    20, // idle chance
+    15, // taunt chance
+    15, // special chance
+    0,  // special int
+	[&](Enemy* self, Player& player) { // lock all exits if the wizard is alive
+        for (Exit& exit : player.getCurrentRoom()->getExits()) {
+            exit.addLock([self]() {
+                if (self != nullptr && self->isAlive()) {
+                    return false;
+                }
+                return true;
+            });
+        }
+    }
 );

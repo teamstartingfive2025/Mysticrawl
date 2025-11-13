@@ -17,7 +17,7 @@ class Exit {
 private:
     string direction;
     // Keeps track of keys used to unlock this exit and the unlock status
-    vector<function<bool()>> lockStatusFunctions; // Fixed type
+    vector<function<bool()>> lockStatusFunctions;
     Room* destination;
 public:
     Exit(string direction, Room* destination, vector<function<bool()>> lockStatusFunctions = {}) :

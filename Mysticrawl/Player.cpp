@@ -134,6 +134,15 @@ void Player::move()
 
                 setCurrentRoom(exit.getDestination());
                 cout << "You move " << exit.getDirection() << ".\n";
+
+                for (Enemy* enemy : currentRoom->getEnemies())
+                {
+                    function <void(Enemy* self, Player& target)> encounterFunction = enemy->getEncounterFunction();
+                    if (encounterFunction != nullptr) {
+                        encounterFunction(enemy, *this);
+                    }
+                }
+
                 look();
             }
         );
