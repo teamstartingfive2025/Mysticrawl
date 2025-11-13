@@ -10,6 +10,16 @@ void Container::removeItem(const shared_ptr<Item>& item) {
 }
 
 void Container::openContainerSelection() {
+	if(items.empty()) {
+		cout << "The " << name << " is empty.\n";
+		return;
+	}
+
+	if(isLocked()) {
+		cout << "The " << name << " is locked.\n";
+		return;
+	}
+
 	vector<tuple<string, function<void()>>> itemOptions;
 	for (const auto& item : items) {
 		itemOptions.push_back({ item->getName(), [this, item]() { 

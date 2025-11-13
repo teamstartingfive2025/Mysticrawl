@@ -19,5 +19,5 @@ public:
 
 	void removeItem(const shared_ptr<Item>& item);
 	void openContainerSelection();
-	string getName() const { return "Container"; }
+	string getName() const { return name; }
 };

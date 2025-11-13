@@ -30,6 +30,13 @@ void Player::look() const {
             cout << " - " << mech->getDescription() << "\n";
         }
     }
+	// Show containers in the room
+    if (!currentRoom->getContainers().empty()) {
+        cout << "\nYou notice the following containers:\n";
+        for (const auto& container : currentRoom->getContainers()) {
+            cout << " - " << container.getName() << "\n";
+		}
+    }
     auto& enemies = currentRoom->getEnemies();
     for (Enemy* enemy : enemies) {
         if (enemy) enemy->DisplayIntroText();
@@ -290,7 +297,7 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
         auto& mechs = currentRoom->getMechanisms();
         auto& containers = currentRoom->getContainers();
 
-        if (mechs.empty()) {
+        if (mechs.empty() && containers.empty()) {
             cout << "There is nothing here to interact with.\n";
             return;
         }
