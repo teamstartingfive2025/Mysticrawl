@@ -26,6 +26,7 @@ namespace MysticCrawlAutomatedTestProject
 			Logger::WriteMessage("Hello from MysticCrawlAutomatedTestProject\n");
 		}
 
+		/* Test Enemy Class Functionality */
 		TEST_METHOD(CreateEnemyAndVerifyNameHP)
 		{
 			Logger::WriteMessage("Creating a dog rat and verifying constructor works as intended\n");
@@ -53,6 +54,10 @@ namespace MysticCrawlAutomatedTestProject
 
 				NYCRat.takeDamage(damage);  // apply damage to rat
 				newHP = newHP - damage;
+
+				if (newHP < 0) // if health goes below zero, should be capped at zero
+					newHP = 0;
+
 				outputMessage = "Applied damage " + std::to_string(damage) + " returned health " + std::to_string(NYCRat.getHealth()) + "\n";
 				Logger::WriteMessage(outputMessage.c_str());
 				Assert::AreEqual(NYCRat.getHealth(), newHP, L"new enemy health not equal to prior enemy health - new damage");
