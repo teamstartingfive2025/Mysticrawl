@@ -1,7 +1,7 @@
 ﻿#include "Fight.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Dungeon.h"
+#include "Room.h"
 #include <iostream>
 using namespace std;
 
@@ -33,7 +33,6 @@ void Fight::fightMenu(Player& player) {
             if (!target->isAlive()) {
                 cout << target->getName() << " is defeated!\n";
                 enemies.erase(enemies.begin());
-                delete target; // prevent memory leak
             }
         }
         });
@@ -58,9 +57,6 @@ void Fight::fightMenu(Player& player) {
             }
         }
         });
-
-
-
 
     // 4. Display the fight menu and handle input
 

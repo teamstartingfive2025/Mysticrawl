@@ -1,10 +1,12 @@
 #include "Player.h"
-#include "Dungeon.h"
+#include "Room.h"
 #include "Enemy.h"
 #include "Key.h"
+#include "Random.h"
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+
 using namespace std;
 
 // Prints details about the current room and visible items
@@ -20,10 +22,25 @@ void Player::look() const {
     else {
         cout << "You don't see any items.\n";
     }
-
+    // Show mechanisms in the room (like levers or buttons)
+    if (!currentRoom->getMechanisms().empty()) {
+        cout << "\nYou notice the following mechanisms:\n";
+        for (const auto& mech : currentRoom->getMechanisms()) {
+            cout << " - " << mech->getDescription() << "\n";
+        }
+    }
     auto& enemies = currentRoom->getEnemies();
     for (Enemy* enemy : enemies) {
         if (enemy) enemy->DisplayIntroText();
+    }
+
+    cout << "\nExits:\n";
+    for (const auto& exit : currentRoom->getExits()) {
+        cout << " - " << exit.getDirection();
+        if (exit.isLocked())
+            cout << " (locked)\n";
+        else
+            cout << " (unlocked)\n";
     }
 }
 
@@ -63,8 +80,8 @@ void Player::pickup() {
                     shared_ptr<Item> pickedItem = roomItems[i];
                     cout << "You pick up the " << pickedItem->getName() << ".\n";
 
-                    if (auto key = std::dynamic_pointer_cast<Key>(pickedItem)) {
-                        key->unlockExit();
+                    if (auto key = dynamic_pointer_cast<Key>(pickedItem)) {
+                        key->printUnlockText();
                     }
 
                     inventory.push_back(pickedItem);
@@ -79,28 +96,62 @@ void Player::pickup() {
 }
 
 // Allows the player to move between rooms
-void Player::move() {
+void Player::move()
+{
     if (currentRoom->getExits().empty()) {
         cout << "You don't see any exits.\n";
         return;
     }
 
-	vector< tuple<string, function<void()>> > moveOptions;
-    for (const auto& exit : currentRoom->getExits()) {
-        moveOptions.push_back({ "Go " + exit.getDirection(), [this, exit]() {
-            if (exit.isLocked()) {
-                cout << "The way " << exit.getDirection() << " is locked.\n";
-                return;
+	// Check if enemy will block movement
+    string enemyBlockingExit = "";
+
+    for (Enemy* enemy : currentRoom->getEnemies()) {
+            if (enemy && enemy->isBlockingExit()) {
+				enemyBlockingExit = enemy->getName();
+                break;
             }
-            setCurrentRoom(exit.getDestination());
-            cout << "You move " << exit.getDirection() << ".\n";
-            look();
-        } });
 	}
+
+    vector< tuple<string, function<void()>> > moveOptions;
+
+    for (const auto& exit : currentRoom->getExits()) {
+        string label = string("Go ") + exit.getDirection() + " ";
+
+        moveOptions.emplace_back(
+            label,
+            [this, exit, enemyBlockingExit]() {
+                if (!enemyBlockingExit.empty()) {
+                    cout << "You tried to escape " << exit.getDirection()
+                        << " but " << enemyBlockingExit << " blocks your way.\n";
+                    return;
+                }
+
+                if (exit.isLocked()) {
+                    cout << "The way " << exit.getDirection() << " is locked.\n";
+                    return;
+                }
+
+                setCurrentRoom(exit.getDestination());
+                cout << "You move " << exit.getDirection() << ".\n";
+
+                for (Enemy* enemy : currentRoom->getEnemies())
+                {
+                    function <void(Enemy* self, Player& target)> encounterFunction = enemy->getEncounterFunction();
+                    if (encounterFunction != nullptr) {
+                        encounterFunction(enemy, *this);
+                    }
+                }
+
+                look();
+            }
+        );
+    }
 
     RefreshSelectionMenu(moveOptions);
     SelectMenuOption();
 }
+
 
 // Displays the player's inventory contents
 void Player::showInventory() const {
@@ -110,10 +161,35 @@ void Player::showInventory() const {
     cout << "\n";
 }
 
+// Displays selection menu of all items in player inventory and returns player choice
+shared_ptr<Item> Player::itemSelectMenu() {
+    shared_ptr<Item> selection;
+    
+    vector< tuple<string, function<void()>>> itemOptions;
+    for (const auto& item : inventory) {
+        itemOptions.push_back({ item->getName(), [item, &selection]() { selection = item; } });
+    }
+    RefreshSelectionMenu(itemOptions);
+    SelectMenuOption();
+
+    return selection;
+}
+
+// Manages item usage
+void Player::useItem(shared_ptr<Item> item) {
+    item->use(this);
+
+    if(item->isConsumable()) inventory.erase(find(inventory.begin(), inventory.end(), item)); //delete consumables after use
+}
+
+bool Player::inventoryEmpty() { return inventory.empty(); }
+
 // Checks whether a specific item exists in the player's inventory
-bool Player::hasItem(const string& itemName) const {
-    for (const auto& item : inventory)
-        if (item->getName() == itemName) return true;
+bool Player::hasItem(const shared_ptr<Item> itemPointer) const {
+    for (const auto& item : inventory) {
+        if (item == itemPointer)
+            return true;
+    }
     return false;
 }
 
@@ -137,7 +213,6 @@ int Player::takeDamage(int amount) {
     if (amount <= 0) return 0;
     int actual = std::min(amount, health);
     health -= actual;
-    if (health < 0) health = 0;
     return actual;
 }
 
@@ -188,11 +263,8 @@ void Player::displayHealthBar(int width) const {
 
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
-    // Seed the random number generator
-    srand(static_cast<unsigned int>(time(nullptr)));
-
     // Generate random damage between 2 and 6
-    int damage = rand() % 5 + 2;  // Range: 2–6 damage
+	int damage = Random::GetInstance().randInt(2, 6);
 
     // Print attack message
     cout << "You swing your fists at the " << target.getName()
@@ -212,3 +284,31 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
             << " still has " << target.getHealth() << " HP left.\n";
     }
 }
+    void Player::interact() {
+        auto& mechs = currentRoom->getMechanisms();
+
+        if (mechs.empty()) {
+            cout << "There is nothing here to interact with.\n";
+            return;
+        }
+
+        // Create a list of menu options from available mechanisms
+        vector<tuple<string, function<void()>>> interactOptions;
+
+        for (const auto& mech : mechs) {
+            // Each menu item triggers that mechanism's use() function
+            interactOptions.push_back({
+                mech->getDescription(),
+                [mech]() { mech->use(); }
+                });
+        }
+
+        // Optional exit option so the player can back out
+        interactOptions.push_back({
+            "Cancel", []() { cout << "You step away from the mechanisms.\n"; }
+            });
+
+        // Refresh and show the arrow-key menu
+        RefreshSelectionMenu(interactOptions);
+        SelectMenuOption();
+    }

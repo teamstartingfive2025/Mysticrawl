@@ -2,17 +2,15 @@
 #include <tuple>
 #include <functional>
 #include "Constants.h"
-#include "UI.h"
-#include "Dungeon.h"   // Include our new dungeon system
-using namespace std;
-
-void displayLoreScreen() {
-    system("cls");
-    cout << Constants::Story::BACKSTORY << "\n\n";
-    cout << Constants::Story::ANTAGONIST_INTRO << "\n\n";
-    cout << "Press Enter to return to the main menu...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-}
+#include "Input.h"
+#include "Prompt.h"
+#include "Room.h"
+#include "Exit.h"
+#include "Potion.h"
+#include "Item.h"
+#include "Key.h"
+#include "Fight.h"
+#include "Dungeon.h"
 
 void displayTitleScreen() {
     while (true) {
@@ -23,17 +21,17 @@ void displayTitleScreen() {
             },
             {
                 {"View Lore", []() {
-					WaitForEnterPrompt(Constants::Story::BACKSTORY + Constants::Story::ANTAGONIST_INTRO + "\n");
+                    WaitForEnterPrompt(Constants::Story::BACKSTORY + Constants::Story::ANTAGONIST_INTRO + "\n");
                 }},
             },
             {
                 {"Exit Game", []() { exit(0); }},
             },
-        });
+            });
 
         Prompt& prompt = Prompt::GetInstance();
 
-        cout << Constants::UI::WELCOME_MESSAGE << endl;
+        cout << Constants::UI::WELCOME_MESSAGE;
         cout << Constants::Story::BACKSTORY << endl;
         cout << Constants::UI::NAVIGATE_TEXT << endl;
         cout << Constants::UI::CONTINUE_TEXT << endl;
@@ -43,9 +41,6 @@ void displayTitleScreen() {
 }
 
 int main() {
-	// Seed random number generator
-    srand((unsigned)time(nullptr));
-
     displayTitleScreen();
     return 0;
 }

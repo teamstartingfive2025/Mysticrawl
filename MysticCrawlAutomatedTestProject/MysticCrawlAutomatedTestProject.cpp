@@ -1,6 +1,17 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "../Mysticrawl/Random.cpp"
+#include "../Mysticrawl/Input.cpp"
+#include "../Mysticrawl/Key.cpp"
+#include "../Mysticrawl/Prompt.cpp"
+#include "../Mysticrawl/Interactable.cpp"
+#include "../Mysticrawl/SimpleMechanism.cpp"
+#include "../Mysticrawl/Exit.cpp"
+#include "../Mysticrawl/Room.cpp"
+#include "../Mysticrawl/Player.cpp"
 #include "../Mysticrawl/Enemy.cpp"
+#include "../Mysticrawl/EnemyTemplates.cpp"
+#include "../Mysticrawl/SelectionMenu.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

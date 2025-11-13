@@ -4,11 +4,13 @@
 #include <iostream>
 #include "Interactable.h"
 #include "Item.h"
+#include "SimpleMechanism.h"
 using namespace std;
 
 // Forward declarations to avoid circular dependency
 class Enemy;
 class Room;
+class Item;
 
 /**
  * The Player class represents the user-controlled character.
@@ -63,22 +65,28 @@ public:
 
     // Displays all items the player has collected
     void showInventory() const;
+    
+    void interact();
+    // Displays selection menu of all items the player has collected
+    shared_ptr<Item> itemSelectMenu();
+
+    // Manages item usage
+    void useItem(shared_ptr<Item> item);
+
+    bool inventoryEmpty();
 
     // Checks if the player currently has a specific item
-    bool hasItem(const string& itemName) const;
+    bool hasItem(const shared_ptr<Item> itemPointer) const;
 
     // Accessor and mutator for the current room pointer
     Room* getCurrentRoom() const;
     void setCurrentRoom(Room* room);
 
     int getHealth() const { return health; }
-    const std::string& getName() const { return playerName; }
+    const string& getName() const { return playerName; }
 
     // changeHealth accepts positive (heal) or negative (damage) values
     void changeHealth(int delta) { health += delta; }
-
-    // convenience: apply damage (positive amount)
-    void applyDamage(int amount) { changeHealth(-amount); }
 
     //view healthbar
     void displayHealthBar(int width = 20) const;
