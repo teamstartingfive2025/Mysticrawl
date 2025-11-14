@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Key.h"
 #include "Exit.h"
+#include "Lockable.h"
+
 using namespace std;
 
 void Key::printUnlockText() {

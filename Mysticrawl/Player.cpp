@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Key.h"
 #include "Random.h"
+#include "Lockable.h"
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
@@ -28,6 +29,13 @@ void Player::look() const {
         for (const auto& mech : currentRoom->getMechanisms()) {
             cout << " - " << mech->getDescription() << "\n";
         }
+    }
+	// Show containers in the room
+    if (!currentRoom->getContainers().empty()) {
+        cout << "\nYou notice the following containers:\n";
+        for (const auto& container : currentRoom->getContainers()) {
+            cout << " - " << container.getName() << "\n";
+		}
     }
     auto& enemies = currentRoom->getEnemies();
     for (Enemy* enemy : enemies) {
@@ -285,9 +293,11 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
     }
 }
     void Player::interact() {
-        auto& mechs = currentRoom->getMechanisms();
 
-        if (mechs.empty()) {
+        auto& mechs = currentRoom->getMechanisms();
+        auto& containers = currentRoom->getContainers();
+
+        if (mechs.empty() && containers.empty()) {
             cout << "There is nothing here to interact with.\n";
             return;
         }
@@ -300,13 +310,21 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
             interactOptions.push_back({
                 mech->getDescription(),
                 [mech]() { mech->use(); }
-                });
+            });
+        }
+
+        for (auto& container : containers) {
+            // Each menu item attempts to open container menu
+            interactOptions.push_back({
+                container.getName(),
+                [&container]() { container.openContainerSelection(); }
+            });
         }
 
         // Optional exit option so the player can back out
         interactOptions.push_back({
-            "Cancel", []() { cout << "You step away from the mechanisms.\n"; }
-            });
+            "Cancel", []() { cout << "You don't interact with anything.\n"; }
+        });
 
         // Refresh and show the arrow-key menu
         RefreshSelectionMenu(interactOptions);

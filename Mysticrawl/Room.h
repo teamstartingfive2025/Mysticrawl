@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Enemy.h"
 #include "Exit.h"
+#include "Container.h"
 
 #include <vector>
 #include <string>
@@ -27,6 +28,7 @@ private:
     vector<Exit> exits;          // Adjacent rooms by direction (e.g., "east")
     vector<Enemy*> enemies;        // Enemies present in the room
     vector<shared_ptr<SimpleMechanism>> mechanisms;
+    vector<Container> containers;
 
 public:
     Room(string name, string description, vector<shared_ptr<Item>> items = {}, vector<shared_ptr<Item>> hiddenItems = {});
@@ -54,4 +56,8 @@ public:
 
     void addMechanism(shared_ptr<SimpleMechanism> mech);
     const vector<shared_ptr<SimpleMechanism>>& getMechanisms() const;
+
+    vector<Container>& getContainers() { return containers; }
+    const vector<Container>& getContainers() const { return containers; }
+	void addContainer(const Container& container) { containers.push_back(container); }
 };

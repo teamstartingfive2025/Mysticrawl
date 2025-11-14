@@ -9,6 +9,8 @@
 #include "SimpleMechanism.h"
 #include "EnemyTemplates.h"
 #include "Prompt.h"
+#include "Lockable.h"
+#include "Container.h"
 
 #include <iostream>
 #include <limits>
@@ -59,6 +61,9 @@ void StartDungeon() {
 
 	Enemy wizard = WizardTemplate;
     wizardRoom.addEnemy(&wizard);
+	shared_ptr<Item> wizardKey = make_shared<Item>();
+	wizardKey->setName("Wizard's Key");
+	wizardRoom.addItem(wizardKey);
 
     // New N/S rooms
     Room northRoom(
@@ -70,6 +75,12 @@ void StartDungeon() {
         "South Cellar",
         "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
     );
+
+    southRoom.addContainer(Container(
+        "Wizard Box",
+        { make_shared<Potion>("Potion of Healing", 10) },
+        { [&]() -> bool { return player.hasItem(wizardKey); } }
+    ));
 
     Enemy rat = RatTemplate;
 
@@ -204,7 +215,9 @@ void StartDungeon() {
                 } });
             }
 
-            if (!player.getCurrentRoom()->getMechanisms().empty()) {
+            if (!player.getCurrentRoom()->getMechanisms().empty() ||
+				!player.getCurrentRoom()->getContainers().empty()
+            ) {
                 options.push_back({ "Interact", [&]() { player.interact(); } });
             }
 
