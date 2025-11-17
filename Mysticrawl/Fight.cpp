@@ -37,11 +37,12 @@ void Fight::fightMenu(Player& player) {
         }
         });
 
-    // --- DEFEND OPTION (placeholder) ---
+    // --- DEFEND OPTION (functional) ---
     fightOptions.push_back({
         "Defend",
-        []() {
+        [&player]() {
             cout << "You brace yourself for an incoming attack.\n";
+            player.setDefending(true); //next enemy attack reduced
         }
         });
 

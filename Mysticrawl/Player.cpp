@@ -216,9 +216,22 @@ bool Player::isAlive() const {
     return health > 0;
 }
 
+void Player::setDefending(bool value) {
+    defending = value;
+}
+
+bool Player::isDefending() const {
+    return defending;
+}
+
 // Applies positive damage; returns actual damage applied (clamped to current health)
 int Player::takeDamage(int amount) {
     if (amount <= 0) return 0;
+    if (defending)
+    {
+        amount -= 2; //next enemy attack damage = -2 of normal
+        defending = false;
+    }
     int actual = std::min(amount, health);
     health -= actual;
     return actual;

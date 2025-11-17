@@ -12,6 +12,8 @@ class Enemy;
 class Room;
 class Item;
 
+
+
 /**
  * The Player class represents the user-controlled character.
  * It tracks the player's current room, inventory, and provides methods
@@ -24,7 +26,7 @@ private:
     std::string playerName;
     int health;
     int maxHealth;
-
+    bool defending = false; //  reduces next enemy hit
 public:
     // Constructor initializes the player at the starting room
     // updated constructor (initialize maxHealth to starting health)
@@ -42,6 +44,9 @@ public:
 
     // takeDamage applies positive damage to the player, clamps at 0, and returns the actual damage applied
     int takeDamage(int amount);
+
+    void setDefending(bool value);
+    bool isDefending() const;
 
     // heal increases health up to maxHealth and returns amount healed
     int heal(int amount);
