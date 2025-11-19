@@ -43,6 +43,10 @@ void Enemy::action(Player& target) {
         int damage = attack(target);
 
     }
+    // LV - is the intention that these are mutually exclusive
+    //  e.g. if idle true - than will never check taunt or special attack
+    //  the probability calculation seems non-intuitive
+    //  Check the model output in the enemy test file for details.
     else if (choice > (100 - attackChance - idleChance)) //chance to idle
     {
         cout << endl << name << " idles!\n";

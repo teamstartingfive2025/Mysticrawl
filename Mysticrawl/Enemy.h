@@ -11,7 +11,7 @@ public:
     Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint); //overloaded constructor for enemies with special abilities
     Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint, function <void(Enemy* self, Player& target)> ef); //overloaded constructor for enemies with special abilities
 
-    const std::string& getName() const;
+    const std::string& getName() const;   // LV - why reference?  method to retrieve the intro text?
     int getHealth() const;
     bool isAlive() const;
 
