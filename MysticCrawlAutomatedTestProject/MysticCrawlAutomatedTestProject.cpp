@@ -15,6 +15,8 @@
 #include "../Mysticrawl/Container.cpp"
 #include "../Mysticrawl/Lockable.cpp"
 
+#ifdef ENEMY
+
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -88,6 +90,7 @@ namespace MysticCrawlAutomatedTestProject
 		}
 	};
 }
+#endif
 
 /*
 Starting 5 Enemy Class
