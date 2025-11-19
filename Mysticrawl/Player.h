@@ -63,7 +63,9 @@ public:
     void investigate();  // Search the current room for hidden items
 
     // Picks up an item from the room (if available)
-    void pickup();
+    //   returns # of items picked up
+    int pickup();
+    int pickupImmediately();
 
     // Displays all items the player has collected
     void showInventory() const;

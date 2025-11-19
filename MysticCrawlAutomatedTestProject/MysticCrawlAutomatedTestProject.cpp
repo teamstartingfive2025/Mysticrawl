@@ -15,6 +15,8 @@
 #include "../Mysticrawl/Container.cpp"
 #include "../Mysticrawl/Lockable.cpp"
 
+#define ENEMY
+
 #ifdef ENEMY
 
 
