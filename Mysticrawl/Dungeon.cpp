@@ -162,10 +162,15 @@ void StartDungeon() {
         Exit("west", &fightRoom),
         Exit("east", &buttonRoom) // locked initially
     });
-
+ 
+// West = back to lever room.
+// East = forward to the final boss chamber.
+//This temporarily connects the button room to the end of the dungeon. When other rooms are created
+//in future stories, the exits will need to be fixed to link the rooms properly.
     buttonRoom.setExits({
-        Exit("west", &leverRoom)
-    });
+        Exit("west", &leverRoom),
+        Exit("east", &finalBossRoom)    
+        });
 
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
         "Iron Lever", true, // true = lever type
