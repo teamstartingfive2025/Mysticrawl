@@ -98,9 +98,18 @@ void StartDungeon() {
         "The air smells of dust. A round stone button is embedded in the far wall."
     );
 
+
     Room greaterRatRoom(
         "The trial of the Greater Rat",
         "Special attack demo. This room definitely doesn't have to be in the final game."
+    );
+
+    // This room sits at the very end of the dungeon path, its the final dungeon room
+    Room finalBossRoom(
+        "Final Boss Chamber",
+        "You step into a vast circular chamber. Ancient stone pillars rise into the darkness.\n"
+        "The air feels unnaturally heavy, as though the dungeon itself is watching you.\n"
+        "This feels like the heart of the entire labyrinth...\n"
     );
 
     Enemy gRat = GreaterRatTemplate;
