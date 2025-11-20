@@ -169,7 +169,15 @@ void StartDungeon() {
 //in future stories, the exits will need to be fixed to link the rooms properly.
     buttonRoom.setExits({
         Exit("west", &leverRoom),
-        Exit("east", &finalBossRoom)    
+        Exit("east", &finalBossRoom)
+        //Edit the above line when linking new rooms for the "east exit"
+        });
+
+//West = returns to Button Room.
+// No other exits are provided, so this is the dungeon’s end.
+    finalBossRoom.setExits({
+        Exit("west", &buttonRoom)
+        //Change buttonRoom to whatever the last room's name is
         });
 
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
