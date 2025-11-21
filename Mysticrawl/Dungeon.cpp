@@ -98,9 +98,18 @@ void StartDungeon() {
         "The air smells of dust. A round stone button is embedded in the far wall."
     );
 
+
     Room greaterRatRoom(
         "The trial of the Greater Rat",
         "Special attack demo. This room definitely doesn't have to be in the final game."
+    );
+
+    // This room sits at the very end of the dungeon path, its the final dungeon room
+    Room finalBossRoom(
+        "Final Boss Chamber",
+        "You step into a vast circular chamber. Ancient stone pillars rise into the darkness.\n"
+        "The air feels unnaturally heavy, as though the dungeon itself is watching you.\n"
+        "This feels like the heart of the entire labyrinth...\n"
     );
 
     Enemy gRat = GreaterRatTemplate;
@@ -153,10 +162,23 @@ void StartDungeon() {
         Exit("west", &fightRoom),
         Exit("east", &buttonRoom) // locked initially
     });
-
+ 
+// West = back to lever room.
+// East = forward to the final boss chamber.
+//This temporarily connects the button room to the end of the dungeon. When other rooms are created
+//in future stories, the exits will need to be fixed to link the rooms properly.
     buttonRoom.setExits({
-        Exit("west", &leverRoom)
-    });
+        Exit("west", &leverRoom),
+        Exit("east", &finalBossRoom)
+        //Edit the above line when linking new rooms for the "east exit"
+        });
+
+//West = returns to Button Room.
+// No other exits are provided, so this is the dungeon’s end.
+    finalBossRoom.setExits({
+        Exit("west", &buttonRoom)
+        //Change buttonRoom to whatever the last room's name is
+        });
 
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
         "Iron Lever", true, // true = lever type
