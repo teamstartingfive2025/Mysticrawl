@@ -29,6 +29,7 @@ using namespace std;
  * and manages the main gameplay loop (exploration, movement, and interaction).
  */
 void StartDungeon() {
+
     // --- Define dungeon layout and content ---
     Room spawnRoom(
         "Spawn Room",
@@ -38,6 +39,9 @@ void StartDungeon() {
         "A large iron-clad door stands to the east, bearing a large lock on the handle.\n",
         { make_shared<Item>("Torch") }
     );
+
+    // --- Initialize the player ---
+    Player player(&spawnRoom, "Hero", 100);
 
     Room nextRoom(
         "Next Room",
@@ -51,46 +55,14 @@ void StartDungeon() {
         "Old crates and the smell of mildew.\n"
     );
 
-    Room wizardRoom(
-        "Wizard's Lair",
-        "The air crackles with magical energy. Ancient tomes and potions clutter the space.\n"
-    );
-
-    // --- Initialize the player ---
-    Player player(&spawnRoom, "Hero", 100);
-
-	Enemy wizard = WizardTemplate;
-    wizardRoom.addEnemy(&wizard);
-	shared_ptr<Item> wizardKey = make_shared<Item>();
-	wizardKey->setName("Wizard's Key");
-	wizardRoom.addItem(wizardKey);
-
-    // New N/S rooms
-    Room northRoom(
-        "North Corridor",
-        "A narrow passage runs north-south. The air is colder here, and the stones are slick with moss.\n"
-    );
-
-    Room southRoom(
-        "South Cellar",
-        "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
-    );
-
-    southRoom.addContainer(Container(
-        "Wizard Box",
-        { make_shared<Potion>("Potion of Healing", 10) },
-        { [&]() -> bool { return player.hasItem(wizardKey); } }
-    ));
-
-    Enemy rat = RatTemplate;
-
-    fightRoom.addEnemy(&rat);
-
-    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
-
     Room leverRoom(
         "Lever Room",
         "You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+    );
+
+    Room a4(
+        "a4: Room with fight",
+        "Placeholder"
     );
 
     Room buttonRoom(
@@ -98,65 +70,467 @@ void StartDungeon() {
         "The air smells of dust. A round stone button is embedded in the far wall."
     );
 
+    Room wizardRoom(
+        "Wizard's Lair",
+        "The air crackles with magical energy. Ancient tomes and potions clutter the space.\n"
+    );
+
+    Room southRoom(
+        "Wizard Treasury",
+        "A low-ceiling cellar stuffed with broken barrels. Something skitters beneath the debris.\n"
+    );
+    
+    Room a8(
+        "a8: Puzzle to go north",
+        "Placeholder"
+    );
+
+    Room a9(
+        "a9: Fight here",
+        "Placeholder"
+    );
+
     Room greaterRatRoom(
         "The trial of the Greater Rat",
         "Special attack demo. This room definitely doesn't have to be in the final game."
     );
 
+    Room a11(
+        "a11: Secret Room",
+        "Placeholder"
+    );
+
+    Room b1(
+        "b1: Healing Room",
+        "there should be a single use means for the player to heal to max"
+    );
+
+    Room b2(
+        "b2: Puzzle Room",
+        "Puzzle east"
+    );
+
+    Room b3(
+        "b3: Fight Room",
+        "Placeholder"
+    );
+
+    Room b4(
+        "b4: Puzzle Room",
+        "Puzzle east and south"
+    );
+
+    Room b5(
+        "b5: Fight Room",
+        "Placeholder"
+    );
+    
+    Room b6(
+        "b6: Secret Treasure Room",
+        "Placeholder"
+    );
+
+    Room b7(
+        "b7: Treasure Room",
+        "Put something that buffs the player here"
+    );
+
+    Room b8(
+        "b8: Fight Room",
+        "Placeholder"
+    );
+
+    Room b9(
+        "b9: Puzzle Room",
+        "puzzle south"
+    );
+
+    Room b10(
+        "b10: Fight Room",
+        "Placeholder"
+    );
+
+    Room b11(
+        "b11: Puzzle Room",
+        "puzzle east"
+    );
+
+    Room b12(
+        "b12: Mini boss Room",
+        "Placeholder"
+    );
+
+    Room b13(
+        "b13: Treasure Room",
+        "Put something that buffs the player here"
+    );
+
+    Room c1(
+        "c1: Empty Room",
+        "I decided to get rid of the labyrinthe area. Placeholder"
+    );
+
+    Room c2(
+        "c2: Empty Room",
+        "I decided to get rid of the labyrinthe area. Placeholder"
+    );
+
+    Room d1(
+        "d1: Healing Room",
+        "Placeholder"
+    );
+
+    Room d7(
+        "d7: Puzzle Room",
+        "Puzzle east"
+    );
+
+    Room d8(
+        "d8: Fight Room",
+        "Placeholder"
+    );
+
+    Room d9(
+        "d9: Puzzle Room",
+        "Puzzle east"
+    );
+
+    Room d10(
+        "d10: Mini Boss Room",
+        "Placeholder"
+    );
+
+    Room d11(
+        "d11: Treasure Room",
+        "Put something useful here"
+    );
+
+    Room d12(
+        "d12: Fight Room",
+        "Placeholder"
+    );
+
+    Room d13(
+        "d13: Empty Room",
+        "Placeholder"
+    );
+
+    Room d14(
+        "d14: Puzzle Room",
+        "Puzzle north"
+    );
+
+    Room d15(
+        "d15: Treasure Room",
+        "Put something useful here"
+    );
+
+    Room d16(
+        "d16: Treasure Room",
+        "Put something useful here"
+    );
+
+    Room d17(
+        "d17: Fight Room",
+        "Placeholder"
+    );
+
+    Room d18(
+        "d18: Empty Room",
+        "Placeholder"
+    );
+
+    Room e1(
+        "e1: Healing Room",
+        "Single use means to heal to max"
+    );
+
+    Room e2(
+        "e2: Puzzle Room",
+        "Puzzle north"
+    );
+
+    Room e3(
+        "e3: Puzzle Room",
+        "Puzzle north"
+    );
+
+    Room e4(
+        "e4: Puzzle Room",
+        "Puzzle north"
+    );
+
+    Room e5(
+        "e5: Treasure Room",
+        "Big weapon here"
+    );
+
+    Room finalBossRoom(
+        "Lair of the Dark Lord",
+        "creative description"
+    );
+
+    //Add enemies
+    Enemy rat = RatTemplate;
+
+    fightRoom.addEnemy(&rat);
+
+    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+
+    Enemy wizard = WizardTemplate;
+    wizardRoom.addEnemy(&wizard);
+    shared_ptr<Item> wizardKey = make_shared<Item>();
+    wizardKey->setName("Wizard's Key");
+    wizardRoom.addItem(wizardKey);
+    
     Enemy gRat = GreaterRatTemplate;
     greaterRatRoom.addEnemy(&gRat);
 
-    // Connect rooms via exits
+    //Add items and containers
     shared_ptr<Key> key = make_shared<Key>();
     spawnRoom.setExits({ Exit("east", &nextRoom, { [&]() -> bool { return player.hasItem(key); } }) });
     key->setName("Key");
     key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
     spawnRoom.addHiddenItem(key);
 
+    southRoom.addContainer(Container(
+        "Wizard Box",
+        { make_shared<Potion>("Potion of Healing", 10) },
+        { [&]() -> bool { return player.hasItem(wizardKey); } }
+    ));
+
+    // Connect rooms via exits
     // Next Room connects in all four directions
     nextRoom.setExits({
         Exit("west",  &spawnRoom),
         Exit("east",  &fightRoom),
-        Exit("north", &wizardRoom),
-        Exit("south", &southRoom)
-    });
-
-    wizardRoom.setExits({
-        Exit("south", &nextRoom)
-    });
-
-    // Fight room unchanged besides its west return
-    fightRoom.setExits({
-        Exit("west", &nextRoom)
-    });
-
-    // New rooms return to Next Room
-    northRoom.setExits({
-        Exit("south", &nextRoom)
-    });
-
-    southRoom.setExits({
-        Exit("north", &nextRoom)
+        //Exit("north", &wizardRoom),
+        //Exit("south", &southRoom)
     });
 
     fightRoom.setExits({
         Exit("west", &nextRoom),
         Exit("east", &leverRoom),
-        Exit("north", &greaterRatRoom)
-    });
-
-    greaterRatRoom.setExits({
-        Exit("south", &fightRoom)
+        //Exit("north", &greaterRatRoom)
     });
 
     leverRoom.setExits({
         Exit("west", &fightRoom),
-        Exit("east", &buttonRoom) // locked initially
+        Exit("east", &a4) // locked initially
+    });
+
+    a4.setExits({
+        Exit("west", &leverRoom),
+        Exit("north", &a8),
+        Exit("south", &buttonRoom)
     });
 
     buttonRoom.setExits({
-        Exit("west", &leverRoom)
+        Exit("north", &a4)
     });
+
+    southRoom.setExits({
+        Exit("east", &wizardRoom)
+    });
+
+    wizardRoom.setExits({
+        Exit("west", &southRoom),
+        Exit("east", &a8)
+    });
+
+    a8.setExits({
+        Exit("west", &wizardRoom),
+        Exit("north", &a9),
+        Exit("south", &a4)
+    });
+
+    a9.setExits({
+        Exit("east", &greaterRatRoom),
+        Exit("south", &a8)
+    });
+
+    greaterRatRoom.setExits({
+        Exit("west", &a9),
+        Exit("south", &b1)
+    });
+
+    a11.setExits({
+        Exit("south", &greaterRatRoom)
+    });
+
+    b1.setExits({
+        Exit("north", &greaterRatRoom),
+        Exit("south", &b2)
+    });
+
+    b2.setExits({
+        Exit("north", &b1),
+        Exit("east", &b7)
+    });
+
+    b3.setExits({
+        Exit("east", &b4),
+        Exit("south", &b7)
+        });
+
+    b4.setExits({
+        Exit("west", &b3),
+        Exit("east", &b5),
+        Exit("south", &b8)
+        });
+
+    b5.setExits({
+        Exit("west", &b4),
+        Exit("south", &b9)
+        });
+
+    b6.setExits({
+        Exit("south", &b5)
+        });
+
+    b7.setExits({
+        Exit("west", &b2),
+        Exit("east", &b8),
+        Exit("north", &b3),
+        Exit("south", &b10)
+    });
+
+    b8.setExits({
+        Exit("west", &b7),
+        Exit("east", &b9),
+        Exit("north", &b4),
+        Exit("south", &b11)
+        });
+
+    b9.setExits({
+        Exit("west", &b8),
+        Exit("north", &b5),
+        Exit("south", &b12)
+        });
+
+    b10.setExits({
+        Exit("east", &b11),
+        Exit("north", &b7),
+        });
+
+    b11.setExits({
+        Exit("west", &b10),
+        Exit("east", &b12),
+        Exit("north", &b8)
+        });
+
+    b12.setExits({
+        Exit("west", &b11),
+        Exit("north", &b9),
+        Exit("south", &b13)
+        });
+
+    b13.setExits({
+        Exit("west", &c1),
+        Exit("north", &b12)
+        });
+
+    c1.setExits({
+        Exit("east", &b13),
+        Exit("south", &c2)
+        });
+
+    c2.setExits({
+        Exit("north", &c1),
+        Exit("east", &d1)
+        });
+
+    d1.setExits({
+        Exit("west", &c2),
+        Exit("east", &d7)
+        });
+
+    d7.setExits({
+        Exit("west", &d1),
+        Exit("east", &d8),
+        Exit("south", &d12)
+        });
+
+    d8.setExits({
+        Exit("west", &d7),
+        Exit("east", &d9)
+        });
+
+    d9.setExits({
+        Exit("west", &d8),
+        Exit("east", &d10),
+        Exit("south", &d14)
+        });
+
+    d10.setExits({
+        Exit("west", &d9),
+        Exit("east", &d11)
+        });
+
+    d11.setExits({
+        Exit("west", &d10),
+        Exit("east", &e1)
+        });
+
+    d12.setExits({
+        Exit("east", &d13),
+        Exit("north", &d7)
+        });
+
+    d13.setExits({
+        Exit("west", &d12),
+        Exit("south", &d17)
+        });
+
+    d14.setExits({
+        Exit("east", &d15),
+        Exit("north", &d9),
+        Exit("south", &d18)
+        });
+
+    d15.setExits({
+        Exit("west", &d14)
+        });
+
+    d16.setExits({
+        Exit("east", &d17)
+        });
+
+    d17.setExits({
+        Exit("west", &d16),
+        Exit("east", &d18),
+        Exit("north", &d13)
+        });
+
+    d18.setExits({
+        Exit("west", &d17),
+        Exit("north", &d14)
+        });
+
+    e1.setExits({
+        Exit("west", &d11),
+        Exit("north", &e2)
+        });
+
+    e2.setExits({
+        Exit("south", &e1),
+        Exit("north", &e3)
+        });
+
+    e3.setExits({
+        Exit("south", &e2),
+        Exit("north", &e4)
+        });
+
+    e4.setExits({
+        Exit("south", &e3),
+        Exit("north", &e5)
+        });
+
+    e5.setExits({
+        Exit("south", &e4),
+        Exit("north", &finalBossRoom)
+        });
 
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
         "Iron Lever", true, // true = lever type
