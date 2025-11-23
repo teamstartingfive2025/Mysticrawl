@@ -22,6 +22,5 @@ std::string Weapon::getName() const
     case WeaponType::Sword: return "Sword";
     case WeaponType::Staff: return "Staff";
     }
-    return "Unknown Weapon";
 }
 
