@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#ifdef NOT_DEBUG
 #include "../Mysticrawl/Random.cpp"
 #include "../Mysticrawl/Input.cpp"
 #include "../Mysticrawl/Key.cpp"
@@ -12,6 +13,7 @@
 #include "../Mysticrawl/Enemy.cpp"
 #include "../Mysticrawl/EnemyTemplates.cpp"
 #include "../Mysticrawl/SelectionMenu.cpp"
+#include "../Mysticrawl/Lockable.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -85,6 +87,8 @@ namespace MysticCrawlAutomatedTestProject
 		}
 	};
 }
+
+#endif
 
 /*
 Starting 5 Enemy Class

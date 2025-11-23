@@ -1,26 +1,26 @@
+#include <string>
 #include "Weapons.h"
+#include "Item.h"
 
-Weapon::Weapon(WeaponType type, int power)
-    : type_(type), power_(power)
-{
-}
+Weapon::Weapon(string name, int power)
+    : Item(name), power_(power) {}
 
-WeaponType Weapon::getType() const
+/*WeaponType Weapon::getType() const
 {
     return type_;
-}
+}*/
 
-int Weapon::getPower() const
+int Weapon::getWeaponPower() const
 {
     return power_;
 }
 
-std::string Weapon::getName() const
+/*std::string Weapon::getName() const
 {
     switch (type_)
     {
     case WeaponType::Sword: return "Sword";
     case WeaponType::Staff: return "Staff";
     }
-}
+}*/
 
