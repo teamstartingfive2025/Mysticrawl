@@ -7,6 +7,7 @@
 #include "../Mysticrawl/Constants.h"
 #include "../Mysticrawl/Prompt.h"
 #include "../Mysticrawl/Input.h"
+#include "../Mysticrawl/Room.h"
 
 #include <string>
 
@@ -42,6 +43,33 @@ namespace MysticCrawlAutomatedTestProject
 			sword.setName("Bigger Sword");
 			Assert::AreEqual("Bigger Sword", sword.getName().c_str());
 			Assert::AreEqual(8, sword.getWeaponPower());
+		}
+
+		TEST_METHOD(CreateRoomWithAStaff) {
+			Logger::WriteMessage("Create a room with a staff\n");
+			Room spawnRoom(
+				"Spawn Room",
+				"You awake in a dimly lit dungeon cell, confused and dazed. \n"
+				"The fiery light of a torch flickers against the dark, cold walls. \n"
+				"The room is barren except for a sole flowerpot resting beside a pile of stones in the corner. \n"
+				"A large iron-clad door stands to the east, bearing a large lock on the handle.\n",
+				{ make_shared<Item>("Torch") },
+				{ make_shared<Weapon>("Staff", 5) }
+			);
+			// vector<shared_ptr<Item>>& getItems() { return items; }
+			// vector<shared_ptr<Item>>& getHiddenItems() { return hiddenItems; }
+			// for (const auto& item : currentRoom->getItems())
+			vector<shared_ptr<Item>> visibleItems = spawnRoom.getItems();
+			vector<shared_ptr<Item>> hiddenItems = spawnRoom.getHiddenItems();
+			for (const auto& itr : spawnRoom.getItems()) {
+				Logger::WriteMessage(itr->getName().c_str());
+				Logger::WriteMessage("\n");
+			}
+			Logger::WriteMessage("Printing Hidden items\n");
+			for (const auto& itr : spawnRoom.getHiddenItems()) {
+				Logger::WriteMessage(itr->getName().c_str());
+				Logger::WriteMessage("\n");
+			}
 		}
 	};
 }
