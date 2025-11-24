@@ -218,6 +218,7 @@ void StartDungeon() {
     try {
         while (true) {
             vector< tuple<string, function<void()>> > options;
+            cout << "\nWhat would you like to do next?\n";
 
             options = {
                 {"Look around", [&player]() { player.look(); }},
