@@ -30,6 +30,7 @@ using namespace std;
  */
 void StartDungeon() {
     // --- Define dungeon layout and content ---
+    cout << "Welcome to Mysticrawl\n";
     Room spawnRoom(
         "Spawn Room",
         "You awake in a dimly lit dungeon cell, confused and dazed. \n"

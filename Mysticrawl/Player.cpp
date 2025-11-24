@@ -80,7 +80,7 @@ void Player::pickup() {
 
     vector<tuple<string, function<void()>>> itemOptions;
 
-    cout << "\nItems available to pick up:\n";
+    cout << "Items available to pick up:\n";
 
     for (size_t i = 0; i < roomItems.size(); ++i) {
         auto& item = roomItems[i];
