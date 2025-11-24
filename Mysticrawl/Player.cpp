@@ -327,7 +327,7 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
 
         // Optional exit option so the player can back out
         interactOptions.push_back({
-            "Cancel", []() { cout << "You don't interact with anything.\n"; }
+            "Cancel", []() { cout << "You decide not to interact with anything.\n"; }
         });
 
         // Refresh and show the arrow-key menu
