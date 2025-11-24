@@ -7,7 +7,7 @@
 using namespace std;
 
 Enemy RatTemplate(
-    "Rat", "A rat suddenly appears! I hope it doesn't have rabies...\n",
+    "Rat", "A rat suddenly appears! I hope it doesn't have rabies...",
     5,  // hit points
     20, // block chance (%)
     1,  // min damage
@@ -34,7 +34,7 @@ Enemy GreaterRatTemplate(
             cout << "The Greater Rat charges a special attack!\n";
         }
     },
-    "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...\n",
+    "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...",
     12, // hit points
     40, // block chance (%)
     3,  // min damage
@@ -49,7 +49,7 @@ Enemy GreaterRatTemplate(
 
 Enemy WizardTemplate(
     [&](Enemy* self, Player& target) {},
-    "Evil Wizard", "An evil wizard glares at you, ready to cast a spell!\n",
+    "Evil Wizard", "An evil wizard glares at you, ready to cast a spell!",
     30, // hit points
     30, // block chance
     5,  // min damage
