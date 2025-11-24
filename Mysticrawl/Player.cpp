@@ -174,6 +174,7 @@ void Player::showInventory() const {
 
 // Displays selection menu of all items in player inventory and returns player choice
 shared_ptr<Item> Player::itemSelectMenu() {
+    cout << "\nSelect an item to use:\n";
     shared_ptr<Item> selection;
     
     vector< tuple<string, function<void()>>> itemOptions;
