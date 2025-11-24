@@ -11,6 +11,7 @@
 #include "Prompt.h"
 #include "Lockable.h"
 #include "Container.h"
+#include "Weapons.h"
 
 #include <iostream>
 #include <limits>
