@@ -166,10 +166,16 @@ void Player::move()
 
 // Displays the player's inventory contents
 void Player::showInventory() const {
-    cout << "\nInventory:";
-    if (inventory.empty()) cout << " (empty)";
-    for (auto& item : inventory) cout << " " << item->getName();
+    cout << "Inventory:";
+    if (inventory.empty()) {
+        cout << " (empty)\n";
+        return;
+    }
+
     cout << "\n";
+    for (const auto& item : inventory) {
+        cout << " - " << item->getName() << "\n";
+    }
 }
 
 // Displays selection menu of all items in player inventory and returns player choice
