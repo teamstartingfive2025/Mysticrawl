@@ -265,9 +265,12 @@ void StartDungeon() {
         "Big weapon here"
     );
 
+    // This room sits at the very end of the dungeon path, its the final dungeon room
     Room finalBossRoom(
-        "Lair of the Dark Lord",
-        "creative description"
+        "Final Boss Chamber",
+        "You step into a vast circular chamber. Ancient stone pillars rise into the darkness.\n"
+        "The air feels unnaturally heavy, as though the dungeon itself is watching you.\n"
+        "This feels like the heart of the entire labyrinth...\n"
     );
 
     //Add enemies
@@ -530,6 +533,10 @@ void StartDungeon() {
     e5.setExits({
         Exit("south", &e4),
         Exit("north", &finalBossRoom)
+        });
+
+    finalBossRoom.setExits({
+        Exit("south", &e5)
         });
 
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
