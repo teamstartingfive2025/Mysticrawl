@@ -18,6 +18,18 @@ Enemy RatTemplate(
     15  // taunt chance (%)  *
 );
 
+Enemy SnakeTemplate(
+    "Snake", "A snake leaps from the ground!\n",
+    8,  // hit points
+    40, // block chance (%)
+    1,  // min damage
+    3,  // max damage
+    40, // block exit chance (%)
+    65, // attack chance (%) *
+    10, // idle chance (%)   *These must add up to 100
+    25  // taunt chance (%)  *
+);
+
 Enemy GreaterRatTemplate(
     [&](Enemy* self, Player& target) { // to access its member variables in the lambda, the object passes a pointer to itself as an argument. it feels ugly but John couldn't figure out a better way to do it.
         self->setSpecialInt(self->getSpecialInt()+1);
@@ -35,7 +47,7 @@ Enemy GreaterRatTemplate(
         }
     },
     "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...\n",
-    12, // hit points
+    20, // hit points
     40, // block chance (%)
     3,  // min damage
     6,  // max damage
