@@ -275,10 +275,13 @@ void StartDungeon() {
 
     //Add enemies
     Enemy rat = RatTemplate;
-
     fightRoom.addEnemy(&rat);
 
-    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+    Enemy snake = SnakeTemplate;
+    a4.addEnemy(&snake);
+
+    Enemy rat_01 = RatTemplate;
+    a9.addEnemy(&rat_01);
 
     Enemy wizard = WizardTemplate;
     wizardRoom.addEnemy(&wizard);
@@ -295,6 +298,8 @@ void StartDungeon() {
     key->setName("Key");
     key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
     spawnRoom.addHiddenItem(key);
+
+    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
     southRoom.addContainer(Container(
         "Wizard Box",

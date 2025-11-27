@@ -4,5 +4,8 @@
 using namespace std;
 
 extern Enemy RatTemplate; 
+extern Enemy SnakeTemplate;
 extern Enemy GreaterRatTemplate;
 extern Enemy WizardTemplate;
+extern Enemy SkeletonTemplate;
+extern Enemy GhostTemplate;

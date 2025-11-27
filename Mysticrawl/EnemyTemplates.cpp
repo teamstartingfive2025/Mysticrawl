@@ -83,3 +83,27 @@ Enemy WizardTemplate(
         }
     }
 );
+
+Enemy SkeletonTemplate(
+    "Skeleton", "A skeleton assembles before you!\n",
+    12,  // hit points
+    40, // block chance (%)
+    5,  // min damage
+    9,  // max damage
+    40, // block exit chance (%)
+    70, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    25  // taunt chance (%)  *
+);
+
+Enemy GhostTemplate(
+    "Ghost", "A figure emerges from the mist!\n",
+    10,  // hit points
+    40, // block chance (%)
+    8,  // min damage
+    12,  // max damage
+    40, // block exit chance (%)
+    70, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    25  // taunt chance (%)  *
+);
