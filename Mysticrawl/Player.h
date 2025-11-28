@@ -24,6 +24,10 @@ private:
     std::string playerName;
     int health;
     int maxHealth;
+    bool poisoned;
+    int poisonCounter = 0;
+    int poisonMin = 0;
+    int poisonMax = 0;
 
 public:
     // Constructor initializes the player at the starting room
@@ -51,6 +55,13 @@ public:
 
     // optional: change player's maximum health (adjusts current health if needed)
     void setMaxHealth(int newMax);
+
+    //manages poisoned condition
+    void setPoisoned(bool p, int c, int min, int max);
+    bool isPoisoned();
+    int getPoisonMin();
+    int getPoisonMax();
+    void decrementPoison();
 
     // Describes the current room and visible items
     void look() const;

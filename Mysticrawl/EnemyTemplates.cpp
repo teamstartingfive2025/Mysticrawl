@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Room.h"
 #include "Exit.h"
+#include "Random.h"
 #include <iostream>
 #include <functional>
 using namespace std;
@@ -19,15 +20,22 @@ Enemy RatTemplate(
 );
 
 Enemy SnakeTemplate(
+    [&](Enemy* self, Player& target) {
+        cout << "\n" << self->getName() << " bites!\n";
+        int duration = Random::GetInstance().randInt(2, 5);
+        target.setPoisoned(true, duration, 3, 6);
+    }, 
     "Snake", "A snake leaps from the ground!\n",
     8,  // hit points
     40, // block chance (%)
     1,  // min damage
     3,  // max damage
     40, // block exit chance (%)
-    65, // attack chance (%) *
+    35, // attack chance (%) *
     10, // idle chance (%)   *These must add up to 100
-    25  // taunt chance (%)  *
+    25, // taunt chance (%)  *
+    30, // special chance(%) *
+    0   // special int
 );
 
 Enemy GreaterRatTemplate(
@@ -106,4 +114,23 @@ Enemy GhostTemplate(
     70, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
     25  // taunt chance (%)  *
+);
+
+Enemy SkeletonKnightTemplate(
+    [&](Enemy* self, Player& target) { 
+        cout << "\nThe Skeleton Knight unleashes a special attack!\n";
+        self->attack(target);
+        self->attack(target);
+    },
+    "Skeleton Knight", "The Skeleton knight draws its sword!\n",
+    30,  // hit points
+    40, // block chance (%)
+    12,  // min damage
+    14,  // max damage
+    40, // block exit chance (%)
+    30, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    25, // taunt chance (%)  *
+    40,// special chance     *
+    0  // special int
 );

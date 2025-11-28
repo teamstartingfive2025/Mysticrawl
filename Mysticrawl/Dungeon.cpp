@@ -11,6 +11,7 @@
 #include "Prompt.h"
 #include "Lockable.h"
 #include "Container.h"
+#include "Random.h"
 
 #include <iostream>
 #include <limits>
@@ -621,6 +622,14 @@ void StartDungeon() {
                         return;
                     }
                 }
+            }
+
+            if (player.isPoisoned()) {
+                int damage = Random::GetInstance().randInt(player.getPoisonMin(), player.getPoisonMax());
+                
+                cout << "\nTook " << damage << " damage from poison\n";
+
+                player.decrementPoison();
             }
 
             player.displayHealthBar();

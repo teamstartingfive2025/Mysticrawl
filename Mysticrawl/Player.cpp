@@ -247,6 +247,26 @@ void Player::setMaxHealth(int newMax) {
     if (health > maxHealth) health = maxHealth;
 }
 
+void Player::setPoisoned(bool p, int c, int min, int max) { // make the player poisoned and increment time until poison is cured
+    poisoned = p;
+    poisonCounter += c;
+    if (min > poisonMin) poisonMin = min;
+    if (max > poisonMax) poisonMax = max;
+}
+
+bool Player::isPoisoned() { return poisoned; }
+
+int Player::getPoisonMin() { return poisonMin; }
+
+int Player::getPoisonMax() { return poisonMax; }
+
+void Player::decrementPoison() {
+    poisonCounter--;
+    if (poisonCounter < 1) {
+        setPoisoned(false, 0, 0, 0);
+    }
+}
+
 void Player::displayHealthBar(int width) const {
     if (width < 4) width = 4; // ensure space for brackets and numbers
 

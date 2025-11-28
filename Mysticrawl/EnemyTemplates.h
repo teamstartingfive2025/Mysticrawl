@@ -9,3 +9,4 @@ extern Enemy GreaterRatTemplate;
 extern Enemy WizardTemplate;
 extern Enemy SkeletonTemplate;
 extern Enemy GhostTemplate;
+extern Enemy SkeletonKnightTemplate;
