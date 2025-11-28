@@ -105,15 +105,21 @@ Enemy SkeletonTemplate(
 );
 
 Enemy GhostTemplate(
+    [&](Enemy* self, Player& target) {
+        cout << "\n" << self->getName() << " saps your strength!\n";
+        target.setAttackDebuff(2, 3);
+    }, 
     "Ghost", "A figure emerges from the mist!\n",
     10,  // hit points
     40, // block chance (%)
     8,  // min damage
     12,  // max damage
     40, // block exit chance (%)
-    70, // attack chance (%) *
+    55, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
-    25  // taunt chance (%)  *
+    25, // taunt chance (%)  *
+    15, // special chance    *
+    0   // special int
 );
 
 Enemy SkeletonKnightTemplate(

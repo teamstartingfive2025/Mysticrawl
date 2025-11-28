@@ -28,6 +28,8 @@ private:
     int poisonCounter = 0;
     int poisonMin = 0;
     int poisonMax = 0;
+    int attackDebuff = 0;
+    int attackDebuffCounter = 0;
 
 public:
     // Constructor initializes the player at the starting room
@@ -58,10 +60,15 @@ public:
 
     //manages poisoned condition
     void setPoisoned(bool p, int c, int min, int max);
-    bool isPoisoned();
-    int getPoisonMin();
-    int getPoisonMax();
+    bool isPoisoned() { return poisoned; }
+    int getPoisonMin() { return poisonMin; }
+    int getPoisonMax() { return poisonMax; }
     void decrementPoison();
+
+    //manages attack debuff
+    void setAttackDebuff(int amount, int duration);
+    int getAttackDebuff() { return attackDebuff; }
+    void decrementAttackDebuff();
 
     // Describes the current room and visible items
     void look() const;

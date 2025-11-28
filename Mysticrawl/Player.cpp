@@ -254,16 +254,22 @@ void Player::setPoisoned(bool p, int c, int min, int max) { // make the player p
     if (max > poisonMax) poisonMax = max;
 }
 
-bool Player::isPoisoned() { return poisoned; }
-
-int Player::getPoisonMin() { return poisonMin; }
-
-int Player::getPoisonMax() { return poisonMax; }
-
 void Player::decrementPoison() {
     poisonCounter--;
     if (poisonCounter < 1) {
         setPoisoned(false, 0, 0, 0);
+    }
+}
+
+void Player::setAttackDebuff(int amount, int duration) {
+    attackDebuff = amount;
+    attackDebuffCounter += duration;
+}
+
+void Player::decrementAttackDebuff() {
+    attackDebuffCounter--;
+    if (attackDebuffCounter < 1) {
+        attackDebuff = 0;
     }
 }
 
@@ -292,7 +298,9 @@ void Player::displayHealthBar(int width) const {
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
     // Generate random damage between 2 and 6
-	int damage = Random::GetInstance().randInt(2, 6);
+	int damage = Random::GetInstance().randInt(2, 6) - attackDebuff;
+
+    if (attackDebuff > 0) cout << "Your strength has been decreased!";
 
     // Print attack message
     cout << "You swing your fists at the " << target.getName()

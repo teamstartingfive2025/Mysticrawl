@@ -636,6 +636,8 @@ void StartDungeon() {
 
             player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
+            
+            player.decrementAttackDebuff();
         }
     }
     catch (const runtime_error&) {
