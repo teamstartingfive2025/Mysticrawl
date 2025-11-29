@@ -545,6 +545,8 @@ void StartDungeon() {
         Exit("south", &e5)
         });
 
+    //Add interactables
+    
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
         "Iron Lever", true, // true = lever type
         [&leverRoom](bool state) {                // capture leverRoom by reference
@@ -573,6 +575,19 @@ void StartDungeon() {
     );
 
     buttonRoom.addMechanism(button);
+
+    shared_ptr<SimpleMechanism> lever_a10 = make_shared<SimpleMechanism>(
+        "Loose Brick", false, 
+        [&greaterRatRoom, &a9, &b1, &a11](bool) {                // capture leverRoom by reference
+            cout << "A door appears to the north!\n";
+            greaterRatRoom.setExits({
+                Exit("north", &a11),
+                Exit("west", &a9),
+                Exit("south", &b1)
+                });
+        }
+    );
+    greaterRatRoom.addMechanism(lever_a10);
 
     // --- Initialize fight manager ---
     Fight fight;

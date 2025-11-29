@@ -107,7 +107,7 @@ Enemy SkeletonTemplate(
 Enemy GhostTemplate(
     [&](Enemy* self, Player& target) {
         cout << "\n" << self->getName() << " saps your strength!\n";
-        target.setAttackDebuff(2, 3);
+        target.setAttackDebuff(2, 3); //-2 to attack for 3 rounds
     }, 
     "Ghost", "A figure emerges from the mist!\n",
     10,  // hit points
