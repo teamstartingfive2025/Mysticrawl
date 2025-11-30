@@ -163,7 +163,7 @@ Enemy ThingTemplate(
         self->heal(damage / 2);
         cout << self->getName() << " healed " << damage/2 << "!\n";
     },
-    "The Thing That Gnaws", "The Thing That Gnaws gnashes its myriad teeth!\n",
+    "The Thing That Gnaws", "Emerging from the water, The Thing That Gnaws gnashes its myriad teeth!\n",
     35,  // hit points
     40, // block chance (%)
     15,  // min damage

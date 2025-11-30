@@ -24,7 +24,7 @@ private:
     std::string playerName;
     int health;
     int maxHealth;
-    bool poisoned;
+    bool poisoned = false;
     int poisonCounter = 0;
     int poisonMin = 0;
     int poisonMax = 0;

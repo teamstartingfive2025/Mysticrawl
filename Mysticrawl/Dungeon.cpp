@@ -168,12 +168,12 @@ void StartDungeon() {
 
     Room c1(
         "Dark tunnel",
-        "A passage so dark you can barely"
+        "A passage so dark you can barely see"
     );
 
     Room c2(
         "Dark tunnel",
-        "You begin to see a faint light eastward"
+        "You begin to see a faint light eastward..."
     );
 
     Room d1(
@@ -193,12 +193,12 @@ void StartDungeon() {
 
     Room d9(
         "d9: Fight Room",
-        "The walls and ceiling are corrupted with black slime that glows in some places."
+        "The walls and ceiling are covered with black slime that glows in some places."
     );
 
     Room d10(
-        "d10: Mini Boss Room",
-        "Placeholder"
+        "The Murky Pool",
+        "The black slime in the mine seems to be growing from a pool in the center of the room."
     );
 
     Room d11(
@@ -615,6 +615,16 @@ void StartDungeon() {
         }
     );
     greaterRatRoom.addMechanism(button_a10);
+
+    shared_ptr<SimpleMechanism> heal_b1 = make_shared<SimpleMechanism>(
+        "Crucifix",
+        [&b1, &player](bool) {
+            cout << "Healed to max.\n";
+            player.setHealth(player.getMaxHealth());
+        },
+        "The crucifix's healing power is spent.\n" //sticky lever
+    );
+    b1.addMechanism(heal_b1);
 
     shared_ptr<SimpleMechanism> button_b5 = make_shared<SimpleMechanism>(
         "Outline on North Wall", false, 
