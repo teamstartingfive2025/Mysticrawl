@@ -62,8 +62,8 @@ void StartDungeon() {
     );
 
     Room a4(
-        "a4: Room with fight",
-        "Placeholder"
+        "Snake Den",
+        "The floor is littered with shed snake skins."
     );
 
     Room buttonRoom(
@@ -92,18 +92,18 @@ void StartDungeon() {
     );
 
     Room greaterRatRoom(
-        "The trial of the Greater Rat",
-        "Special attack demo. This room definitely doesn't have to be in the final game."
+        "The Trial of the Greater Rat",
+        "The edges of this room are cluttered with the corpses of lesser rats."
     );
 
     Room a11(
-        "a11: Secret Room",
-        "Placeholder"
+        "Secret Room",
+        "A secret is revealed!"
     );
 
-    Room b1(
-        "b1: Healing Room",
-        "there should be a single use means for the player to heal to max"
+    Room b1( //there should be a single use means for the player to heal to max
+        "The Catacombs",
+        "Both sides of the passageway are covered with neat piles of skulls and bones. A crucifix hangs on the wall high above the bones."
     );
 
     Room b2(
@@ -167,33 +167,33 @@ void StartDungeon() {
     );
 
     Room c1(
-        "c1: Empty Room",
-        "I decided to get rid of the labyrinthe area. Placeholder"
+        "Dark tunnel",
+        "A passage so dark you can barely"
     );
 
     Room c2(
-        "c2: Empty Room",
-        "I decided to get rid of the labyrinthe area. Placeholder"
+        "Dark tunnel",
+        "You begin to see a faint light eastward"
     );
 
     Room d1(
-        "d1: Healing Room",
-        "Placeholder"
+        "The Old Mine",
+        "A sign hangs above the door at the end of this dimly illuminated room: \"DANGER: DO NOT ENTER BY ORDER OF THE KING UNDER THE MOUNTAIN\""
     );
 
     Room d7(
         "d7: Puzzle Room",
-        "Puzzle east"
+        "Crates and pickaxes line the walls. There appears to be black mold on the eastern wall."
     );
 
     Room d8(
         "d8: Fight Room",
-        "Placeholder"
+        "The posts holding up the ceiling are rotted through with black slime. The equipment in this room is thoroughly rusted."
     );
 
     Room d9(
-        "d9: Puzzle Room",
-        "Puzzle east"
+        "d9: Fight Room",
+        "The walls and ceiling are corrupted with black slime that glows in some places."
     );
 
     Room d10(
@@ -207,13 +207,13 @@ void StartDungeon() {
     );
 
     Room d12(
-        "d12: Fight Room",
-        "Placeholder"
+        "Storage house",
+        "Crates filled with ores, all abandoned."
     );
 
     Room d13(
-        "d13: Empty Room",
-        "Placeholder"
+        "Passageway",
+        "A dark sludge drips from the ceiling and leaks from the walls."
     );
 
     Room d14(
@@ -292,6 +292,33 @@ void StartDungeon() {
     
     Enemy gRat = GreaterRatTemplate;
     greaterRatRoom.addEnemy(&gRat);
+
+    Enemy skeleton_b3 = SkeletonTemplate;
+    b3.addEnemy(&skeleton_b3);
+
+    Enemy skeleton_b5 = SkeletonTemplate;
+    b5.addEnemy(&skeleton_b5);
+
+    Enemy ghost_b8 = GhostTemplate;
+    b8.addEnemy(&ghost_b8);
+
+    Enemy ghost_b10 = GhostTemplate;
+    b10.addEnemy(&ghost_b10);
+
+    Enemy gRat_d8 = GreaterRatTemplate;
+    d8.addEnemy(&gRat_d8);
+
+    Enemy mole_d9 = GiantMoleTemplate;
+    d9.addEnemy(&mole_d9);
+
+    Enemy gRat_d12 = GreaterRatTemplate;
+    d12.addEnemy(&gRat_d12);
+
+    Enemy mole_d17 = GiantMoleTemplate;
+    d17.addEnemy(&mole_d17);
+
+    Enemy theThing = ThingTemplate;
+    d10.addEnemy(&theThing);
 
     //Add items and containers
     shared_ptr<Key> key = make_shared<Key>();

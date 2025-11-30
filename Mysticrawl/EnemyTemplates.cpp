@@ -57,8 +57,8 @@ Enemy GreaterRatTemplate(
     "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...\n",
     20, // hit points
     40, // block chance (%)
-    3,  // min damage
-    6,  // max damage
+    5,  // min damage
+    8,  // max damage
     40, // block exit chance (%)
     60, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
@@ -114,7 +114,7 @@ Enemy GhostTemplate(
     40, // block chance (%)
     8,  // min damage
     12,  // max damage
-    40, // block exit chance (%)
+    70, // block exit chance (%)
     55, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
     25, // taunt chance (%)  *
@@ -128,15 +128,50 @@ Enemy SkeletonKnightTemplate(
         self->attack(target);
         self->attack(target);
     },
-    "Skeleton Knight", "The Skeleton knight draws its sword!\n",
+    "Skeleton Knight", "The Skeleton Knight draws its sword!\n",
     30,  // hit points
     40, // block chance (%)
     12,  // min damage
     14,  // max damage
-    40, // block exit chance (%)
+    100, // block exit chance (%)
     30, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
     25, // taunt chance (%)  *
+    40,// special chance     *
+    0  // special int
+);
+
+Enemy GiantMoleTemplate(
+    "Giant Mole", "A crazed giant mole approaches!\n",
+    20,  // hit points
+    40, // block chance (%)
+    10,  // min damage
+    14,  // max damage
+    60, // block exit chance (%)
+    85, // attack chance (%) *
+    0,  // idle chance (%)   *These must add up to 100
+    15  // taunt chance (%)  *
+);
+
+Enemy ThingTemplate(
+    [&](Enemy* self, Player& target) {
+        int min = 15;
+        int max = 18;
+        int damage = Random::GetInstance().randInt(min, max);
+        cout << self->getName() << " drains " << damage << " health!\n";
+
+        self->heal(damage / 2);
+        cout << self->getName() << " healed " << damage/2 << "!\n";
+    },
+    "The Thing That Gnaws", "The Thing That Gnaws gnashes its myriad teeth!\n",
+    35,  // hit points
+    40, // block chance (%)
+    15,  // min damage
+    18,  // max damage
+    100, // block exit chance (%)
+    40, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    15, // taunt chance (%)  *
     40,// special chance     *
     0  // special int
 );
