@@ -273,6 +273,15 @@ void StartDungeon() {
         "This feels like the heart of the entire labyrinth...\n"
     );
 
+    // List of pointers for testing using teleportation, not intended for long term use
+    vector<Room*> allRooms = {
+        &spawnRoom, &nextRoom, &fightRoom, &leverRoom, &a4, &buttonRoom, &wizardRoom, &southRoom,
+        &a8, &a9, &greaterRatRoom, &a11, &b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8,
+        &b9, &b10, &b11, &b12, &b13, &c1, &c2, &d1, &d7, &d8, &d9, &d10, &d11,
+        &d12, &d13, &d14, &d15, &d16, &d17, &d18, &e1, &e2, &e3, &e4, &e5,
+        &finalBossRoom
+    };
+
     //Add enemies
     Enemy rat = RatTemplate;
 
@@ -584,6 +593,9 @@ void StartDungeon() {
                 {"Check Inventory", [&player]() { player.showInventory(); }},
                 {"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
+#ifdef _DEBUG
+                {"Teleport", [&player, allRooms]() { player.teleport(allRooms); }},
+#endif
             };
             if (!player.inventoryEmpty()) {
                 options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  } });
