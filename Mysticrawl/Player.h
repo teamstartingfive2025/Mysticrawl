@@ -11,7 +11,7 @@ using namespace std;
 class Enemy;
 class Room;
 class Item;
-class Weapon;
+
 
 
 /**
@@ -27,8 +27,6 @@ private:
     int health;
     int maxHealth;
     bool defending = false; //  reduces next enemy hit
-    int attack_ = 0;
-    const Weapon* equippedWeapon_ = nullptr;
 public:
     // Constructor initializes the player at the starting room
     // updated constructor (initialize maxHealth to starting health)
@@ -88,9 +86,6 @@ public:
     // Accessor and mutator for the current room pointer
     Room* getCurrentRoom() const;
     void setCurrentRoom(Room* room);
-
-    void equipWeapon(const Weapon& weapon);
-    int getAttack() const { return attack_; }
 
     int getHealth() const { return health; }
     const string& getName() const { return playerName; }

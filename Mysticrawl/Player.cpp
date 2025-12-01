@@ -2,7 +2,6 @@
 #include "Room.h"
 #include "Enemy.h"
 #include "Key.h"
-#include "Weapons.h"
 #include "Random.h"
 #include "Lockable.h"
 #include <algorithm>
@@ -168,15 +167,6 @@ void Player::showInventory() const {
     if (inventory.empty()) cout << " (empty)";
     for (auto& item : inventory) cout << " " << item->getName();
     cout << "\n";
-}
-
-void Player::equipWeapon(const Weapon& weapon)
-{
-    equippedWeapon_ = &weapon;
-   // attack_ = weapon.getPower();
-
-   // std::cout << "You have equipped the " << weapon.getName()
-     //   << ". Attack power is now " << attack_ << ".\n";
 }
 
 // Displays selection menu of all items in player inventory and returns player choice
