@@ -175,7 +175,6 @@ Enemy ThingTemplate(
     40,// special chance     *
     0  // special int
 );
-);
 
 Enemy BossTemplate(
     // to access its member variables in the lambda, the object passes a pointer to itself as an argument. 
