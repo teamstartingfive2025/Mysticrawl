@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Room.h"
 #include "Exit.h"
+#include "Random.h"
 #include <iostream>
 #include <functional>
 using namespace std;
@@ -16,6 +17,25 @@ Enemy RatTemplate(
     70, // attack chance (%) *
     15, // idle chance (%)   *These must add up to 100
     15  // taunt chance (%)  *
+);
+
+Enemy SnakeTemplate(
+    [&](Enemy* self, Player& target) {
+        cout << "\n" << self->getName() << " bites!\n";
+        int duration = Random::GetInstance().randInt(2, 5);
+        target.setPoisoned(true, duration, 3, 6);
+    }, 
+    "Snake", "A snake leaps from the ground!\n",
+    8,  // hit points
+    40, // block chance (%)
+    1,  // min damage
+    3,  // max damage
+    40, // block exit chance (%)
+    35, // attack chance (%) *
+    10, // idle chance (%)   *These must add up to 100
+    25, // taunt chance (%)  *
+    30, // special chance(%) *
+    0   // special int
 );
 
 Enemy GreaterRatTemplate(
@@ -35,10 +55,10 @@ Enemy GreaterRatTemplate(
         }
     },
     "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...\n",
-    12, // hit points
+    20, // hit points
     40, // block chance (%)
-    3,  // min damage
-    6,  // max damage
+    5,  // min damage
+    8,  // max damage
     40, // block exit chance (%)
     60, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
@@ -70,6 +90,91 @@ Enemy WizardTemplate(
             });
         }
     }
+);
+
+Enemy SkeletonTemplate(
+    "Skeleton", "A skeleton assembles before you!\n",
+    12,  // hit points
+    40, // block chance (%)
+    5,  // min damage
+    9,  // max damage
+    40, // block exit chance (%)
+    70, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    25  // taunt chance (%)  *
+);
+
+Enemy GhostTemplate(
+    [&](Enemy* self, Player& target) {
+        cout << "\n" << self->getName() << " saps your strength!\n";
+        target.setAttackDebuff(2, 3); //-2 to attack for 3 rounds
+    }, 
+    "Ghost", "A figure emerges from the mist!\n",
+    10,  // hit points
+    40, // block chance (%)
+    8,  // min damage
+    12,  // max damage
+    70, // block exit chance (%)
+    55, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    25, // taunt chance (%)  *
+    15, // special chance    *
+    0   // special int
+);
+
+Enemy SkeletonKnightTemplate(
+    [&](Enemy* self, Player& target) { 
+        cout << "\nThe Skeleton Knight unleashes a special attack!\n";
+        self->attack(target);
+        self->attack(target);
+    },
+    "Skeleton Knight", "The Skeleton Knight draws its sword!\n",
+    30,  // hit points
+    40, // block chance (%)
+    12,  // min damage
+    14,  // max damage
+    100, // block exit chance (%)
+    30, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    25, // taunt chance (%)  *
+    40,// special chance     *
+    0  // special int
+);
+
+Enemy GiantMoleTemplate(
+    "Giant Mole", "A crazed giant mole approaches!\n",
+    20,  // hit points
+    40, // block chance (%)
+    10,  // min damage
+    14,  // max damage
+    60, // block exit chance (%)
+    85, // attack chance (%) *
+    0,  // idle chance (%)   *These must add up to 100
+    15  // taunt chance (%)  *
+);
+
+Enemy ThingTemplate(
+    [&](Enemy* self, Player& target) {
+        int min = 15;
+        int max = 18;
+        int damage = Random::GetInstance().randInt(min, max);
+        cout << self->getName() << " drains " << damage << " health!\n";
+
+        self->heal(damage / 2);
+        cout << self->getName() << " healed " << damage/2 << "!\n";
+    },
+    "The Thing That Gnaws", "Emerging from the water, The Thing That Gnaws gnashes its myriad teeth!\n",
+    35,  // hit points
+    40, // block chance (%)
+    15,  // min damage
+    18,  // max damage
+    100, // block exit chance (%)
+    40, // attack chance (%) *
+    5,  // idle chance (%)   *These must add up to 100
+    15, // taunt chance (%)  *
+    40,// special chance     *
+    0  // special int
+);
 );
 
 Enemy BossTemplate(
