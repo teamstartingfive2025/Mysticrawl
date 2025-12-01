@@ -102,8 +102,5 @@ Enemy BossTemplate(
                 return true;      // unlock when boss is dead
                 });
         }
-
-        cout << "\nThe Dungeon Overlord raises a hand — the exits slam shut!\n"
-            << "You sense that you won't leave this place until one of you falls...\n";
     }
     );
