@@ -6,3 +6,4 @@ using namespace std;
 extern Enemy RatTemplate; 
 extern Enemy GreaterRatTemplate;
 extern Enemy WizardTemplate;
+extern Enemy BossTemplate;

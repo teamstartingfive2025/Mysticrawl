@@ -79,8 +79,7 @@ Enemy BossTemplate(
         self->attack(target);
     },
     "Dungeon Overlord",
-        "You step into a vast chamber. A towering figure cloaked in shadow turns to face you —\n"
-        "the Dungeon Overlord has been waiting.\n",
+        "\n",
         40,   // hit points (tougher than normal enemies)
         40,   // block chance (%)
         8,    // min damage
