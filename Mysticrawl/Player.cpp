@@ -247,6 +247,32 @@ void Player::setMaxHealth(int newMax) {
     if (health > maxHealth) health = maxHealth;
 }
 
+void Player::setPoisoned(bool p, int c, int min, int max) { // make the player poisoned and increment time until poison is cured
+    poisoned = p;
+    poisonCounter += c;
+    if (min > poisonMin) poisonMin = min;
+    if (max > poisonMax) poisonMax = max;
+}
+
+void Player::decrementPoison() {
+    poisonCounter--;
+    if (poisonCounter < 1) {
+        setPoisoned(false, 0, 0, 0);
+    }
+}
+
+void Player::setAttackDebuff(int amount, int duration) {
+    attackDebuff = amount;
+    attackDebuffCounter += duration;
+}
+
+void Player::decrementAttackDebuff() {
+    attackDebuffCounter--;
+    if (attackDebuffCounter < 1) {
+        attackDebuff = 0;
+    }
+}
+
 void Player::displayHealthBar(int width) const {
     if (width < 4) width = 4; // ensure space for brackets and numbers
 
@@ -272,7 +298,9 @@ void Player::displayHealthBar(int width) const {
 // Player::basicAttack() Generic unarmed strike implementation.
 void Player::basicAttack(Enemy& target, Room& currentRoom) {
     // Generate random damage between 2 and 6
-	int damage = Random::GetInstance().randInt(2, 6);
+	int damage = Random::GetInstance().randInt(2, 6) - attackDebuff;
+
+    if (attackDebuff > 0) cout << "Your strength has been decreased!";
 
     // Print attack message
     cout << "You swing your fists at the " << target.getName()
@@ -292,41 +320,59 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
             << " still has " << target.getHealth() << " HP left.\n";
     }
 }
-    void Player::interact() {
 
-        auto& mechs = currentRoom->getMechanisms();
-        auto& containers = currentRoom->getContainers();
+void Player::interact() {
 
-        if (mechs.empty() && containers.empty()) {
-            cout << "There is nothing here to interact with.\n";
-            return;
-        }
+    auto& mechs = currentRoom->getMechanisms();
+    auto& containers = currentRoom->getContainers();
 
-        // Create a list of menu options from available mechanisms
-        vector<tuple<string, function<void()>>> interactOptions;
-
-        for (const auto& mech : mechs) {
-            // Each menu item triggers that mechanism's use() function
-            interactOptions.push_back({
-                mech->getDescription(),
-                [mech]() { mech->use(); }
-            });
-        }
-
-        for (auto& container : containers) {
-            // Each menu item attempts to open container menu
-            interactOptions.push_back({
-                container.getName(),
-                [&container]() { container.openContainerSelection(); }
-            });
-        }
-
-        // Optional exit option so the player can back out
-        interactOptions.push_back({
-            "Cancel", []() { cout << "You don't interact with anything.\n"; }
-        });
-
-        // Refresh and show the arrow-key menu
-        RefreshSelectionMenu(interactOptions);
-        SelectMenuOption();
+    if (mechs.empty() && containers.empty()) {
+        cout << "There is nothing here to interact with.\n";
+        return;
     }
+
+    // Create a list of menu options from available mechanisms
+    vector<tuple<string, function<void()>>> interactOptions;
+
+    for (const auto& mech : mechs) {
+        // Each menu item triggers that mechanism's use() function
+        interactOptions.push_back({
+            mech->getDescription(),
+            [mech]() { mech->use(); }
+        });
+    }
+
+    for (auto& container : containers) {
+        // Each menu item attempts to open container menu
+        interactOptions.push_back({
+            container.getName(),
+            [&container]() { container.openContainerSelection(); }
+        });
+    }
+
+    // Optional exit option so the player can back out
+    interactOptions.push_back({
+        "Cancel", []() { cout << "You don't interact with anything.\n"; }
+    });
+
+    // Refresh and show the arrow-key menu
+    RefreshSelectionMenu(interactOptions);
+    SelectMenuOption();
+}
+
+void Player::teleport(vector<Room *> allRooms) {
+    vector<tuple<string, function<void()>>> interactOptions;
+
+    for (Room *room : allRooms) {
+        interactOptions.push_back({
+            room->getName(),
+            [this, room]() { setCurrentRoom(room); }
+        });
+    }
+
+    // Refresh and show the arrow-key menu
+    RefreshSelectionMenu(interactOptions);
+    SelectMenuOption();
+
+    look();
+}

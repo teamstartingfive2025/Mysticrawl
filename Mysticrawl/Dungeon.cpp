@@ -11,6 +11,7 @@
 #include "Prompt.h"
 #include "Lockable.h"
 #include "Container.h"
+#include "Random.h"
 
 #include <iostream>
 #include <limits>
@@ -61,8 +62,8 @@ void StartDungeon() {
     );
 
     Room a4(
-        "a4: Room with fight",
-        "Placeholder"
+        "Snake Den",
+        "The floor is littered with shed snake skins."
     );
 
     Room buttonRoom(
@@ -91,18 +92,18 @@ void StartDungeon() {
     );
 
     Room greaterRatRoom(
-        "The trial of the Greater Rat",
-        "Special attack demo. This room definitely doesn't have to be in the final game."
+        "The Trial of the Greater Rat",
+        "The edges of this room are cluttered with the corpses of lesser rats."
     );
 
     Room a11(
-        "a11: Secret Room",
-        "Placeholder"
+        "Secret Room",
+        "A secret is revealed!"
     );
 
-    Room b1(
-        "b1: Healing Room",
-        "there should be a single use means for the player to heal to max"
+    Room b1( //there should be a single use means for the player to heal to max
+        "The Catacombs",
+        "Both sides of the passageway are covered with neat piles of skulls and bones. A crystal is embedded in the wall high above the bones."
     );
 
     Room b2(
@@ -111,8 +112,8 @@ void StartDungeon() {
     );
 
     Room b3(
-        "b3: Fight Room",
-        "Placeholder"
+        "Piles of Bones",
+        "The floor is littered with heaps of bones."
     );
 
     Room b4(
@@ -121,13 +122,13 @@ void StartDungeon() {
     );
 
     Room b5(
-        "b5: Fight Room",
-        "Placeholder"
+        "Stone Room",
+        "The walls in this room are bare, though some bones are still scattered on the ground."
     );
     
     Room b6(
-        "b6: Secret Treasure Room",
-        "Placeholder"
+        "Secret Resting Place",
+        "A skeleton in an open casket holds a box." ///REPLACE BOX WITH WHATEVER GOES HERE
     );
 
     Room b7(
@@ -136,28 +137,28 @@ void StartDungeon() {
     );
 
     Room b8(
-        "b8: Fight Room",
-        "Placeholder"
+        "Circular Room",
+        "A mist fills the air, you can hardly see the skulls on the other side."
     );
 
     Room b9(
-        "b9: Puzzle Room",
-        "puzzle south"
+        "East hallway",
+        "A sign hangs over the southern doorway: \"THE CRYP -\". The rest is lost."
     );
 
     Room b10(
-        "b10: Fight Room",
-        "Placeholder"
+        "Well Room",
+        "A well is in the center of this room. You see no bucket though.\n You could swear you saw the skulls looking at you out of the corner of your eye."
     );
 
     Room b11(
-        "b11: Puzzle Room",
-        "puzzle east"
+        "South hallway",
+        "A sign hangs over the eastern doorway: \"THE CRYPT OF -\". The rest is lost."
     );
 
     Room b12(
-        "b12: Mini boss Room",
-        "Placeholder"
+        "The Knight's Crypt",
+        "In the center of this room, a skeleton wearing armor and fine jewelry sits on a throne."
     );
 
     Room b13(
@@ -166,38 +167,38 @@ void StartDungeon() {
     );
 
     Room c1(
-        "c1: Empty Room",
-        "I decided to get rid of the labyrinthe area. Placeholder"
+        "Dark tunnel",
+        "A passage so dark you can barely see"
     );
 
     Room c2(
-        "c2: Empty Room",
-        "I decided to get rid of the labyrinthe area. Placeholder"
+        "Dark tunnel",
+        "You begin to see a faint light eastward..."
     );
 
     Room d1(
-        "d1: Healing Room",
-        "Placeholder"
+        "The Old Mine",
+        "A sign hangs above the door at the end of this dimly illuminated room: \"DANGER: DO NOT ENTER BY ORDER OF THE KING UNDER THE MOUNTAIN.\" A crystal is embedded in the southern wall."
     );
 
     Room d7(
-        "d7: Puzzle Room",
-        "Puzzle east"
+        "Shaft",
+        "Crates and pickaxes line the walls. There appears to be black mold on the eastern wall."
     );
 
     Room d8(
-        "d8: Fight Room",
-        "Placeholder"
+        "Corrupted Passageway",
+        "The posts holding up the ceiling are rotted through with black slime. The equipment in this room is thoroughly rusted."
     );
 
     Room d9(
-        "d9: Puzzle Room",
-        "Puzzle east"
+        "Slime Room",
+        "The walls and ceiling are covered with black slime that glows in some places."
     );
 
     Room d10(
-        "d10: Mini Boss Room",
-        "Placeholder"
+        "The Murky Pool",
+        "The black slime in the mine seems to be growing from a pool in the center of the room."
     );
 
     Room d11(
@@ -206,13 +207,13 @@ void StartDungeon() {
     );
 
     Room d12(
-        "d12: Fight Room",
-        "Placeholder"
+        "Storage house",
+        "Crates filled with ores, all abandoned."
     );
 
     Room d13(
-        "d13: Empty Room",
-        "Placeholder"
+        "Passageway",
+        "A dark sludge drips from the ceiling and leaks from the walls."
     );
 
     Room d14(
@@ -241,8 +242,8 @@ void StartDungeon() {
     );
 
     Room e1(
-        "e1: Healing Room",
-        "Single use means to heal to max"
+        "The Dark Lair",
+        "Floating flames illuminate a hall with ebony walls. A crystal is embedded in the eastern wall."
     );
 
     Room e2(
@@ -273,12 +274,24 @@ void StartDungeon() {
         "This feels like the heart of the entire labyrinth...\n"
     );
 
+    // List of pointers for testing using teleportation, not intended for long term use
+    vector<Room*> allRooms = {
+        &spawnRoom, &nextRoom, &fightRoom, &leverRoom, &a4, &buttonRoom, &wizardRoom, &southRoom,
+        &a8, &a9, &greaterRatRoom, &a11, &b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8,
+        &b9, &b10, &b11, &b12, &b13, &c1, &c2, &d1, &d7, &d8, &d9, &d10, &d11,
+        &d12, &d13, &d14, &d15, &d16, &d17, &d18, &e1, &e2, &e3, &e4, &e5,
+        &finalBossRoom
+    };
+
     //Add enemies
     Enemy rat = RatTemplate;
-
     fightRoom.addEnemy(&rat);
 
-    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
+    Enemy snake = SnakeTemplate;
+    a4.addEnemy(&snake);
+
+    Enemy rat_01 = RatTemplate;
+    a9.addEnemy(&rat_01);
 
     Enemy wizard = WizardTemplate;
     wizardRoom.addEnemy(&wizard);
@@ -289,12 +302,41 @@ void StartDungeon() {
     Enemy gRat = GreaterRatTemplate;
     greaterRatRoom.addEnemy(&gRat);
 
+    Enemy skeleton_b3 = SkeletonTemplate;
+    b3.addEnemy(&skeleton_b3);
+
+    Enemy skeleton_b5 = SkeletonTemplate;
+    b5.addEnemy(&skeleton_b5);
+
+    Enemy ghost_b8 = GhostTemplate;
+    b8.addEnemy(&ghost_b8);
+
+    Enemy ghost_b10 = GhostTemplate;
+    b10.addEnemy(&ghost_b10);
+
+    Enemy gRat_d8 = GreaterRatTemplate;
+    d8.addEnemy(&gRat_d8);
+
+    Enemy mole_d9 = GiantMoleTemplate;
+    d9.addEnemy(&mole_d9);
+
+    Enemy gRat_d12 = GreaterRatTemplate;
+    d12.addEnemy(&gRat_d12);
+
+    Enemy mole_d17 = GiantMoleTemplate;
+    d17.addEnemy(&mole_d17);
+
+    Enemy theThing = ThingTemplate;
+    d10.addEnemy(&theThing);
+
     //Add items and containers
     shared_ptr<Key> key = make_shared<Key>();
     spawnRoom.setExits({ Exit("east", &nextRoom, { [&]() -> bool { return player.hasItem(key); } }) });
     key->setName("Key");
     key->setExitKeyUnlockDestination(spawnRoom.getExit("east"));
     spawnRoom.addHiddenItem(key);
+
+    fightRoom.addItem(make_shared<Potion>("Potion of Healing", 10));
 
     southRoom.addContainer(Container(
         "Wizard Box",
@@ -539,6 +581,8 @@ void StartDungeon() {
         Exit("south", &e5)
         });
 
+    //Add interactables
+    
     shared_ptr<SimpleMechanism> lever = make_shared<SimpleMechanism>(
         "Iron Lever", true, // true = lever type
         [&leverRoom](bool state) {                // capture leverRoom by reference
@@ -568,6 +612,62 @@ void StartDungeon() {
 
     buttonRoom.addMechanism(button);
 
+    shared_ptr<SimpleMechanism> button_a10 = make_shared<SimpleMechanism>(
+        "Loose Brick", false, 
+        [&greaterRatRoom, &a9, &b1, &a11](bool) {
+            cout << "A door appears to the north!\n";
+            greaterRatRoom.setExits({
+                Exit("north", &a11),
+                Exit("west", &a9),
+                Exit("south", &b1)
+                });
+        }
+    );
+    greaterRatRoom.addMechanism(button_a10);
+
+    shared_ptr<SimpleMechanism> heal_b1 = make_shared<SimpleMechanism>(
+        "Crucifix",
+        [&b1, &player](bool) {
+            cout << "Healed to max.\n";
+            player.setHealth(player.getMaxHealth());
+        },
+        "The crucifix's healing power is spent.\n" //sticky lever
+    );
+    b1.addMechanism(heal_b1);
+
+    shared_ptr<SimpleMechanism> button_b5 = make_shared<SimpleMechanism>(
+        "Outline on North Wall", false, 
+        [&b5, &b4, &b6, &b9](bool) {
+            cout << "A door appears to the north!\n";
+            b5.setExits({
+                Exit("north", &b6),
+                Exit("west", &b4),
+                Exit("south", &b9)
+                });
+        }
+    );
+    b5.addMechanism(button_b5);
+
+    shared_ptr<SimpleMechanism> heal_d1 = make_shared<SimpleMechanism>(
+        "Crystal",
+        [&d1, &player](bool) {
+            cout << "Healed to max.\n";
+            player.setHealth(player.getMaxHealth());
+        },
+        "The crystal's healing power is spent.\n" //sticky lever
+    );
+    d1.addMechanism(heal_d1);
+
+    shared_ptr<SimpleMechanism> heal_e1 = make_shared<SimpleMechanism>(
+        "Crystal",
+        [&e1, &player](bool) {
+            cout << "Healed to max.\n";
+            player.setHealth(player.getMaxHealth());
+        },
+        "The crystal's healing power is spent.\n" //sticky lever
+    );
+    e1.addMechanism(heal_e1);
+
     // --- Initialize fight manager ---
     Fight fight;
 
@@ -584,6 +684,9 @@ void StartDungeon() {
                 {"Check Inventory", [&player]() { player.showInventory(); }},
                 {"Move Somewhere", [&player]() { player.move(); }},
                 {"Pickup Item", [&player]() { player.pickup(); }},
+#ifdef _DEBUG
+                {"Teleport", [&player, allRooms]() { player.teleport(allRooms); }},
+#endif
             };
             if (!player.inventoryEmpty()) {
                 options.push_back({ "Use Item", [&player]() { player.useItem(player.itemSelectMenu());  } });
@@ -618,10 +721,20 @@ void StartDungeon() {
                 }
             }
 
+            if (player.isPoisoned()) {
+                int damage = Random::GetInstance().randInt(player.getPoisonMin(), player.getPoisonMax());
+                
+                cout << "\nTook " << damage << " damage from poison\n";
+
+                player.decrementPoison();
+            }
+
             player.displayHealthBar();
 
             player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
+            
+            player.decrementAttackDebuff();
         }
     }
     catch (const runtime_error&) {
