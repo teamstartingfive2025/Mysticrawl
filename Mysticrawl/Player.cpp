@@ -320,41 +320,59 @@ void Player::basicAttack(Enemy& target, Room& currentRoom) {
             << " still has " << target.getHealth() << " HP left.\n";
     }
 }
-    void Player::interact() {
 
-        auto& mechs = currentRoom->getMechanisms();
-        auto& containers = currentRoom->getContainers();
+void Player::interact() {
 
-        if (mechs.empty() && containers.empty()) {
-            cout << "There is nothing here to interact with.\n";
-            return;
-        }
+    auto& mechs = currentRoom->getMechanisms();
+    auto& containers = currentRoom->getContainers();
 
-        // Create a list of menu options from available mechanisms
-        vector<tuple<string, function<void()>>> interactOptions;
-
-        for (const auto& mech : mechs) {
-            // Each menu item triggers that mechanism's use() function
-            interactOptions.push_back({
-                mech->getDescription(),
-                [mech]() { mech->use(); }
-            });
-        }
-
-        for (auto& container : containers) {
-            // Each menu item attempts to open container menu
-            interactOptions.push_back({
-                container.getName(),
-                [&container]() { container.openContainerSelection(); }
-            });
-        }
-
-        // Optional exit option so the player can back out
-        interactOptions.push_back({
-            "Cancel", []() { cout << "You don't interact with anything.\n"; }
-        });
-
-        // Refresh and show the arrow-key menu
-        RefreshSelectionMenu(interactOptions);
-        SelectMenuOption();
+    if (mechs.empty() && containers.empty()) {
+        cout << "There is nothing here to interact with.\n";
+        return;
     }
+
+    // Create a list of menu options from available mechanisms
+    vector<tuple<string, function<void()>>> interactOptions;
+
+    for (const auto& mech : mechs) {
+        // Each menu item triggers that mechanism's use() function
+        interactOptions.push_back({
+            mech->getDescription(),
+            [mech]() { mech->use(); }
+        });
+    }
+
+    for (auto& container : containers) {
+        // Each menu item attempts to open container menu
+        interactOptions.push_back({
+            container.getName(),
+            [&container]() { container.openContainerSelection(); }
+        });
+    }
+
+    // Optional exit option so the player can back out
+    interactOptions.push_back({
+        "Cancel", []() { cout << "You don't interact with anything.\n"; }
+    });
+
+    // Refresh and show the arrow-key menu
+    RefreshSelectionMenu(interactOptions);
+    SelectMenuOption();
+}
+
+void Player::teleport(vector<Room *> allRooms) {
+    vector<tuple<string, function<void()>>> interactOptions;
+
+    for (Room *room : allRooms) {
+        interactOptions.push_back({
+            room->getName(),
+            [this, room]() { setCurrentRoom(room); }
+        });
+    }
+
+    // Refresh and show the arrow-key menu
+    RefreshSelectionMenu(interactOptions);
+    SelectMenuOption();
+
+    look();
+}

@@ -111,4 +111,7 @@ public:
     
     // Performs a basic attack with bare hands against an enemy.
     void basicAttack(Enemy& target, Room& currentRoom);
+
+    // Allows the tester to teleport to rooms if in Debug mode
+    void teleport(vector<Room*> allRooms);
 };
