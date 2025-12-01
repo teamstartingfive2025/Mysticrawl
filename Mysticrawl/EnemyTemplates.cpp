@@ -71,3 +71,40 @@ Enemy WizardTemplate(
         }
     }
 );
+
+Enemy BossTemplate(
+    // to access its member variables in the lambda, the object passes a pointer to itself as an argument. 
+    [&](Enemy* self, Player& target) {
+        cout << "\nThe Dungeon Overlord channels a devastating blast of dark energy!\n";
+        self->attack(target);
+    },
+    "Dungeon Overlord",
+        "You step into a vast chamber. A towering figure cloaked in shadow turns to face you —\n"
+        "the Dungeon Overlord has been waiting.\n",
+        40,   // hit points (tougher than normal enemies)
+        40,   // block chance (%)
+        8,    // min damage
+        15,   // max damage
+        30,   // block exit chance (%)
+        50,   // attack chance (%)
+        10,   // idle chance (%)
+        10,   // taunt chance (%)
+        30,   // special chance (%)
+        0,    // special int 
+        // Encounter function: lock exits while boss is alive
+        [&](Enemy* self, Player& player) {
+        // When the boss is first encountered, it seals the room.
+        for (Exit& exit : player.getCurrentRoom()->getExits()) {
+            exit.addLock([self]() {
+                // While the boss is alive, exits stay locked.
+                if (self != nullptr && self->isAlive()) {
+                    return false; // locked
+                }
+                return true;      // unlock when boss is dead
+                });
+        }
+
+        cout << "\nThe Dungeon Overlord raises a hand — the exits slam shut!\n"
+            << "You sense that you won't leave this place until one of you falls...\n";
+    }
+    );
