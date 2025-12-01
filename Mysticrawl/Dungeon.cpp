@@ -103,7 +103,7 @@ void StartDungeon() {
 
     Room b1( //there should be a single use means for the player to heal to max
         "The Catacombs",
-        "Both sides of the passageway are covered with neat piles of skulls and bones. A crucifix hangs on the wall high above the bones."
+        "Both sides of the passageway are covered with neat piles of skulls and bones. A crystal is embedded in the wall high above the bones."
     );
 
     Room b2(
@@ -112,8 +112,8 @@ void StartDungeon() {
     );
 
     Room b3(
-        "b3: Fight Room",
-        "Placeholder"
+        "Piles of Bones",
+        "The floor is littered with heaps of bones."
     );
 
     Room b4(
@@ -122,13 +122,13 @@ void StartDungeon() {
     );
 
     Room b5(
-        "b5: Fight Room",
-        "Placeholder"
+        "Stone Room",
+        "The walls in this room are bare, though some bones are still scattered on the ground."
     );
     
     Room b6(
-        "b6: Secret Treasure Room",
-        "Placeholder"
+        "Secret Resting Place",
+        "A skeleton in an open casket holds a box." ///REPLACE BOX WITH WHATEVER GOES HERE
     );
 
     Room b7(
@@ -137,28 +137,28 @@ void StartDungeon() {
     );
 
     Room b8(
-        "b8: Fight Room",
-        "Placeholder"
+        "Circular Room",
+        "A mist fills the air, you can hardly see the skulls on the other side."
     );
 
     Room b9(
-        "b9: Puzzle Room",
-        "puzzle south"
+        "East hallway",
+        "A sign hangs over the southern doorway: \"THE CRYP -\". The rest is lost."
     );
 
     Room b10(
-        "b10: Fight Room",
-        "Placeholder"
+        "Well Room",
+        "A well is in the center of this room. You see no bucket though.\n You could swear you saw the skulls looking at you out of the corner of your eye."
     );
 
     Room b11(
-        "b11: Puzzle Room",
-        "puzzle east"
+        "South hallway",
+        "A sign hangs over the eastern doorway: \"THE CRYPT OF -\". The rest is lost."
     );
 
     Room b12(
-        "b12: Mini boss Room",
-        "Placeholder"
+        "The Knight's Crypt",
+        "In the center of this room, a skeleton wearing armor and fine jewelry sits on a throne."
     );
 
     Room b13(
@@ -178,21 +178,21 @@ void StartDungeon() {
 
     Room d1(
         "The Old Mine",
-        "A sign hangs above the door at the end of this dimly illuminated room: \"DANGER: DO NOT ENTER BY ORDER OF THE KING UNDER THE MOUNTAIN\""
+        "A sign hangs above the door at the end of this dimly illuminated room: \"DANGER: DO NOT ENTER BY ORDER OF THE KING UNDER THE MOUNTAIN.\" A crystal is embedded in the southern wall."
     );
 
     Room d7(
-        "d7: Puzzle Room",
+        "Shaft",
         "Crates and pickaxes line the walls. There appears to be black mold on the eastern wall."
     );
 
     Room d8(
-        "d8: Fight Room",
+        "Corrupted Passageway",
         "The posts holding up the ceiling are rotted through with black slime. The equipment in this room is thoroughly rusted."
     );
 
     Room d9(
-        "d9: Fight Room",
+        "Slime Room",
         "The walls and ceiling are covered with black slime that glows in some places."
     );
 
@@ -242,8 +242,8 @@ void StartDungeon() {
     );
 
     Room e1(
-        "e1: Healing Room",
-        "Single use means to heal to max"
+        "The Dark Lair",
+        "Floating flames illuminate a hall with ebony walls. A crystal is embedded in the eastern wall."
     );
 
     Room e2(
@@ -638,6 +638,26 @@ void StartDungeon() {
         }
     );
     b5.addMechanism(button_b5);
+
+    shared_ptr<SimpleMechanism> heal_d1 = make_shared<SimpleMechanism>(
+        "Crystal",
+        [&d1, &player](bool) {
+            cout << "Healed to max.\n";
+            player.setHealth(player.getMaxHealth());
+        },
+        "The crystal's healing power is spent.\n" //sticky lever
+    );
+    d1.addMechanism(heal_d1);
+
+    shared_ptr<SimpleMechanism> heal_e1 = make_shared<SimpleMechanism>(
+        "Crystal",
+        [&e1, &player](bool) {
+            cout << "Healed to max.\n";
+            player.setHealth(player.getMaxHealth());
+        },
+        "The crystal's healing power is spent.\n" //sticky lever
+    );
+    e1.addMechanism(heal_e1);
 
     // --- Initialize fight manager ---
     Fight fight;
