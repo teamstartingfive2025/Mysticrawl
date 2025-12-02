@@ -6,7 +6,16 @@ SimpleMechanism::SimpleMechanism(const std::string& name, bool leverType,
     name(name),           // Store the mechanism’s display name
     isLever(leverType),   // True = lever, False = button
     state(false),         // Start with default state (lever up)
-    onUse(action) {}      // Store the function that runs when used
+    onUse(action),
+    sticky (false) {}      // Store the function that runs when used
+
+SimpleMechanism::SimpleMechanism(const std::string& name, //overloaded constructor for sticky levers
+    function<void(bool)> action, string stuckMessage) :
+    name(name),           // Store the mechanism’s display name
+    state(false),         // Start with default state (lever up)
+    onUse(action),      // Store the function that runs when used
+    sticky(sticky),
+    stuckMessage(stuckMessage) {}
 
 
 // use()
@@ -16,6 +25,11 @@ SimpleMechanism::SimpleMechanism(const std::string& name, bool leverType,
 
 void SimpleMechanism::use() {
     if (isLever) {
+        if (sticky && state) { //down sticky levers do nothing
+            cout << stuckMessage << endl;
+            return;
+        }
+
         // Flip the lever’s state
         state = !state;
 

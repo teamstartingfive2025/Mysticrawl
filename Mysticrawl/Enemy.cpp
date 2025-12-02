@@ -7,17 +7,17 @@ using namespace std;
 
 Enemy::Enemy(string n, string t, int hp) : name(n), introText(t), health(hp) {}
 
-Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt) {
+Enemy::Enemy(string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt) : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), maxHealth(hp) {
     specialChance = 0;
     specialInt = 0;
 }
 
 Enemy::Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint)
-    : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint) {
+    : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint), maxHealth(hp) {
 }
 
 Enemy::Enemy(function <void(Enemy*, Player& target)> sp, string n, string t, int hp, int bc, int dMin, int dMax, int bec, int att, int idle, int tnt, int spc, int spint, function <void(Enemy* self, Player& target)> ef)
-    : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint), encounterFunction(ef) {
+    : name(n), introText(t), health(hp), blockChance(bc), damageMin(dMin), damageMax(dMax), blockExitChance(bec), attackChance(att), idleChance(idle), tauntChance(tnt), special(sp), specialChance(spc), specialInt(spint), encounterFunction(ef), maxHealth(hp) {
 }
 
 const string& Enemy::getName() const { return name; }
@@ -31,6 +31,13 @@ void Enemy::takeDamage(int amount) {
     if (health < 0) health = 0;
 }
 
+void Enemy::heal(int amount) {
+    if (amount < 0) return;
+
+    health += amount;
+    if (health > maxHealth) health = maxHealth;
+}
+
 bool Enemy::block() {
     return Random::GetInstance().randInt(0, 99) < blockChance;
 }
@@ -38,25 +45,30 @@ bool Enemy::block() {
 void Enemy::action(Player& target) {
     int choice = Random::GetInstance().randInt(1, 100);
 
-    if (choice > (100 - attackChance)) //chance to attack
-    {
-        int damage = attack(target);
-
-    }
-    else if (choice > (100 - attackChance - idleChance)) //chance to idle
+    if (choice > (100 - idleChance)) //chance to idle
     {
         cout << endl << name << " idles!\n";
     }
-    else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
+    else if (choice > (100 - idleChance - tauntChance)) //chance to taunt
     {
         tauntMultiplier += 0.5;
         cout << endl << name << " taunts! Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << " % \n";
     }
-    else if (choice > (100 - attackChance - idleChance - tauntChance - specialChance)) //chance to use special attack
+    else if (!target.isDefending())
     {
-        special(this, target);
+        if (choice > (100 - idleChance - tauntChance - attackChance)) //chance to attack
+        {
+            int damage = attack(target);
+        }
+        else if (choice > (100 - attackChance - idleChance - tauntChance - specialChance)) //chance to use special attack
+        {
+            special(this, target);
+        }
     }
-
+    else
+    {
+        cout << "\nYou defended against the " << name << "'s attack.\n";
+    }
 }
 
 /*

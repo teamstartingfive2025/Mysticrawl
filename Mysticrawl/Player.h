@@ -24,6 +24,15 @@ private:
     std::string playerName;
     int health;
     int maxHealth;
+    bool poisoned = false;
+    int poisonCounter = 0;
+    int poisonMin = 0;
+    int poisonMax = 0;
+    int attackDebuff = 0;
+    int attackDebuffCounter = 0;
+
+    int defenceTurns = 0; // How many turns the player has before attack
+    int defenceCooldown = 0; // How many turns the player has until they can defend
 
 public:
     // Constructor initializes the player at the starting room
@@ -43,6 +52,14 @@ public:
     // takeDamage applies positive damage to the player, clamps at 0, and returns the actual damage applied
     int takeDamage(int amount);
 
+    void setDefenceTurns(int turns);
+    int getDefenceTurns() const { return defenceTurns; }
+    bool isDefending() const;
+
+    void setDefenceCooldown(int amount);
+    int getDefenceCooldown() const { return defenceCooldown; }
+    void decrementDefenceCooldown();
+
     // heal increases health up to maxHealth and returns amount healed
     int heal(int amount);
 
@@ -51,6 +68,18 @@ public:
 
     // optional: change player's maximum health (adjusts current health if needed)
     void setMaxHealth(int newMax);
+
+    //manages poisoned condition
+    void setPoisoned(bool p, int c, int min, int max);
+    bool isPoisoned() { return poisoned; }
+    int getPoisonMin() { return poisonMin; }
+    int getPoisonMax() { return poisonMax; }
+    void decrementPoison();
+
+    //manages attack debuff
+    void setAttackDebuff(int amount, int duration);
+    int getAttackDebuff() { return attackDebuff; }
+    void decrementAttackDebuff();
 
     // Describes the current room and visible items
     void look() const;
@@ -93,4 +122,7 @@ public:
     
     // Performs a basic attack with bare hands against an enemy.
     void basicAttack(Enemy& target, Room& currentRoom);
+
+    // Allows the tester to teleport to rooms if in Debug mode
+    void teleport(vector<Room*> allRooms);
 };
