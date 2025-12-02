@@ -85,12 +85,14 @@ public:
     // Checks if the player currently has a specific item
     bool hasItem(const shared_ptr<Item> itemPointer) const;
 
+    //Read only access to Inventory
+    const vector<shared_ptr<Item>>& getInventory() const { return inventory; }
+
     // Accessor and mutator for the current room pointer
     Room* getCurrentRoom() const;
     void setCurrentRoom(Room* room);
 
-    void equipWeapon(const Weapon& weapon);
-    int getAttack() const { return attack_; }
+
 
     int getHealth() const { return health; }
     const string& getName() const { return playerName; }
@@ -103,4 +105,7 @@ public:
     
     // Performs a basic attack with bare hands against an enemy.
     void basicAttack(Enemy& target, Room& currentRoom);
+
+    //Attack with weapon or fists as user choices
+    void attack(Enemy& target, Room& currentRoom, shared_ptr<Weapon> weapon);
 };

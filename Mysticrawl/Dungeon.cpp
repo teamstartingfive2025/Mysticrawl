@@ -11,6 +11,7 @@
 #include "Prompt.h"
 #include "Lockable.h"
 #include "Container.h"
+#include "Weapons.h"
 
 #include <iostream>
 #include <limits>
@@ -36,9 +37,14 @@ void StartDungeon() {
         "The fiery light of a torch flickers against the dark, cold walls. \n"
         "The room is barren except for a sole flowerpot resting beside a pile of stones in the corner. \n"
         "A large iron-clad door stands to the east, bearing a large lock on the handle.\n",
-        { make_shared<Item>("Torch")},
-        { make_shared<Weapon>("Staff", 5) }
+        { make_shared<Item>("Torch")}
     );
+
+    auto staff = make_shared<Weapon>(
+        "Staff", 0, "A magical staff that has one purpose in life & disappears after its purpose is fulfilled."
+    );
+    spawnRoom.addHiddenItem(staff);
+
 
     Room nextRoom(
         "Next Room",

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Room.h"
+#include "Weapons.h"
 #include <iostream>
 using namespace std;
 
@@ -28,14 +29,64 @@ void Fight::fightMenu(Player& player) {
             // Player attacks first enemy in the room
             Enemy* target = enemies.front();  
 
-            player.basicAttack(*target, *room); // dereference for attack
-
-            if (!target->isAlive()) {
-                cout << target->getName() << " is defeated!\n";
-                enemies.erase(enemies.begin());
+            //Collect player weapons
+            vector<shared_ptr<Weapon>> weapons;
+            for (const auto& item : player.getInventory())
+            {
+                if (auto weapon = dynamic_pointer_cast<Weapon>(item))
+                {
+                    weapons.push_back(weapon);
+                }
             }
+
+            //Player has no weapons, basicAttack used
+            if (weapons.empty())
+            {
+                player.basicAttack(*target, *room); // dereference for attack
+
+                if (!target->isAlive())
+                {
+                    cout << target->getName() << " is defeated!\n";
+                    enemies.erase(enemies.begin());
+                }
+                return;
+            }
+
+            //Sub-Menu for weapons
+            vector<tuple<string, function<void()>>> weaponOptions;
+
+            for (auto& weapon : weapons) {
+                string label = "Use " + weapon->getName();
+
+                weaponOptions.push_back({
+                    label,
+                    [&player, room, weapon]() {
+                        auto& enemies = room->getEnemies();
+                        if (enemies.empty()) return;
+
+                        Enemy* t = enemies.front();
+
+                        // Use the weapon-based attack (Staff, Sword, etc.)
+                        player.attack(*t, *room, weapon);
+
+                        if (!t->isAlive()) {
+                            cout << t->getName() << " is defeated!\n";
+                            enemies.erase(enemies.begin());
+                        }
+                    }
+                });
+            }
+            // Show weapon sub-menu 
+            Fight subMenu;
+            subMenu.RefreshSelectionMenu(weaponOptions);
+            subMenu.SelectMenuOption();
+
+            
+
+
+
         }
-        });
+    });
 
     // --- DEFEND OPTION (functional) ---
     fightOptions.push_back({
@@ -63,4 +114,4 @@ void Fight::fightMenu(Player& player) {
 
     RefreshSelectionMenu(fightOptions);
     SelectMenuOption();
-}
+};

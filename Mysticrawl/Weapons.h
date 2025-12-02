@@ -1,42 +1,32 @@
+#pragma once
 #include <string>
 #include "Item.h"
 #include "Interactable.h"
 
+// Weapons class (child of Item & Interactable)
 class Weapon : public Item, public Interactable
 {
-    public:
-        explicit Weapon(string weaponName, int power = 5);
-        // from items - 
-        // - keep this one - Item(const string name) : name(name) {}
-        // add a new constructor (name, power)
-        //virtual string getName() const { return name; }
-        //void setName(string name) { this->name = name; }
-        //virtual void use(Player* player) { cout << "Nothing happened.\\n"; return; }
-        //bool isConsumable() const { return consumable; }
-    
-        //Weapon(const std::string& name, int power, const std::string& description)
-        //    : Item(name), power_(power), description_(description)
-        //{
-        //}
+public:
+    // New constructor with name, power & description
+    Weapon(const std::string& name, int power, const std::string& description);
 
-        //WeaponType type() const noexcept;
-        int getWeaponPower() const;
 
-        // Returns a random hit value based on power
-        int attackRoll() const;
+    // New method - getWeaponPower
+    int getWeaponPower() const noexcept
+    {
+        return power_;
+    }
 
-    private:
-        //WeaponType type_;
-        int power_;
+    // New method - getWeaponDescription
+    std::string getWeaponDescription() const
+    {
+        return description_;
+    }
+
+
+
+private:
+    int power_;
+    std::string description_;
 };
 
-
-inline Weapon MakeSword(int power = 8) {
-    
-    return Weapon("Sword", power);
-}
-
-inline Weapon MakeStaff(int power = 5) {
-
-    return Weapon("Staff", power);
-}

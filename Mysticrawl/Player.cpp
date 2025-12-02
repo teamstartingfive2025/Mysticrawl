@@ -20,6 +20,13 @@ void Player::look() const {
         cout << "You see:\n";
         for (const auto& item : currentRoom->getItems())
             cout << " - " << item->getName() << "\n";
+
+        //Show weapon description
+        if (auto weapon = dynamic_pointer_cast<Weapon>(item)) {
+
+            cout << " - " << weapon->getWeaponDescription();
+        }
+        cout << "\n";
     }
     else {
         cout << "You don't see any items.\n";
@@ -170,21 +177,37 @@ void Player::showInventory() const {
     cout << "\n";
 }
 
-void Player::equipWeapon(const Weapon& weapon)
-{
-    equippedWeapon_ = &weapon;
-   // attack_ = weapon.getPower();
-
-   // std::cout << "You have equipped the " << weapon.getName()
-     //   << ". Attack power is now " << attack_ << ".\n";
-}
 
 // Displays selection menu of all items in player inventory and returns player choice
 shared_ptr<Item> Player::itemSelectMenu() {
     shared_ptr<Item> selection;
     
     vector< tuple<string, function<void()>>> itemOptions;
+
+    string currentRoomName;
+    if (currentRoom != nullptr) {
+        currentRoomName = currentRoom->getName();
+    }
+    else {
+        currentRoomName = "";
+    }
+
     for (const auto& item : inventory) {
+        bool allow = true;
+
+        //If user choices weapon, apply logic
+        if (auto weapon = dynamic_pointer_cast<Weapon>(item))
+        {
+            if (weapon->getName() == "Staff")
+            {
+                //Only allow staff usage in GR room
+                if (currentRoomName != "The Trial of the Greater Rat") {
+                    allow = false;
+                }
+            }
+        }
+
+        if (!allow) continue;
         itemOptions.push_back({ item->getName(), [item, &selection]() { selection = item; } });
     }
     RefreshSelectionMenu(itemOptions);
@@ -195,10 +218,21 @@ shared_ptr<Item> Player::itemSelectMenu() {
 
 // Manages item usage
 void Player::useItem(shared_ptr<Item> item) {
-    item->use(this);
 
-    if(item->isConsumable()) inventory.erase(find(inventory.begin(), inventory.end(), item)); //delete consumables after use
+    //Behavior if staff is used
+    if (auto weapon = dynamic_pointer_cast<Weapon>(item)) {
+        if (weapon->getName() == "Staff")
+        {
+            cout << "You have equipped the Mighty Staff. It provides magical energy to defeat the Greater Rat.";
+        }
+        return;
+    }
+
+    item->use(this);
+    if (item->isConsumable()) inventory.erase(find(inventory.begin(), inventory.end(), item)); //delete consumables after use
+
 }
+
 
 bool Player::inventoryEmpty() { return inventory.empty(); }
 
@@ -292,27 +326,53 @@ void Player::displayHealthBar(int width) const {
     std::cout << "\nHealth " << bar << " " << health << "/" << maxHp;
 }
 
-// Player::basicAttack() Generic unarmed strike implementation.
-void Player::basicAttack(Enemy& target, Room& currentRoom) {
-    // Generate random damage between 2 and 6
-	int damage = Random::GetInstance().randInt(2, 6);
+//Player has option of using Staff or fists
+void Player::attack(Enemy& target, Room& currentRoom, shared_ptr<Weapon> weapon) {
+    int damage = 0;
 
-    // Print attack message
-    cout << "You swing your fists at the " << target.getName()
-        << " for " << damage << " damage!\n";
-
-    // Apply the damage
-    target.takeDamage(damage);
-
-    // If the enemy's HP has dropped to 0 or below, print a message
-    if (!target.isAlive()) {
-        cout << "The " << target.getName()
-            << " collapses to the ground. You are victorious!\n";
+    //Determine damage
+    if (weapon) {
+        if (weapon->getName() == "Staff") {
+            damage = Random::GetInstance().randInt(5, 8); // damage ranges from 5-8
+        }
     }
     else {
-        // If the enemy still has health, display the remaining HP
-        cout << "The " << target.getName()
-            << " still has " << target.getHealth() << " HP left.\n";
+        //no weapon = basic attack (fists)
+        damage = Random::GetInstance().randInt(2, 6); // damage ranges from 2-6
+    }
+
+    if (damage < 0) damage = 0;
+
+    //Print combat message
+    if (weapon) {
+        cout << "You attacked the enemy with " << weapon->getName() << " for " << damage << " damage.\n";
+    }
+    else {
+        cout << "You attacked the enemy for " << damage << " damage.\n";
+    }
+
+    //Apply damage
+    target.takeDamage(damage);
+
+    //Staff and Greater Rat disappearance/destruction
+    if (!target.isAlive()) {
+        cout << "The " << target.getName() << " collapses to the ground. You are victorious!\n";
+
+        if (weapon && weapon->getName() == "Staff" && target.getName() == "Greater Rat" && !target.isAlive()) {
+            cout << "During battle, the staff was damaged and was left behind. "
+                << "You drop the staff, and see a wisp of smoke and the staff magically disappears.\n";
+        }
+
+        //Remove Staff from Inventory
+        for (auto it = inventory.begin(); it != inventory.end(); ++it) {
+            if (*it && (*it)->getName() == "Staff") {
+                inventory.erase(it);
+                break; //stops after removing Staff
+            }
+            else {
+                cout << "The " << target.getName() << " still has " << target.getHealth() << " HP left.\n";
+            }
+        }  
     }
 }
     void Player::interact() {
