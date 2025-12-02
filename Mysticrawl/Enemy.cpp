@@ -45,25 +45,30 @@ bool Enemy::block() {
 void Enemy::action(Player& target) {
     int choice = Random::GetInstance().randInt(1, 100);
 
-    if (choice > (100 - attackChance)) //chance to attack
-    {
-        int damage = attack(target);
-
-    }
-    else if (choice > (100 - attackChance - idleChance)) //chance to idle
+    if (choice > (100 - idleChance)) //chance to idle
     {
         cout << endl << name << " idles!\n";
     }
-    else if (choice > (100 - attackChance - idleChance - tauntChance)) //chance to taunt
+    else if (choice > (100 - idleChance - tauntChance)) //chance to taunt
     {
         tauntMultiplier += 0.5;
         cout << endl << name << " taunts! Attack strength multiplier increased to " << (int)(tauntMultiplier * 100) << " % \n";
     }
-    else if (choice > (100 - attackChance - idleChance - tauntChance - specialChance)) //chance to use special attack
+    else if (!target.isDefending())
     {
-        special(this, target);
+        if (choice > (100 - idleChance - tauntChance - attackChance)) //chance to attack
+        {
+            int damage = attack(target);
+        }
+        else if (choice > (100 - attackChance - idleChance - tauntChance - specialChance)) //chance to use special attack
+        {
+            special(this, target);
+        }
     }
-
+    else
+    {
+        cout << "\nYou defended against the " << name << "'s attack.\n";
+    }
 }
 
 /*

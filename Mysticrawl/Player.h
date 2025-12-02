@@ -31,6 +31,9 @@ private:
     int attackDebuff = 0;
     int attackDebuffCounter = 0;
 
+    int defenceTurns = 0; // How many turns the player has before attack
+    int defenceCooldown = 0; // How many turns the player has until they can defend
+
 public:
     // Constructor initializes the player at the starting room
     // updated constructor (initialize maxHealth to starting health)
@@ -48,6 +51,14 @@ public:
 
     // takeDamage applies positive damage to the player, clamps at 0, and returns the actual damage applied
     int takeDamage(int amount);
+
+    void setDefenceTurns(int turns);
+    int getDefenceTurns() const { return defenceTurns; }
+    bool isDefending() const;
+
+    void setDefenceCooldown(int amount);
+    int getDefenceCooldown() const { return defenceCooldown; }
+    void decrementDefenceCooldown();
 
     // heal increases health up to maxHealth and returns amount healed
     int heal(int amount);
