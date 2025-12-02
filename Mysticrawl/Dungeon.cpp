@@ -32,6 +32,7 @@ using namespace std;
 void StartDungeon() {
 
     // --- Define dungeon layout and content ---
+    cout << "Your journey awaits...\n";
     Room spawnRoom(
         "Spawn Room",
         "You awake in a dimly lit dungeon cell, confused and dazed. \n"
@@ -691,6 +692,7 @@ void StartDungeon() {
     try {
         while (true) {
             vector< tuple<string, function<void()>> > options;
+            cout << "\nWhat would you like to do next?\n";
 
             options = {
                 {"Look around", [&player]() { player.look(); }},

@@ -11,11 +11,23 @@ void Fight::fightMenu(Player& player) {
 
     // 2. Validate that the room actually contains enemies
     if (room->getEnemies().empty()) {
-        cout << "Fight: " << room->getEnemies().empty() << endl;
-
-        cout << "There are no enemies to fight here.\n";
+        cout << "\nThere are no enemies to fight here.\n";
         return;
     }
+
+    cout << "\n== Combat ==\n";
+
+    auto& enemies = room->getEnemies();
+    Enemy* primaryEnemy = enemies.front();
+
+    cout << "Your Health: " << player.getHealth()
+        << "/" << player.getMaxHealth() << "\n";
+
+    if (primaryEnemy) {
+        cout << primaryEnemy->getName()
+            << " Health: " << primaryEnemy->getHealth() << "\n";
+    }
+
     // 3. Create our menu option list using lambdas.
     vector<tuple<string, function<void()>>> fightOptions;
 

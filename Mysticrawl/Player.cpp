@@ -21,7 +21,7 @@ void Player::look() const {
             cout << " - " << item->getName() << "\n";
     }
     else {
-        cout << "You don't see any items.\n";
+        cout << "You don't see any items.";
     }
     // Show mechanisms in the room (like levers or buttons)
     if (!currentRoom->getMechanisms().empty()) {
@@ -41,15 +41,18 @@ void Player::look() const {
     for (Enemy* enemy : enemies) {
         if (enemy) enemy->DisplayIntroText();
     }
-
-    cout << "\nExits:\n";
-    for (const auto& exit : currentRoom->getExits()) {
-        cout << " - " << exit.getDirection();
+    cout << "Exits: ";
+    const auto& exits = currentRoom->getExits();
+    for (size_t i = 0; i < exits.size(); ++i) {
+        const auto& exit = exits[i];
+        cout << exit.getDirection();
         if (exit.isLocked())
-            cout << " (locked)\n";
-        else
-            cout << " (unlocked)\n";
+            cout << " (locked)";
+        if (i + 1 < exits.size())
+            cout << ", ";
     }
+    cout << "\n";
+
 }
 
 void Player::investigate() {
@@ -163,14 +166,21 @@ void Player::move()
 
 // Displays the player's inventory contents
 void Player::showInventory() const {
-    cout << "\nInventory:";
-    if (inventory.empty()) cout << " (empty)";
-    for (auto& item : inventory) cout << " " << item->getName();
+    cout << "Inventory:";
+    if (inventory.empty()) {
+        cout << " (empty)\n";
+        return;
+    }
+
     cout << "\n";
+    for (const auto& item : inventory) {
+        cout << " - " << item->getName() << "\n";
+    }
 }
 
 // Displays selection menu of all items in player inventory and returns player choice
 shared_ptr<Item> Player::itemSelectMenu() {
+    cout << "\nSelect an item to use:\n";
     shared_ptr<Item> selection;
     
     vector< tuple<string, function<void()>>> itemOptions;
