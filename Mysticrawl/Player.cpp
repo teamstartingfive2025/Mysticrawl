@@ -216,12 +216,26 @@ bool Player::isAlive() const {
     return health > 0;
 }
 
-void Player::setDefenseTurns(int turns) {
-    defenseTurns = turns;
+void Player::setDefenceTurns(int turns) {
+    defenceTurns = turns;
 }
 
 bool Player::isDefending() const {
-    return defenseTurns > 0;
+    return defenceTurns > 0;
+}
+
+void Player::setDefenceCooldown(int amount) {
+    if (amount < 0) {
+        amount = 0;
+        return;
+    }
+
+    defenceCooldown = amount;
+}
+
+void Player::decrementDefenceCooldown() {
+    if (defenceCooldown > 0)
+        --defenceCooldown;
 }
 
 // Applies positive damage; returns actual damage applied (clamped to current health)

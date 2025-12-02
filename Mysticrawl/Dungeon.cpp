@@ -238,8 +238,10 @@ void StartDungeon() {
             }
 
             if (player.isDefending()) {
-                player.setDefenseTurns(player.getDefenseTurns() - 1);
+                player.setDefenceTurns(player.getDefenceTurns() - 1);
             }
+
+            player.decrementDefenceCooldown();
 
             player.displayHealthBar();
 

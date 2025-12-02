@@ -37,14 +37,17 @@ void Fight::fightMenu(Player& player) {
         }
         });
 
-    // --- DEFEND OPTION (functional) ---
-    fightOptions.push_back({
-        "Defend",
-        [&player]() {
-            cout << "You brace yourself for an incoming attack.\n";
-            player.setDefenseTurns(2); //next enemy attack reduced
-        }
-    });
+    // --- DEFEND OPTION ---
+    if (player.getDefenceCooldown() == 0) {
+        fightOptions.push_back({
+            "Defend",
+            [&player]() {
+                cout << "You brace yourself for an incoming attack.\n";
+                player.setDefenceTurns(2); //next enemy attack reduced
+                player.setDefenceCooldown(4);
+            }
+        });
+    }
 
     // --- CHECK OPTION ---
     fightOptions.push_back({
