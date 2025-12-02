@@ -21,7 +21,7 @@ void Player::look() const {
             cout << " - " << item->getName() << "\n";
     }
     else {
-        cout << "You don't see any items.\n";
+        cout << "You don't see any items.";
     }
     // Show mechanisms in the room (like levers or buttons)
     if (!currentRoom->getMechanisms().empty()) {
@@ -41,7 +41,7 @@ void Player::look() const {
     for (Enemy* enemy : enemies) {
         if (enemy) enemy->DisplayIntroText();
     }
-    cout << "\nExits: ";
+    cout << "Exits: ";
     const auto& exits = currentRoom->getExits();
     for (size_t i = 0; i < exits.size(); ++i) {
         const auto& exit = exits[i];
