@@ -237,6 +237,10 @@ void StartDungeon() {
                 }
             }
 
+            if (player.isDefending()) {
+                player.setDefenseTurns(player.getDefenseTurns() - 1);
+            }
+
             player.displayHealthBar();
 
             player.getCurrentRoom()->RefreshSelectionMenu(options);

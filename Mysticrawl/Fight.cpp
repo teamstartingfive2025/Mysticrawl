@@ -42,9 +42,9 @@ void Fight::fightMenu(Player& player) {
         "Defend",
         [&player]() {
             cout << "You brace yourself for an incoming attack.\n";
-            player.setDefending(true); //next enemy attack reduced
+            player.setDefenseTurns(2); //next enemy attack reduced
         }
-        });
+    });
 
     // --- CHECK OPTION ---
     fightOptions.push_back({
