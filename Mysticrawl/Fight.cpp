@@ -15,11 +15,6 @@ void Fight::fightMenu(Player& player) {
         return;
     }
 
-    if (room->getEnemies().empty()) {
-        cout << "\nThere are no enemies to fight here.\n";
-        return;
-    }
-
     cout << "\n== Combat ==\n";
 
     auto& enemies = room->getEnemies();
