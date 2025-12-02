@@ -5,6 +5,7 @@
 #include "Weapons.h"
 #include "Random.h"
 #include "Lockable.h"
+#include <memory>
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
@@ -18,15 +19,16 @@ void Player::look() const {
 
     if (!currentRoom->getItems().empty()) {
         cout << "You see:\n";
-        for (const auto& item : currentRoom->getItems())
+        for (const auto& item : currentRoom->getItems()) {
             cout << " - " << item->getName() << "\n";
 
-        //Show weapon description
-        if (auto weapon = dynamic_pointer_cast<Weapon>(item)) {
+            //Show weapon description
+            if (auto weapon = std::dynamic_pointer_cast<Weapon>(item)) {
 
-            cout << " - " << weapon->getWeaponDescription();
-        }
-        cout << "\n";
+                cout << " - " << weapon->getWeaponDescription();
+
+            }
+        }   cout << "\n";
     }
     else {
         cout << "You don't see any items.\n";

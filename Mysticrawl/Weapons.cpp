@@ -1,17 +1,10 @@
-#include <string>
 #include "Weapons.h"
-#include "Item.h"
 
-using namespace std;
+using std::string;
 
-Weapon::Weapon(string name, int power, string description): Item(name), Interactable(), power_(power), description_(description) {} 
-
-
-
-int Weapon::getWeaponPower() const
-{
-    return power_;
-}
+// Constructor with name, power & description
+Weapon::Weapon(const string& name, int power, const string& description)
+    : Item(name), Interactable(), power_(power), description_(description){}
 
 
 

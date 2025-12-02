@@ -3,30 +3,26 @@
 #include "Item.h"
 #include "Interactable.h"
 
-// Weapons class (child of Item & Interactable)
+using std::string;
+
 class Weapon : public Item, public Interactable
 {
 public:
-    // New constructor with name, power & description
-    Weapon(const std::string& name, int power, const std::string& description);
+    Weapon(const string& name, int power, const string& description);
 
+    int getWeaponPower() const {
 
-    // New method - getWeaponPower
-    int getWeaponPower() const noexcept
-    {
         return power_;
     }
 
-    // New method - getWeaponDescription
-    std::string getWeaponDescription() const
-    {
+    string getWeaponDescription() const {
+
         return description_;
     }
 
-
-
 private:
     int power_;
-    std::string description_;
+    string description_;
 };
+
 
