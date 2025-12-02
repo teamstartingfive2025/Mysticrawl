@@ -27,6 +27,9 @@ public:
     // Apply damage to this enemy
     void takeDamage(int amount);
 
+    // Heal this enemy
+    void heal(int amount);
+
     // Whether this enemy will be hostile on spawn (chance-based)
     bool hostilityTrigger();
 
@@ -55,6 +58,7 @@ private:
     string name;
     string introText = "";
     int health;
+    int maxHealth;
     int blockChance = 0;
     int damageMin = 0;
     int damageMax = 0;

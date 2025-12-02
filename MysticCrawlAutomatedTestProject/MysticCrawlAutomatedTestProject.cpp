@@ -12,8 +12,9 @@
 #include "../Mysticrawl/Enemy.cpp"
 #include "../Mysticrawl/EnemyTemplates.cpp"
 #include "../Mysticrawl/SelectionMenu.cpp"
-#include "../Mysticrawl/Lockable.cpp"
 #include "../Mysticrawl/Container.cpp"
+#include "../Mysticrawl/Lockable.cpp"
+
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
