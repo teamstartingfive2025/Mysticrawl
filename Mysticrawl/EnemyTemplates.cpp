@@ -175,3 +175,36 @@ Enemy ThingTemplate(
     40,// special chance     *
     0  // special int
 );
+
+Enemy BossTemplate(
+    // to access its member variables in the lambda, the object passes a pointer to itself as an argument. 
+    [&](Enemy* self, Player& target) {
+        cout << "\nThe Dungeon Overlord channels a devastating blast of dark energy!\n";
+        self->attack(target);
+    },
+    "Dungeon Overlord",
+        "\n",
+        40,   // hit points (tougher than normal enemies)
+        40,   // block chance (%)
+        8,    // min damage
+        15,   // max damage
+        30,   // block exit chance (%)
+        50,   // attack chance (%)
+        10,   // idle chance (%)
+        10,   // taunt chance (%)
+        30,   // special chance (%)
+        0,    // special int 
+        // Encounter function: lock exits while boss is alive
+        [&](Enemy* self, Player& player) {
+        // When the boss is first encountered, it seals the room.
+        for (Exit& exit : player.getCurrentRoom()->getExits()) {
+            exit.addLock([self]() {
+                // While the boss is alive, exits stay locked.
+                if (self != nullptr && self->isAlive()) {
+                    return false; // locked
+                }
+                return true;      // unlock when boss is dead
+                });
+        }
+    }
+    );

@@ -12,3 +12,5 @@ extern Enemy GhostTemplate;
 extern Enemy SkeletonKnightTemplate;
 extern Enemy GiantMoleTemplate;
 extern Enemy ThingTemplate;
+extern Enemy WizardTemplate;
+extern Enemy BossTemplate;

@@ -267,11 +267,19 @@ void StartDungeon() {
     );
 
     // This room sits at the very end of the dungeon path, its the final dungeon room
+    // add final boss to boss room at the end of the lever + button path
     Room finalBossRoom(
         "Final Boss Chamber",
-        "You step into a vast circular chamber. Ancient stone pillars rise into the darkness.\n"
-        "The air feels unnaturally heavy, as though the dungeon itself is watching you.\n"
-        "This feels like the heart of the entire labyrinth...\n"
+        "\nThe chamber opens up into a vast hall. The walls are lined with crumbling statues,\n"
+        "and a cold, oppressive silence hangs in the air. At the far end, a dark figure waits,\n"
+        "watching your every move.\n"
+        "It's the ghostly figure you met at the beginning of your journey.\n"
+        "Every turn you took.\n"
+        "Every room you explores.\n"
+        "It... was... watching\n"
+        "The Dungeon Overlord raises a hand and the exits slam shut!\n"
+        "You sense that you won't leave this place until one of you falls...\n"
+
     );
 
     // List of pointers for testing using teleportation, not intended for long term use
@@ -330,6 +338,12 @@ void StartDungeon() {
     d10.addEnemy(&theThing);
 
     //Add items and containers
+    // Create the final boss from the template and place it in the Final Boss Chamber
+    Enemy finalBoss = BossTemplate;
+    finalBossRoom.addEnemy(&finalBoss);
+
+ 
+    // Connect rooms via exits
     shared_ptr<Key> key = make_shared<Key>();
     spawnRoom.setExits({ Exit("east", &nextRoom, { [&]() -> bool { return player.hasItem(key); } }) });
     key->setName("Key");
