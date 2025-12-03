@@ -170,8 +170,8 @@ Enemy ThingTemplate(
     18,  // max damage
     100, // block exit chance (%)
     40, // attack chance (%) *
-    5,  // idle chance (%)   *These must add up to 100
-    15, // taunt chance (%)  *
+    0,  // idle chance (%)   *These must add up to 100
+    20, // taunt chance (%)  *
     40,// special chance     *
     0  // special int
 );
