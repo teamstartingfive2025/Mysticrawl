@@ -83,13 +83,13 @@ void StartDungeon() {
     );
     
     Room a8(
-        "a8: Puzzle to go north",
-        "Placeholder\n"
+        "Moldy room",
+        "Mold covers the eastern wall. The scent of mildew is particularly strong here.\n"
     );
 
     Room a9(
-        "a9: Fight here",
-        "Placeholder\n"
+        "Food storage.",
+        "Moldy bread and cheese fills cupboards on the northern wall.\n"
     );
 
     Room greaterRatRoom(
@@ -108,8 +108,8 @@ void StartDungeon() {
     );
 
     Room b2(
-        "b2: Puzzle Room",
-        "Puzzle east\n"
+        "Shrine",
+        "There is an archway on the western wall amid the skulls and bones that line the room. An empty pedestal stands in the center of it.\n"
     );
 
     Room b3(
@@ -118,8 +118,8 @@ void StartDungeon() {
     );
 
     Room b4(
-        "b4: Puzzle Room",
-        "Puzzle east and south\n"
+        "North hallway",
+        "The skulls on the north side of the hallway are arranged in the shape of a cross.\n"
     );
 
     Room b5(
@@ -128,13 +128,13 @@ void StartDungeon() {
     );
     
     Room b6(
-        "Secret Resting Place",
+        "Secret Tomb",
         "A skeleton in an open casket holds a box.\n" ///REPLACE BOX WITH WHATEVER GOES HERE
     );
 
     Room b7(
-        "b7: Treasure Room",
-        "Put something that buffs the player here\n"
+        "Pillar of Skulls",
+        "A pillar covered with skulls stands in the center of this room.\n"
     );
 
     Room b8(
@@ -163,8 +163,8 @@ void StartDungeon() {
     );
 
     Room b13(
-        "b13: Treasure Room",
-        "Put something that buffs the player here\n"
+        "Catacombs exit",
+        "A stone pedestal stands in the center of this room.\n"
     );
 
     Room c1(
@@ -189,7 +189,7 @@ void StartDungeon() {
 
     Room d8(
         "Corrupted Passageway",
-        "The posts holding up the ceiling are rotted through with black slime. The equipment in this room is thoroughly rusted.\n"
+        "The posts holding up the ceiling are rotted through with black slime. The mining equipment in this room is thoroughly rusted.\n"
     );
 
     Room d9(
@@ -203,8 +203,8 @@ void StartDungeon() {
     );
 
     Room d11(
-        "d11: Treasure Room",
-        "Put something useful here\n"
+        "Stairs",
+        "Black slime drips from the ceiling. A long staircase leads upward to the east\n"
     );
 
     Room d12(
@@ -233,13 +233,13 @@ void StartDungeon() {
     );
 
     Room d17(
-        "d17: Fight Room",
-        "Placeholder\n"
+        "Mole Room",
+        "large holes are dug in the floor. No ordinary mole made these...\n"
     );
 
     Room d18(
-        "d18: Empty Room",
-        "Placeholder\n"
+        "Narrow passageway",
+        "Some of the wooden supports here have rotted through and collapsed, leaving a narrow, L-shaped tunnel that you cannot move through without squeezing.\n"
     );
 
     Room e1(
@@ -248,23 +248,23 @@ void StartDungeon() {
     );
 
     Room e2(
-        "e2: Puzzle Room",
-        "Puzzle north\n"
+        "Dark Lair Part 2",
+        "In the center of this room is a headless statue of some terrible beast.\n"
     );
 
     Room e3(
-        "e3: Puzzle Room",
-        "Puzzle north\b"
+        "Dark Lair Part 3",
+        "Broken stained glass windows march high on the western and eastern walls.\b"
     );
 
     Room e4(
-        "e4: Puzzle Room",
-        "Puzzle north\n"
+        "Dark Lair Part 4",
+        "Two dry fountains are on the walls to eitehr side.\n"
     );
 
     Room e5(
-        "e5: Treasure Room",
-        "Big weapon here\n"
+        "Antechamber",
+        "An altar rests in the center of the room. The double doors to the north loom black and terrible...\n"
     );
 
     // This room sits at the very end of the dungeon path, its the final dungeon room
