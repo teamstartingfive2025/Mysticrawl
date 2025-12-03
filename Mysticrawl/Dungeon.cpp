@@ -746,6 +746,7 @@ void StartDungeon() {
                 cout << "\nTook " << damage << " damage from poison\n";
 
                 player.decrementPoison();
+                player.takeDamage(damage);
             }
 
             if (player.isDefending()) {
