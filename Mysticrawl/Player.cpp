@@ -299,11 +299,14 @@ void Player::setAttackDebuff(int amount, int duration) {
 }
 
 void Player::decrementAttackDebuff() {
+    if (attackDebuffCounter == 0) return;
+
     attackDebuffCounter--;
     if (attackDebuffCounter < 1) {
         attackDebuff = 0;
     }
-    cout << endl << "ATTACK DEBUFF: " << attackDebuff << endl;
+
+    cout << endl << "Attack debuff: " << attackDebuff << endl;
 }
 
 void Player::displayHealthBar(int width) const {
