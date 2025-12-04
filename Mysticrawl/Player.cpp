@@ -294,7 +294,7 @@ void Player::decrementPoison() {
 }
 
 void Player::setAttackDebuff(int amount, int duration) {
-    attackDebuff = amount;
+    attackDebuff = (amount > attackDebuff)? amount : attackDebuff;
     attackDebuffCounter += duration;
 }
 
@@ -303,6 +303,7 @@ void Player::decrementAttackDebuff() {
     if (attackDebuffCounter < 1) {
         attackDebuff = 0;
     }
+    cout << endl << "ATTACK DEBUFF: " << attackDebuff << endl;
 }
 
 void Player::displayHealthBar(int width) const {

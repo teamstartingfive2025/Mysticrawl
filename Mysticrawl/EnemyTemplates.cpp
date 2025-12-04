@@ -8,7 +8,7 @@
 using namespace std;
 
 Enemy RatTemplate(
-    "Rat", "A rat suddenly appears! I hope it doesn't have rabies...",
+    "Rat", "\nA rat suddenly appears! I hope it doesn't have rabies...",
     5,  // hit points
     20, // block chance (%)
     1,  // min damage
@@ -25,7 +25,7 @@ Enemy SnakeTemplate(
         int duration = Random::GetInstance().randInt(2, 5);
         target.setPoisoned(true, duration, 3, 6);
     }, 
-    "Snake", "A snake leaps from the ground!\n",
+    "Snake", "\nA snake leaps from the ground!\n",
     8,  // hit points
     40, // block chance (%)
     1,  // min damage
@@ -54,7 +54,7 @@ Enemy GreaterRatTemplate(
             cout << "The Greater Rat charges a special attack!\n";
         }
     },
-    "Greater Rat", "A Greater Rat suddenly appears! Looks like it means business...\n",
+    "Greater Rat", "\nA Greater Rat suddenly appears! Looks like it means business...\n",
     12, // hit points
     40, // block chance (%)
     5,  // min damage
@@ -69,7 +69,7 @@ Enemy GreaterRatTemplate(
 
 Enemy WizardTemplate(
     [&](Enemy* self, Player& target) {},
-    "Evil Wizard", "An evil wizard glares at you, ready to cast a spell!",
+    "Evil Wizard", "\nAn evil wizard glares at you, ready to cast a spell!",
     30, // hit points
     30, // block chance
     5,  // min damage
@@ -109,16 +109,16 @@ Enemy GhostTemplate(
         cout << "\n" << self->getName() << " saps your strength!\n";
         target.setAttackDebuff(2, 3); //-2 to attack for 3 rounds
     }, 
-    "Ghost", "A figure emerges from the mist!\n",
+    "Ghost", "\nA figure emerges from the mist!\n",
     10,  // hit points
     40, // block chance (%)
     8,  // min damage
-    12,  // max damage
+    10,  // max damage
     70, // block exit chance (%)
-    55, // attack chance (%) *
+    70, // attack chance (%) *
     5,  // idle chance (%)   *These must add up to 100
     25, // taunt chance (%)  *
-    15, // special chance    *
+    0, // special chance    *
     0   // special int
 );
 
@@ -128,7 +128,7 @@ Enemy SkeletonKnightTemplate(
         self->attack(target);
         self->attack(target);
     },
-    "Skeleton Knight", "The Skeleton Knight draws its sword!\n",
+    "Skeleton Knight", "\nThe Skeleton Knight draws its sword!\n",
     30,  // hit points
     40, // block chance (%)
     12,  // min damage
@@ -142,7 +142,7 @@ Enemy SkeletonKnightTemplate(
 );
 
 Enemy GiantMoleTemplate(
-    "Giant Mole", "A crazed giant mole approaches!\n",
+    "Giant Mole", "\nA crazed giant mole approaches!\n",
     20,  // hit points
     40, // block chance (%)
     10,  // min damage
@@ -158,20 +158,21 @@ Enemy ThingTemplate(
         int min = 15;
         int max = 18;
         int damage = Random::GetInstance().randInt(min, max);
+        target.takeDamage(damage);
         cout << self->getName() << " drains " << damage << " health!\n";
 
         self->heal(damage / 2);
         cout << self->getName() << " healed " << damage/2 << "!\n";
     },
-    "The Thing That Gnaws", "Emerging from the water, The Thing That Gnaws gnashes its myriad teeth!\n",
+    "The Thing That Gnaws", "\nEmerging from the water, The Thing That Gnaws gnashes its myriad teeth!\n",
     35,  // hit points
     40, // block chance (%)
     15,  // min damage
     18,  // max damage
     100, // block exit chance (%)
     40, // attack chance (%) *
-    5,  // idle chance (%)   *These must add up to 100
-    15, // taunt chance (%)  *
+    0,  // idle chance (%)   *These must add up to 100
+    20, // taunt chance (%)  *
     40,// special chance     *
     0  // special int
 );

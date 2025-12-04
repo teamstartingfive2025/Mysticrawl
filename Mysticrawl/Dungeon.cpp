@@ -47,8 +47,8 @@ void StartDungeon() {
 
     Room nextRoom(
         "Next Room",
-        "You step into a darker chamber. Runes glow faintly on the wall. "
-        "A torch might help illuminate the strange scroll lying on the ground.",
+        "You step into a darker chamber. Runes glow faintly on the wall. \n"
+        "A torch might help illuminate the strange scroll lying on the ground.\n",
         { make_shared<Item>("Scroll with Riddle") }
     );
 
@@ -59,17 +59,17 @@ void StartDungeon() {
 
     Room leverRoom(
         "Lever Room",
-        "You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+        "You step into a dimly lit chamber. A single iron lever is fixed to the wall.\n"
     );
 
     Room a4(
         "Snake Den",
-        "The floor is littered with shed snake skins."
+        "The floor is littered with shed snake skins.\n"
     );
 
     Room buttonRoom(
         "Button Room",
-        "The air smells of dust. A round stone button is embedded in the far wall."
+        "The air smells of dust. A round stone button is embedded in the far wall.\n"
     );
 
     Room wizardRoom(
@@ -83,188 +83,189 @@ void StartDungeon() {
     );
     
     Room a8(
-        "a8: Puzzle to go north",
-        "Placeholder"
+        "Moldy room",
+        "Mold covers the eastern wall. The scent of mildew is particularly strong here.\n"
     );
 
     Room a9(
-        "a9: Fight here",
-        "Placeholder"
+        "Food storage.",
+        "Moldy bread and cheese fills cupboards on the northern wall.\n"
     );
 
     Room greaterRatRoom(
         "The Trial of the Greater Rat",
-        "The edges of this room are cluttered with the corpses of lesser rats."
+        "The edges of this room are cluttered with the corpses of lesser rats.\n"
     );
 
     Room a11(
         "Secret Room",
-        "A secret is revealed!"
+        "A secret is revealed!\n"
     );
 
     Room b1( //there should be a single use means for the player to heal to max
         "The Catacombs",
-        "Both sides of the passageway are covered with neat piles of skulls and bones. A crystal is embedded in the wall high above the bones."
+        "Both sides of the passageway are covered with neat piles of skulls and bones. A crystal is embedded in the wall high above the bones.\n"
     );
 
     Room b2(
-        "b2: Puzzle Room",
-        "Puzzle east"
+        "Shrine",
+        "There is an archway on the western wall amid the skulls and bones that line the room. An empty pedestal stands in the center of it.\n"
     );
 
     Room b3(
         "Piles of Bones",
-        "The floor is littered with heaps of bones."
+        "The floor is littered with heaps of bones.\n"
     );
 
     Room b4(
-        "b4: Puzzle Room",
-        "Puzzle east and south"
+        "North hallway",
+        "The skulls on the north side of the hallway are arranged in the shape of a cross.\n"
     );
 
     Room b5(
         "Stone Room",
-        "The walls in this room are bare, though some bones are still scattered on the ground."
+        "The walls in this room are bare, though some bones are still scattered on the ground.\n"
     );
     
     Room b6(
-        "Secret Resting Place",
-        "A skeleton in an open casket holds a box." ///REPLACE BOX WITH WHATEVER GOES HERE
+        "Secret Tomb",
+        "A skeleton in an open casket holds a box.\n" ///REPLACE BOX WITH WHATEVER GOES HERE
     );
 
     Room b7(
-        "b7: Treasure Room",
-        "Put something that buffs the player here"
+        "Pillar of Skulls",
+        "A pillar covered with skulls stands in the center of this room.\n"
     );
 
     Room b8(
         "Circular Room",
-        "A mist fills the air, you can hardly see the skulls on the other side."
+        "A mist fills the air, you can hardly see the skulls on the other side.\n"
     );
 
     Room b9(
         "East hallway",
-        "A sign hangs over the southern doorway: \"THE CRYP -\". The rest is lost."
+        "A sign hangs over the southern doorway: \"THE CRYP -\". The rest is lost.\n"
     );
 
     Room b10(
         "Well Room",
-        "A well is in the center of this room. You see no bucket though.\n You could swear you saw the skulls looking at you out of the corner of your eye."
+        "A well is in the center of this room. You see no bucket though.\n"
+        " You could swear you saw the skulls looking at you out of the corner of your eye.\n"
     );
 
     Room b11(
         "South hallway",
-        "A sign hangs over the eastern doorway: \"THE CRYPT OF -\". The rest is lost."
+        "A sign hangs over the eastern doorway: \"THE CRYPT OF -\". The rest is lost.\n"
     );
 
     Room b12(
         "The Knight's Crypt",
-        "In the center of this room, a skeleton wearing armor and fine jewelry sits on a throne."
+        "In the center of this room, a skeleton wearing armor and fine jewelry sits on a throne.\n"
     );
 
     Room b13(
-        "b13: Treasure Room",
-        "Put something that buffs the player here"
+        "Catacombs exit",
+        "A stone pedestal stands in the center of this room.\n"
     );
 
     Room c1(
         "Dark tunnel",
-        "A passage so dark you can barely see"
+        "A passage so dark you can barely see\n"
     );
 
     Room c2(
         "Dark tunnel",
-        "You begin to see a faint light eastward..."
+        "You begin to see a faint light eastward...\n"
     );
 
     Room d1(
         "The Old Mine",
-        "A sign hangs above the door at the end of this dimly illuminated room: \"DANGER: DO NOT ENTER BY ORDER OF THE KING UNDER THE MOUNTAIN.\" A crystal is embedded in the southern wall."
+        "A sign hangs above the door at the end of this dimly illuminated room: \"DANGER: DO NOT ENTER BY ORDER OF THE KING UNDER THE MOUNTAIN.\" A crystal is embedded in the southern wall.\n"
     );
 
     Room d7(
         "Shaft",
-        "Crates and pickaxes line the walls. There appears to be black mold on the eastern wall."
+        "Crates and pickaxes line the walls. There appears to be black mold on the eastern wall.\n"
     );
 
     Room d8(
         "Corrupted Passageway",
-        "The posts holding up the ceiling are rotted through with black slime. The equipment in this room is thoroughly rusted."
+        "The posts holding up the ceiling are rotted through with black slime. The mining equipment in this room is thoroughly rusted.\n"
     );
 
     Room d9(
         "Slime Room",
-        "The walls and ceiling are covered with black slime that glows in some places."
+        "The walls and ceiling are covered with black slime that glows in some places.\n"
     );
 
     Room d10(
         "The Murky Pool",
-        "The black slime in the mine seems to be growing from a pool in the center of the room."
+        "The black slime in the mine seems to be growing from a pool in the center of the room.\n"
     );
 
     Room d11(
-        "d11: Treasure Room",
-        "Put something useful here"
+        "Stairs",
+        "Black slime drips from the ceiling. A long staircase leads upward to the east\n"
     );
 
     Room d12(
         "Storage house",
-        "Crates filled with ores, all abandoned."
+        "Crates filled with ores, all abandoned.\n"
     );
 
     Room d13(
         "Passageway",
-        "A dark sludge drips from the ceiling and leaks from the walls."
+        "A dark sludge drips from the ceiling and leaks from the walls.\n"
     );
 
     Room d14(
-        "d14: Puzzle Room",
-        "Puzzle north"
+        "Mineshaft",
+        "To the north, the door post is covered in glowing slime.\n"
     );
 
     Room d15(
-        "d15: Treasure Room",
-        "Put something useful here"
+        "Supply depot",
+        "Pickaxes and lanterns hang on the walls. All are rusted and covered in black slime.\n"
     );
 
     Room d16(
-        "d16: Treasure Room",
-        "Put something useful here"
+        "Collapsed Passageway",
+        "Rocks block the way. A skeleton's arms are sticking out between the boulders.\n"
     );
 
     Room d17(
-        "d17: Fight Room",
-        "Placeholder"
+        "Mole Room",
+        "large holes are dug in the floor. No ordinary mole made these...\n"
     );
 
     Room d18(
-        "d18: Empty Room",
-        "Placeholder"
+        "Narrow passageway",
+        "Some of the wooden supports here have rotted through and collapsed, leaving a narrow, L-shaped tunnel that you cannot move through without squeezing.\n"
     );
 
     Room e1(
         "The Dark Lair",
-        "Floating flames illuminate a hall with ebony walls. A crystal is embedded in the eastern wall."
+        "Floating flames illuminate a hall with ebony walls. A crystal is embedded in the eastern wall.\n"
     );
 
     Room e2(
-        "e2: Puzzle Room",
-        "Puzzle north"
+        "Dark Lair Part 2",
+        "In the center of this room is a headless statue of some terrible beast.\n"
     );
 
     Room e3(
-        "e3: Puzzle Room",
-        "Puzzle north"
+        "Dark Lair Part 3",
+        "Broken stained glass windows march high on the western and eastern walls.\b"
     );
 
     Room e4(
-        "e4: Puzzle Room",
-        "Puzzle north"
+        "Dark Lair Part 4",
+        "Two dry fountains are on the walls to eitehr side.\n"
     );
 
     Room e5(
-        "e5: Treasure Room",
-        "Big weapon here"
+        "Antechamber",
+        "An altar rests in the center of the room. The double doors to the north loom black and terrible...\n"
     );
 
     // This room sits at the very end of the dungeon path, its the final dungeon room
@@ -322,6 +323,9 @@ void StartDungeon() {
 
     Enemy ghost_b10 = GhostTemplate;
     b10.addEnemy(&ghost_b10);
+
+    Enemy skKnight = SkeletonKnightTemplate;
+    b12.addEnemy(&skKnight);
 
     Enemy gRat_d8 = GreaterRatTemplate;
     d8.addEnemy(&gRat_d8);
@@ -641,12 +645,12 @@ void StartDungeon() {
     greaterRatRoom.addMechanism(button_a10);
 
     shared_ptr<SimpleMechanism> heal_b1 = make_shared<SimpleMechanism>(
-        "Crucifix",
+        "Crystal",
         [&b1, &player](bool) {
             cout << "Healed to max.\n";
             player.setHealth(player.getMaxHealth());
         },
-        "The crucifix's healing power is spent.\n" //sticky lever
+        "The crystal's healing power is spent.\n" //sticky lever
     );
     b1.addMechanism(heal_b1);
 
@@ -743,6 +747,7 @@ void StartDungeon() {
                 cout << "\nTook " << damage << " damage from poison\n";
 
                 player.decrementPoison();
+                player.takeDamage(damage);
             }
 
             if (player.isDefending()) {
