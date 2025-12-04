@@ -1,19 +1,19 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#ifdef NOT_DEBUG
-#include "../Mysticrawl/Random.cpp"
-#include "../Mysticrawl/Input.cpp"
-#include "../Mysticrawl/Key.cpp"
-#include "../Mysticrawl/Prompt.cpp"
-#include "../Mysticrawl/Interactable.cpp"
-#include "../Mysticrawl/SimpleMechanism.cpp"
-#include "../Mysticrawl/Exit.cpp"
-#include "../Mysticrawl/Room.cpp"
-#include "../Mysticrawl/Player.cpp"
-#include "../Mysticrawl/Enemy.cpp"
-#include "../Mysticrawl/EnemyTemplates.cpp"
-#include "../Mysticrawl/SelectionMenu.cpp"
-#include "../Mysticrawl/Lockable.cpp"
+
+#include "../Mysticrawl/Random.h"
+#include "../Mysticrawl/Input.h"
+#include "../Mysticrawl/Key.h"
+#include "../Mysticrawl/Prompt.h"
+#include "../Mysticrawl/Interactable.h"
+#include "../Mysticrawl/SimpleMechanism.h"
+#include "../Mysticrawl/Exit.h"
+#include "../Mysticrawl/Room.h"
+#include "../Mysticrawl/Player.h"
+#include "../Mysticrawl/Enemy.h"
+#include "../Mysticrawl/EnemyTemplates.h"
+#include "../Mysticrawl/SelectionMenu.h"
+#include "../Mysticrawl/Lockable.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -87,8 +87,6 @@ namespace MysticCrawlAutomatedTestProject
 		}
 	};
 }
-
-#endif
 
 /*
 Starting 5 Enemy Class

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+
 #include "../Mysticrawl/Weapons.h"
 #include "../Mysticrawl/Item.h"
 #include "../Mysticrawl/Interactable.h"
@@ -28,14 +29,16 @@ namespace MysticCrawlAutomatedTestProject
 		// Testing the sword methods - including the inherited methods from Item
 		TEST_METHOD(CreateAWeapon) {
 			Logger::WriteMessage("Create a sword\n");
-			Weapon sword = Weapon("sword", 8);
+			Weapon sword = Weapon("sword", 8, "Sword's description");
 
 			Assert::AreEqual("sword", sword.getName().c_str());
+			Assert::AreEqual("Sword's description", sword.getWeaponDescription().c_str());
 			Logger::WriteMessage("Verified we can create a sword & the name returned equals what we created, next verify power is correct\n");
 			Assert::AreEqual(8, sword.getWeaponPower());
 
 			// create a second weapon with a large power, verify it also works
-			Weapon merlinsWand = Weapon("Merlin's Wand", -5);
+			Weapon merlinsWand = Weapon("Merlin's Wand", -5, "Wand's description");
+			Assert::AreEqual("Wand's description", merlinsWand.getWeaponDescription().c_str());
 			Assert::AreEqual("Merlin's Wand", merlinsWand.getName().c_str());
 			Assert::AreEqual(-5, merlinsWand.getWeaponPower());
 
@@ -54,7 +57,7 @@ namespace MysticCrawlAutomatedTestProject
 				"The room is barren except for a sole flowerpot resting beside a pile of stones in the corner. \n"
 				"A large iron-clad door stands to the east, bearing a large lock on the handle.\n",
 				{ make_shared<Item>("Torch") },
-				{ make_shared<Weapon>("Staff", 5) }
+				{ make_shared<Weapon>("Staff", 5, "Staff' description")}
 			);
 			// vector<shared_ptr<Item>>& getItems() { return items; }
 			// vector<shared_ptr<Item>>& getHiddenItems() { return hiddenItems; }
