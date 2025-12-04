@@ -24,6 +24,10 @@
 
 using namespace std;
 
+void endGame() {
+    WaitForEnterPrompt("You have defeated the The Dungeon Overlord and escaped the dungeon. Congratulations!\n\n");
+}
+
 /**
  * The StartDungeon function runs the dungeon portion of the game.
  * It sets up the initial rooms, links them together, initializes the player,
@@ -761,6 +765,11 @@ void StartDungeon() {
             player.getCurrentRoom()->RefreshSelectionMenu(options);
             player.getCurrentRoom()->SelectMenuOption();
             
+            if (!finalBoss.isAlive()) {
+                endGame();
+                return;
+            }
+
             player.decrementAttackDebuff();
         }
     }
