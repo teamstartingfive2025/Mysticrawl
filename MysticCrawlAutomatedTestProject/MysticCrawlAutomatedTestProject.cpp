@@ -86,6 +86,76 @@ namespace MysticCrawlAutomatedTestProject
 				Assert::AreEqual(NYCRat.getHealth(), initialHP, L"negative/zero enemy health is equal to prior enemy health");
 			}
 		}
+		//This whitebox test directly constructs a Room using the same name and description as the
+		//final boss chamber in Dungeon.cpp and verifies that the getters return the expected values.
+		//This verifies that the room has the correct name and description
+		TEST_METHOD(FinalBossRoom_HasCorrectNameAndDescription)
+		{
+			Logger::WriteMessage("Verifying Final Boss Chamber room basic properties\n");
+
+			//create a room like the one used in Dungeon.cpp
+			std::string roomName = "Final Boss Chamber";
+			std::string roomDescription =
+				"The chamber opens up into a vast hall. The walls are lined with crumbling statues,\n"
+				"and a cold, oppressive silence hangs in the air. At the far end, a dark figure waits,\n"
+				"watching your every move.\n";
+
+			Room finalBossRoom(roomName, roomDescription);
+
+			//Asserts should return true because name that we are comparing matches room name/desc
+			Assert::AreEqual(finalBossRoom.getName(), roomName, L"Room name does not match expected Final Boss Chamber");
+			Assert::AreEqual(finalBossRoom.getDescription(), roomDescription, L"Room description does not match expected text");
+		}
+
+
+		//This whitebox test instantiates three Room objects and connects their exits exactly as in the original code. 
+		//It then uses the  getExit and getDestination methods to assert that traveling east from the Button 
+		//Room leads to the Final Boss Chamber, and traveling west from the Final Boss Chamber returns to the 
+		//Button Room. This will check that the location of the final room is correct
+		TEST_METHOD(FinalBossRoom_ExitWiringEastFromButtonWestBack)
+		{
+			Logger::WriteMessage("Verifying Button Room connects east to Final Boss Chamber and west returns\n");
+
+			// Lever Room <-> Button Room <-> Final Boss Room
+
+			Room leverRoom(
+				"Lever Room",
+				"You step into a dimly lit chamber. A single iron lever is fixed to the wall."
+			);
+
+			Room buttonRoom(
+				"Button Room",
+				"The air smells of dust. A round stone button is embedded in the far wall."
+			);
+
+			Room finalBossRoom(
+				"Final Boss Chamber",
+				"The chamber opens up into a vast hall. The walls are lined with crumbling statues,\n"
+				"and a cold, oppressive silence hangs in the air. At the far end, a dark figure waits,\n"
+				"watching your every move.\n"
+			);
+
+			// Connect exits the same way as in Dungeon.cpp
+			buttonRoom.setExits({
+				Exit("west", &leverRoom),
+				Exit("east", &finalBossRoom)
+				});
+
+			finalBossRoom.setExits({
+				Exit("west", &buttonRoom)
+				});
+
+			//follow exits just like the game would
+			Exit* eastFromButton = buttonRoom.getExit("east");
+			Assert::IsNotNull(eastFromButton, L"Button Room should have an east exit");
+			Assert::AreEqual(eastFromButton->getDestination()->getName(), finalBossRoom.getName(),
+				L"East exit from Button Room should lead to Final Boss Chamber");
+
+			Exit* westFromFinal = finalBossRoom.getExit("west");
+			Assert::IsNotNull(westFromFinal, L"Final Boss Chamber should have a west exit");
+			Assert::AreEqual(westFromFinal->getDestination()->getName(), buttonRoom.getName(),
+				L"West exit from Final Boss Chamber should lead back to Button Room");
+		}
 	};
 }
 
