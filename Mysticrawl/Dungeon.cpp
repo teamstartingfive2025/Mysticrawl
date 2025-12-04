@@ -149,7 +149,8 @@ void StartDungeon() {
 
     Room b10(
         "Well Room",
-        "A well is in the center of this room. You see no bucket though.\n You could swear you saw the skulls looking at you out of the corner of your eye.\n"
+        "A well is in the center of this room. You see no bucket though.\n"
+        " You could swear you saw the skulls looking at you out of the corner of your eye.\n"
     );
 
     Room b11(
@@ -644,12 +645,12 @@ void StartDungeon() {
     greaterRatRoom.addMechanism(button_a10);
 
     shared_ptr<SimpleMechanism> heal_b1 = make_shared<SimpleMechanism>(
-        "Crucifix",
+        "Crystal",
         [&b1, &player](bool) {
             cout << "Healed to max.\n";
             player.setHealth(player.getMaxHealth());
         },
-        "The crucifix's healing power is spent.\n" //sticky lever
+        "The crystal's healing power is spent.\n" //sticky lever
     );
     b1.addMechanism(heal_b1);
 
