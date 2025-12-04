@@ -13,10 +13,10 @@ using namespace std;
 // Prints details about the current room and visible items
 void Player::look() const {
     cout << "\n== " << currentRoom->getName() << " ==\n";
-    cout << currentRoom->getDescription() << "\n";
+    cout << currentRoom->getDescription();
 
     if (!currentRoom->getItems().empty()) {
-        cout << "You see:\n";
+        cout << "\nYou see:\n";
         for (const auto& item : currentRoom->getItems())
             cout << " - " << item->getName() << "\n";
     }
@@ -41,18 +41,20 @@ void Player::look() const {
     for (Enemy* enemy : enemies) {
         if (enemy) enemy->DisplayIntroText();
     }
-    cout << "Exits: ";
-    const auto& exits = currentRoom->getExits();
-    for (size_t i = 0; i < exits.size(); ++i) {
-        const auto& exit = exits[i];
-        cout << exit.getDirection();
-        if (exit.isLocked())
-            cout << " (locked)";
-        if (i + 1 < exits.size())
-            cout << ", ";
-    }
-    cout << "\n";
 
+    const auto& exits = currentRoom->getExits();
+    if (!exits.empty()) {
+        cout << "\nExits: ";
+        for (size_t i = 0; i < exits.size(); ++i) {
+            const auto& exit = exits[i];
+            cout << exit.getDirection();
+            if (exit.isLocked())
+                cout << " (locked)";
+            if (i + 1 < exits.size())
+                cout << ", ";
+        }
+        cout << "\n";
+    }
 }
 
 void Player::investigate() {
